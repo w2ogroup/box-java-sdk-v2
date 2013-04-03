@@ -1,0 +1,85 @@
+package com.box.boxjavalibv2.dao;
+
+import java.util.Map;
+
+import com.box.boxjavalibv2.interfaces.IBoxParcelWrapper;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
+ * Box folder.
+ */
+public class BoxFolder extends BoxItem {
+
+    public static final String FIELD_FOLDER_UPLOAD_EMAIL = "folder_upload_email";
+    public static final String FIELD_ITEM_COLLECTION = "item_collection";
+
+    /**
+     * Constructor.
+     */
+    public BoxFolder() {
+        setType(BoxResourceType.FOLDER.toString());
+    }
+
+    /**
+     * Copy constructor, this does deep copy for all the fields.
+     * 
+     * @param obj
+     */
+    public BoxFolder(BoxFolder obj) {
+        super(obj);
+    }
+
+    /**
+     * Instantiate the object from a map. Each entry in the map reflects to a field.
+     * 
+     * @param map
+     */
+    public BoxFolder(Map<String, Object> map) {
+        super(map);
+    }
+
+    /**
+     * This is folder specific field, get the email that can be used to upload file into the folder.
+     * 
+     * @return email
+     */
+    @JsonProperty(FIELD_FOLDER_UPLOAD_EMAIL)
+    public BoxEmail getFolderUploadEmail() {
+        return (BoxEmail) getValue(FIELD_FOLDER_UPLOAD_EMAIL);
+    }
+
+    /**
+     * Setter. This is only used by {@see <a href="http://jackson.codehaus.org">Jackson JSON processer</a>}
+     * 
+     * @param folderUploadEmail
+     */
+    @JsonProperty(FIELD_FOLDER_UPLOAD_EMAIL)
+    protected void setFolderUploadEmail(BoxEmail folderUploadEmail) {
+        put(FIELD_FOLDER_UPLOAD_EMAIL, folderUploadEmail);
+    }
+
+    /**
+     * Getter.Get the items(files, subfolders, web links...) under this box folder.
+     * 
+     * @return collection of children items.
+     */
+    @JsonProperty(FIELD_ITEM_COLLECTION)
+    public BoxCollection getItemCollection() {
+        return (BoxCollection) getValue(FIELD_ITEM_COLLECTION);
+    }
+
+    /**
+     * Setter. This is only used by {@see <a href="http://jackson.codehaus.org">Jackson JSON processer</a>}
+     * 
+     * @param itemCollection
+     *            children item.
+     */
+    @JsonProperty(FIELD_ITEM_COLLECTION)
+    protected void setItemCollection(BoxCollection itemCollection) {
+        put(FIELD_ITEM_COLLECTION, itemCollection);
+    }
+
+    public BoxFolder(IBoxParcelWrapper in) {
+        super(in);
+    }
+}
