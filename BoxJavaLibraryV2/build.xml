@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="debug" name="BoxJavaLibraryExtendedV2">
     <property name="debuglevel" value="source,lines,vars"/>
-    <path id="BoxJavaLibraryExtendedV2.debug.classpath">
+    <path id="BoxJavaLibraryV2.debug.classpath">
         <pathelement location="bin/debug"/>
         <pathelement location="bin/test"/>
         <fileset dir="libs" includes="*.jar"/>
     </path>
-    <path id="BoxJavaLibraryExtendedV2.release.classpath">
+    <path id="BoxJavaLibraryV2.release.classpath">
         <pathelement location="bin/release"/>
         <fileset dir="libs" includes="*.jar"/>
     </path>
@@ -19,27 +19,27 @@
         <mkdir dir="bin/debug"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin/debug" includeantruntime="false">
             <src path="src"/>
-            <classpath refid="BoxJavaLibraryExtendedV2.debug.classpath"/>
+            <classpath refid="BoxJavaLibraryV2.debug.classpath"/>
         </javac>
-        <jar destfile="dist/debug/BoxJavaLibraryExtendedV2.jar" basedir="bin/debug"/>
+        <jar destfile="dist/debug/BoxJavaLibraryV2.jar" basedir="bin/debug"/>
     </target>
     <target name="release" description="Performs a release build.">
         <mkdir dir="bin/release"/>
         <javac debug="false" destdir="bin/release" includeantruntime="false">
             <src path="src"/>
-            <classpath refid="BoxJavaLibraryExtendedV2.release.classpath"/>
+            <classpath refid="BoxJavaLibraryV2.release.classpath"/>
         </javac>
-        <jar destfile="dist/release/BoxJavaLibraryExtendedV2.jar" basedir="bin/release"/>
+        <jar destfile="dist/release/BoxJavaLibraryV2.jar" basedir="bin/release"/>
     </target>
     <target name="test" depends="debug" description="Performs a debug build and then runs tests.">
         <mkdir dir="reports"/>
         <mkdir dir="bin/test"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin/test" includeantruntime="false">
             <src path="tst"/>
-            <classpath refid="BoxJavaLibraryExtendedV2.debug.classpath"/>
+            <classpath refid="BoxJavaLibraryV2.debug.classpath"/>
         </javac>
         <junit>
-            <classpath refid="BoxJavaLibraryExtendedV2.debug.classpath"/>
+            <classpath refid="BoxJavaLibraryV2.debug.classpath"/>
             <batchtest todir="reports">
                 <formatter type="xml"/>
                 <fileset dir="tst" includes="**/*.java"/>
