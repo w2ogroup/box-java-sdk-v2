@@ -1,8 +1,11 @@
 package com.box.boxjavalibv2.dao;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Map;
 
 import com.box.boxjavalibv2.interfaces.IBoxParcelWrapper;
+import com.box.boxjavalibv2.utils.ISO8601DateParser;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -101,6 +104,16 @@ public class BoxCollaboration extends BoxTypedObject {
     @JsonProperty(FIELD_EXPIRES_AT)
     public String getExpiresAt() {
         return (String) getValue(FIELD_EXPIRES_AT);
+    }
+
+    /**
+     * Get the time this collaboration expires.
+     * 
+     * @return
+     * @throws ParseException
+     */
+    public Date getDateExpiresAt() throws ParseException {
+        return ISO8601DateParser.parse(getExpiresAt());
     }
 
     /**

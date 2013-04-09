@@ -1,8 +1,11 @@
 package com.box.boxjavalibv2.dao;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Map;
 
 import com.box.boxjavalibv2.interfaces.IBoxParcelWrapper;
+import com.box.boxjavalibv2.utils.ISO8601DateParser;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -90,6 +93,16 @@ public class BoxTypedObject extends BoxObject {
     }
 
     /**
+     * Get the time created at.
+     * 
+     * @return
+     * @throws ParseException
+     */
+    public Date getDateCreatedAt() throws ParseException {
+        return ISO8601DateParser.parse(getCreatedAt());
+    }
+
+    /**
      * Setter. This is only used by {@see <a href="http://jackson.codehaus.org">Jackson JSON processer</a>}
      * 
      * @param createdAt
@@ -109,6 +122,16 @@ public class BoxTypedObject extends BoxObject {
     @JsonProperty(FIELD_MODIFIED_AT)
     public String getModifiedAt() {
         return (String) getValue(FIELD_MODIFIED_AT);
+    }
+
+    /**
+     * Get the date this object is modified at.
+     * 
+     * @return
+     * @throws ParseException
+     */
+    public Date getDateModifiedAt() throws ParseException {
+        return ISO8601DateParser.parse(getModifiedAt());
     }
 
     /**
