@@ -4,47 +4,75 @@ Box Java SDK
 API Calls Quickstart
 --------------------
 
+### Authenticate
+
+Authenticate the client with OAuth. See the authentication section below for
+more information.
+
 ```java
-// Authenticate the client with OAuth. See the authentication section below for
-// more information.
 boxClient.authenticate(oAuthView, autoRefreshToken, listener);
+```
 
-// Get default file info.
-BoxAndroidFile boxFile = boxClient.getFilesManager().getFile(fileId, null);
+### Get Default File Info
 
-// Get default file info plus its description and SHA1.
+```java
+BoxFile boxFile = boxClient.getFilesManager().getFile(fileId, null);
+```
+
+### Get Additional File Info
+
+Get default file info plus its description and SHA1.
+
+```java
 BoxDefaultRequestObject requestObj =
   (new BoxDefaultRequestObject()).addField(BoxFile.FIELD_SHA1);
 		.addField(BoxFile.FIELD_DESCRIPTION);
-BoxAndroidFile boxFile = boxClient.getFilesManager().getFile(fileId, requestObj);
+BoxFile boxFile = boxClient.getFilesManager().getFile(fileId, requestObj);
+```
 
-// Get the 20th through 50th children items (inclusive, for a total 30 items) of a folder, requiring 
-// etag, description, and name to be included. 
+### Get Folder Children
+
+Get 30 child items, starting from the 20th one, requiring etag, description, and
+name to be included.
+
+```java
 BoxFolderRequestObject requestObj = 
 	BoxFolderRequestObject.getFolderItemsRequestObject(30, 20)
 		.addField(BoxFolder.FIELD_NAME)
 		.addField(BoxFolder.FIELD_DESCRIPTION)
 		.addField(BoxFolder.FIELD_ETAG);
-BoxAndroidCollection collection = 
+BoxCollection collection = 
 	boxClient.getFoldersManager().getFolderItems(folderId, requestObj);
+```
 
-// Upload a new file.
+### Upload a New File
+
+```java
 BoxFileUploadRequestObject requestObj = 
 	BoxFileUploadRequestObject.uploadFileRequestObject(parent, "name", file);
-List<BoxAndroidFile> bFiles =
-	boxClient.getFilesManager().uploadFiles(requestObj);
+List<BoxFile> bFiles = boxClient.getFilesManager().uploadFiles(requestObj);
+```
 
-// Upload a new file with an upload progress listener.
+### Upload a File with a Progress Listener
+
+```java
 BoxFileUploadRequestObject requestObj = 
 	BoxFileUploadRequestObject.uploadFileRequestObject(parent, "name", file)
 		.setListener(listener));
-List<BoxAndroidFile> bFiles = 
-	boxClient.getFilesManager().uploadFiles(requestObj);
+List<BoxFile> bFiles = boxClient.getFilesManager().uploadFiles(requestObj);
+```
 
-// Download a file.
+### Download a File
+
+```java
 boxClient.getFilesManager().downloadFile(fileId, null);
+```
 
-// Delete a file, but only if the etag matches.
+### Delete a File
+
+Delete a file, but only if the etag matches.
+
+```java
 BoxFileRequestObject requestObj =
 	BoxFileRequestObject.deleteFileRequestObject().setIfMatch(etag);
 boxClient.deleteFile(fileId, requestObj);
@@ -53,12 +81,14 @@ boxClient.deleteFile(fileId, requestObj);
 Authentication
 --------------
 
-**Note:** You can find a full example of how to perform authentication in the sample
-app.
+You can find a full example of how to perform authentication in the sample app.
+
+### Basic Authentication
+
+The easiest way to authenticate is to use the OAuthActivity, which is included
+in the SDK. Add it to your manifest to use it.
 
 ```java
-// The easiest way to authenticate is to use the OAuthActivity, which is
-// included in the SDK. Add it to your manifest to use it.
 Intent intent = OAuthActivity.createOAuthActivityIntent(this, clientId, 
 	clientSecret);
 startActivityForResult(intent);
@@ -72,24 +102,27 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	   handleFail(failMessage);
 	} else {
 		// You will get an authenticated BoxClient object back upon success.
-		BoxAndroidClient client =
+		BoxClient client =
 			data.getParcelableExtra(OAuthActivity.BOX_CLIENT);
 		youOwnMethod(client);
 	}
 }
 ```
 
+### Advanced Authentication
+
+Alternatively, you can use your own custom login activity with a WebView for
+authentication.
+
 ```java
-// Alternatively, you can use your own custom login activity with a WebView for
-// authentication.
 oauthView = (OAuthWebView) findViewById(R.id.oauthview);
 oauthView.initializeAuthFlow(boxClient, this);
 boxClient.authenticate(oauthView, autoRefreshOAuth, getOAuthFlowListener());
 
 // Create a listener listening to OAuth flow. The most important part you need
 // to implement is onAuthFlowEvent and catch the OAUTH_CREATED event. This event
-// indicates that the OAuth flow is done, the BoxClient is authenticated and that
-// you can start making API calls. 
+// indicates that the OAuth flow is done, the BoxClient is authenticated and
+// that you can start making API calls. 
 private OAuthWebViewListener getOAuthFlowListener() {
 	return new OAuthWebViewListener() {
 		@Override
