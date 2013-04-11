@@ -29,7 +29,7 @@ public class TestUtils {
         JsonFactory jsonFactory = new JsonFactory();
         try {
             JsonParser jp = jsonFactory.createJsonParser(json);
-            return objectMapper.readValue(jp, cls);
+            return (BoxObject) objectMapper.readValue(jp, cls);
         }
         catch (Exception e) {
             throw new BoxRestException(e, e.getMessage());

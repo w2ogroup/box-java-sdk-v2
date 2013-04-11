@@ -1,11 +1,11 @@
-*.class
-
-# Package Files #
 *.war
 *.ear
 bin/
 gen/
 dist/
+reports/
 *.class
 local.properties
 BoxJavaLibraryV2.jar
+.DS_Store
+

@@ -42,7 +42,7 @@
             <classpath refid="BoxJavaLibraryV2.debug.classpath"/>
             <batchtest todir="reports">
                 <formatter type="xml"/>
-                <fileset dir="tst" includes="**/*.java"/>
+                <fileset dir="bin/test" includes="**/*Test.class"/>
             </batchtest>
         </junit>
         <junitreport todir="reports">
