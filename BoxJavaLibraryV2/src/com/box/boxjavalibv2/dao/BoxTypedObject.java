@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.box.boxjavalibv2.interfaces.IBoxParcelWrapper;
 import com.box.boxjavalibv2.utils.ISO8601DateParser;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -98,8 +100,9 @@ public class BoxTypedObject extends BoxObject {
      * @return
      * @throws ParseException
      */
-    public Date getDateCreatedAt() throws ParseException {
-        return ISO8601DateParser.parse(getCreatedAt());
+    public Date dateCreatedAt() throws ParseException {
+        String createdAt = getCreatedAt();
+        return StringUtils.isEmpty(createdAt) ? null : ISO8601DateParser.parse(getCreatedAt());
     }
 
     /**
