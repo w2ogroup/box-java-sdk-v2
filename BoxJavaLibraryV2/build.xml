@@ -38,7 +38,7 @@
             <src path="tst"/>
             <classpath refid="BoxJavaLibraryV2.debug.classpath"/>
         </javac>
-        <junit>
+        <junit fork="true" forkmode="once" dir=".">
             <classpath refid="BoxJavaLibraryV2.debug.classpath"/>
             <batchtest todir="reports">
                 <formatter type="xml"/>
