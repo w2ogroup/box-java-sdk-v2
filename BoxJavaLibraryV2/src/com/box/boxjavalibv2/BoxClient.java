@@ -56,14 +56,14 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
     public BoxClient(final String clientId, final String clientSecret) {
         resourceHub = createResourceHub();
         restClient = createRestClient();
-        authController = new OAuthDataController(this, clientId, clientSecret, DEFAULT_AUTO_REFRESH);
-        auth = new OAuthAuthorization((OAuthDataController) authController);
+        authController = createAuthDataController(clientId, clientSecret);
+        auth = createAuthorization(authController);
 
-        filesManager = new BoxFilesManager(getConfig(), resourceHub, auth, restClient);
-        foldersManager = new BoxFoldersManager(getConfig(), resourceHub, auth, restClient);
-        collaborationsManager = new BoxCollaborationsManager(getConfig(), resourceHub, auth, restClient);
-        commentsManager = new BoxCommentsManager(getConfig(), resourceHub, auth, restClient);
-        usersManager = new BoxUsersManager(getConfig(), resourceHub, auth, restClient);
+        filesManager = new BoxFilesManager(getConfig(), resourceHub, getAuth(), restClient);
+        foldersManager = new BoxFoldersManager(getConfig(), resourceHub, getAuth(), restClient);
+        collaborationsManager = new BoxCollaborationsManager(getConfig(), resourceHub, getAuth(), restClient);
+        commentsManager = new BoxCommentsManager(getConfig(), resourceHub, getAuth(), restClient);
+        usersManager = new BoxUsersManager(getConfig(), resourceHub, getAuth(), restClient);
         oauthManager = new BoxOAuthManager(getConfig(), resourceHub, restClient);
     }
 
@@ -243,7 +243,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
     public void onAuthFlowEvent(IAuthEvent event, IAuthFlowMessage message) {
         OAuthEvent oe = (OAuthEvent) event;
         if (oe == OAuthEvent.OAUTH_CREATED) {
-            ((OAuthAuthorization) auth).setOAuthData(getOAuthTokenFromMessage(message));
+            ((OAuthAuthorization) getAuth()).setOAuthData(getOAuthTokenFromMessage(message));
         }
         if (mAuthListener != null) {
             mAuthListener.onAuthFlowEvent(event, message);
@@ -304,8 +304,25 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      *            password(use null if no password at all)
      * @return IBoxRequestAuth
      */
-    protected IBoxRequestAuth getSharedItemAuth(String sharedLink, String password) {
-        return new SharedLinkAuthorization((OAuthAuthorization) auth, sharedLink, password);
+    public IBoxRequestAuth getSharedItemAuth(String sharedLink, String password) {
+        return new SharedLinkAuthorization((OAuthAuthorization) getAuth(), sharedLink, password);
+    }
+
+    public IAuthDataController createAuthDataController(final String clientId, final String clientSecret) {
+        return new OAuthDataController(this, clientId, clientSecret, DEFAULT_AUTO_REFRESH);
+    }
+
+    public IBoxRequestAuth createAuthorization(IAuthDataController controller) {
+        return new OAuthAuthorization((OAuthDataController) authController);
+    }
+
+    /**
+     * Get the auth object used to make api calls.
+     * 
+     * @return
+     */
+    public IBoxRequestAuth getAuth() {
+        return auth;
     }
 
     @Override
