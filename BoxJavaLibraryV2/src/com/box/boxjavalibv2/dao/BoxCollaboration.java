@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.box.boxjavalibv2.interfaces.IBoxParcelWrapper;
 import com.box.boxjavalibv2.utils.ISO8601DateParser;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -112,8 +114,9 @@ public class BoxCollaboration extends BoxTypedObject {
      * @return
      * @throws ParseException
      */
-    public Date getDateExpiresAt() throws ParseException {
-        return ISO8601DateParser.parse(getExpiresAt());
+    public Date dateExpiresAt() throws ParseException {
+        String expiresAt = getExpiresAt();
+        return StringUtils.isEmpty(expiresAt) ? null : ISO8601DateParser.parse(expiresAt);
     }
 
     /**

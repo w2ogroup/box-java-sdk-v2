@@ -133,8 +133,9 @@ public class BoxTypedObject extends BoxObject {
      * @return
      * @throws ParseException
      */
-    public Date getDateModifiedAt() throws ParseException {
-        return ISO8601DateParser.parse(getModifiedAt());
+    public Date dateModifiedAt() throws ParseException {
+        String dateModifiedAt = getModifiedAt();
+        return StringUtils.isEmpty(dateModifiedAt) ? null : ISO8601DateParser.parse(dateModifiedAt);
     }
 
     /**
