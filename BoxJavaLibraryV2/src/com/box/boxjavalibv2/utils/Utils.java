@@ -95,8 +95,7 @@ public final class Utils {
      *            class
      * @return object
      */
-    @SuppressWarnings({"rawtypes"})
-    public static Object parseJSONStringIntoObject(final String jsonString, final Class theClass) {
+    public static <T> T parseJSONStringIntoObject(final String jsonString, final Class<T> theClass) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -112,10 +111,10 @@ public final class Utils {
      *            class
      * @param objectMapper
      *            mapper.
+     * @return
      * @return object
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static Object parseJSONStringIntoObject(final String jsonString, final Class theClass, final ObjectMapper objectMapper) {
+    public static <T> T parseJSONStringIntoObject(final String jsonString, final Class<T> theClass, final ObjectMapper objectMapper) {
         try {
             JsonFactory jsonFactory = new JsonFactory();
             JsonParser jp = jsonFactory.createJsonParser(jsonString);
@@ -137,8 +136,7 @@ public final class Utils {
      *            the BoxClient you are using
      * @return object
      */
-    @SuppressWarnings({"rawtypes"})
-    public static Object parseJSONStringIntoObject(final String jsonString, final Class theClass, BoxClient client) {
+    public static <T> T parseJSONStringIntoObject(final String jsonString, final Class<T> theClass, BoxClient client) {
         return parseJSONStringIntoObject(jsonString, theClass, client.getResourceHub().getObjectMapper());
     }
 }
