@@ -1,11 +1,14 @@
 package com.box.boxjavalibv2;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import com.box.boxjavalibv2.authorization.OAuthAuthorization;
 import com.box.boxjavalibv2.authorization.OAuthDataController;
 import com.box.boxjavalibv2.authorization.OAuthDataController.OAuthTokenState;
 import com.box.boxjavalibv2.authorization.SharedLinkAuthorization;
 import com.box.boxjavalibv2.dao.BoxBase;
 import com.box.boxjavalibv2.dao.BoxOAuthToken;
+import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.events.OAuthEvent;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.interfaces.IAuthData;
@@ -22,6 +25,7 @@ import com.box.boxjavalibv2.resourcemanagers.BoxCommentsManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxFilesManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxFoldersManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxOAuthManager;
+import com.box.boxjavalibv2.resourcemanagers.BoxResourceManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxSharedItemsManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxUsersManager;
 import com.box.restclientv2.interfaces.IBoxConfig;
@@ -59,12 +63,12 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
         authController = createAuthDataController(clientId, clientSecret);
         auth = createAuthorization(authController);
 
-        filesManager = new BoxFilesManager(getConfig(), resourceHub, getAuth(), restClient);
-        foldersManager = new BoxFoldersManager(getConfig(), resourceHub, getAuth(), restClient);
-        collaborationsManager = new BoxCollaborationsManager(getConfig(), resourceHub, getAuth(), restClient);
-        commentsManager = new BoxCommentsManager(getConfig(), resourceHub, getAuth(), restClient);
-        usersManager = new BoxUsersManager(getConfig(), resourceHub, getAuth(), restClient);
-        oauthManager = new BoxOAuthManager(getConfig(), resourceHub, restClient);
+        filesManager = new BoxFilesManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
+        foldersManager = new BoxFoldersManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
+        collaborationsManager = new BoxCollaborationsManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
+        commentsManager = new BoxCommentsManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
+        usersManager = new BoxUsersManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
+        oauthManager = new BoxOAuthManager(getConfig(), getResourceHub(), getRestClient());
     }
 
     /**
@@ -155,7 +159,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return BoxSharedItemsManager
      */
     public BoxSharedItemsManager getSharedItemsManager(String sharedLink, String password) {
-        return new BoxSharedItemsManager(getConfig(), resourceHub, getSharedItemAuth(sharedLink, password), restClient);
+        return new BoxSharedItemsManager(getConfig(), getResourceHub(), getSharedItemAuth(sharedLink, password), getRestClient());
     }
 
     /**
@@ -168,7 +172,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return BoxFilesManager
      */
     public BoxFilesManager getSharedFilesManager(String sharedLink, String password) {
-        return new BoxFilesManager(getConfig(), resourceHub, getSharedItemAuth(sharedLink, password), restClient);
+        return new BoxFilesManager(getConfig(), getResourceHub(), getSharedItemAuth(sharedLink, password), getRestClient());
     }
 
     /**
@@ -181,7 +185,41 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return BoxFoldersManager
      */
     public BoxFoldersManager getSharedFoldersManager(String sharedLink, String password) {
-        return new BoxFoldersManager(getConfig(), resourceHub, getSharedItemAuth(sharedLink, password), restClient);
+        return new BoxFoldersManager(getConfig(), getResourceHub(), getSharedItemAuth(sharedLink, password), getRestClient());
+    }
+
+    /**
+     * Get the BoxCommentsManager for shared items, which can be used to make API calls on comments endpoints for a shared item.
+     * 
+     * @param sharedLink
+     *            shared link.
+     * @param password
+     *            password of the shared link, use null if there is no password
+     * @return BoxFoldersManager
+     */
+    public BoxCommentsManager getSharedCommentsManager(String sharedLink, String password) {
+        return new BoxCommentsManager(getConfig(), getResourceHub(), getSharedItemAuth(sharedLink, password), getRestClient());
+    }
+
+    /**
+     * A generic way to get a resourceManager with shared link auth. Currently only supports file, folder and comment endpoints.
+     * 
+     * @param type
+     * @param sharedLink
+     * @param password
+     * @return
+     */
+    public BoxResourceManager getResourceManagerWithSharedLinkAuth(BoxResourceType type, String sharedLink, String password) {
+        switch (type) {
+            case FILE:
+                return getSharedFilesManager(sharedLink, password);
+            case FOLDER:
+                return getSharedFoldersManager(sharedLink, password);
+            case COMMENT:
+                return getSharedCommentsManager(sharedLink, password);
+            default:
+                throw new NotImplementedException();
+        }
     }
 
     /**
@@ -284,6 +322,15 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      */
     public IBoxResourceHub getResourceHub() {
         return this.resourceHub;
+    }
+
+    /**
+     * Get rest client.
+     * 
+     * @return
+     */
+    protected IBoxRESTClient getRestClient() {
+        return this.restClient;
     }
 
     /**
