@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.box.boxjavalibv2.dao.BoxCollection;
-import com.box.boxjavalibv2.dao.BoxComment;
 import com.box.boxjavalibv2.dao.BoxFile;
 import com.box.boxjavalibv2.dao.BoxFileVersion;
 import com.box.boxjavalibv2.dao.BoxPreview;
@@ -123,14 +122,14 @@ public class BoxFilesManager extends BoxFileFoldersManager {
 
         return (BoxPreview) tryCastObject(BoxResourceType.PREVIEW, result);
     }
-    
+
     /**
      * Get thumbnail of a file.
      * 
      * @param fileId
      *            id of the file
      * @param extension
-     *             file extension of requested thumbnail
+     *            file extension of requested thumbnail
      * @param requestObject
      *            request object
      * @return InputStream
@@ -146,7 +145,7 @@ public class BoxFilesManager extends BoxFileFoldersManager {
         ThumbnailRequest request = new ThumbnailRequest(getConfig(), getObjectMapper(), fileId, extension, requestObject);
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
-        return (InputStream) (new DefaultFileResponseParser()).parse(response);       
+        return (InputStream) (new DefaultFileResponseParser()).parse(response);
     }
 
     /**
@@ -370,11 +369,10 @@ public class BoxFilesManager extends BoxFileFoldersManager {
      * @throws AuthFatalFailureException
      *             exception indicating authentication totally failed
      */
-    public List<BoxComment> getFileComments(final String fileId, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
+    public BoxCollection getFileComments(final String fileId, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
         GetFileCommentsRequest request = new GetFileCommentsRequest(getConfig(), getObjectMapper(), fileId, requestObject);
-        BoxCollection collection = (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.COMMENTS, getObjectMapper());
-        return BoxCommentsManager.getComments(collection);
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.COMMENTS, getObjectMapper());
     }
 
     /**
