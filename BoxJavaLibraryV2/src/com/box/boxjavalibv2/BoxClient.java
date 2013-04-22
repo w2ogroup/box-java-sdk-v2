@@ -26,6 +26,7 @@ import com.box.boxjavalibv2.resourcemanagers.BoxFilesManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxFoldersManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxOAuthManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxResourceManager;
+import com.box.boxjavalibv2.resourcemanagers.BoxSearchManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxSharedItemsManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxUsersManager;
 import com.box.restclientv2.interfaces.IBoxConfig;
@@ -51,6 +52,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
 
     private final BoxFilesManager filesManager;
     private final BoxFoldersManager foldersManager;
+    private final BoxSearchManager searchManager;
     private final BoxCollaborationsManager collaborationsManager;
     private final BoxCommentsManager commentsManager;
     private final BoxUsersManager usersManager;
@@ -65,6 +67,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
 
         filesManager = new BoxFilesManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
         foldersManager = new BoxFoldersManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
+        searchManager = new BoxSearchManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
         collaborationsManager = new BoxCollaborationsManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
         commentsManager = new BoxCommentsManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
         usersManager = new BoxUsersManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
@@ -228,6 +231,13 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      */
     public BoxFoldersManager getFoldersManager() {
         return foldersManager;
+    }
+
+    /**
+     * @return BoxSearchManager through which searches can be performed.
+     */
+    public BoxSearchManager getSearchManager() {
+        return searchManager;
     }
 
     /**

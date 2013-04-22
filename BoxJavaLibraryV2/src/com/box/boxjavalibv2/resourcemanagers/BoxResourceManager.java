@@ -1,14 +1,15 @@
 package com.box.boxjavalibv2.resourcemanagers;
 
 import com.box.boxjavalibv2.dao.BoxCollection;
-import com.box.boxjavalibv2.dao.BoxServerError;
 import com.box.boxjavalibv2.dao.BoxResourceType;
+import com.box.boxjavalibv2.dao.BoxServerError;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedHttpStatusException;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedStatus;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.requests.GetFolderItemsRequest;
+import com.box.boxjavalibv2.requests.SearchRequest;
 import com.box.boxjavalibv2.responseparsers.BoxObjectResponseParser;
 import com.box.boxjavalibv2.responseparsers.ErrorResponseParser;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -136,23 +137,48 @@ public abstract class BoxResourceManager {
         AuthFatalFailureException {
         return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, objectMapper);
     }
-    
+
     /**
-     * Make a rest api request, get response,  parse the response, and try to cast parsed out object into expected object.
-     *@param request
+     * Get results of a search.
+     * 
+     * @param request
+     *            SearchRequest.
+     * @param objectMapper
+     *            ObjectMapper for deserializing.
+     * @return Box items.
+     * @throws BoxServerException
+     *             Thrown if there was a problem with the server.
+     * @throws BoxRestException
+     *             Thrown if there was a problem with the request.
+     * @throws AuthFatalFailureException
+     *             Thrown if there was an authentication problem.
+     */
+    protected BoxCollection getSearchResults(final SearchRequest request, final ObjectMapper objectMapper) throws BoxServerException, BoxRestException,
+        AuthFatalFailureException {
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, objectMapper);
+    }
+
+    /**
+     * Make a rest api request, get response, parse the response, and try to cast parsed out object into expected object.
+     * 
+     * @param request
      *            request
      * @param type
      *            type
      * @param objectMapper
      *            ObjectMapper
      * @return parsed object
-     * @throws AuthFatalFailureException exception
-     * @throws BoxRestException exception
-     * @throws BoxServerException exception
+     * @throws AuthFatalFailureException
+     *             exception
+     * @throws BoxRestException
+     *             exception
+     * @throws BoxServerException
+     *             exception
      */
-    public Object getResponseAndParseAndTryCast(final DefaultBoxRequest request, final BoxResourceType type, final ObjectMapper objectMapper) throws BoxRestException, AuthFatalFailureException, BoxServerException {
-    	Object obj = getResponseAndParse(request, type, objectMapper);
-    	return tryCastObject(type, obj);
+    public Object getResponseAndParseAndTryCast(final DefaultBoxRequest request, final BoxResourceType type, final ObjectMapper objectMapper)
+        throws BoxRestException, AuthFatalFailureException, BoxServerException {
+        Object obj = getResponseAndParse(request, type, objectMapper);
+        return tryCastObject(type, obj);
     }
 
     /**
@@ -179,8 +205,7 @@ public abstract class BoxResourceManager {
         return response.parseResponse(parser, errorParser);
     }
 
-    
-    //TODO: support web links
+    // TODO: support web links
     /**
      * Try to cast a box item into a concrete class(i.e. file or folder)
      * 
@@ -220,13 +245,13 @@ public abstract class BoxResourceManager {
             throw new BoxUnexpectedHttpStatusException((BoxUnexpectedStatus) obj);
         }
         else {
-        	Class expectedClass = getResourceHub().getClass(expectedType);
-        	if (expectedClass.isInstance(obj)) {
-        		return obj;
-        	}
-        	else {
-        		throw new BoxRestException("Invalid class, expected:" + expectedClass.getCanonicalName() + ";current:" + obj.getClass().getCanonicalName());
-        	}
+            Class expectedClass = getResourceHub().getClass(expectedType);
+            if (expectedClass.isInstance(obj)) {
+                return obj;
+            }
+            else {
+                throw new BoxRestException("Invalid class, expected:" + expectedClass.getCanonicalName() + ";current:" + obj.getClass().getCanonicalName());
+            }
         }
     }
 }
