@@ -2,6 +2,7 @@ package com.box.boxjavalibv2.dao;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -39,6 +40,15 @@ public class BoxTypedObject extends BoxObject {
      */
     public BoxTypedObject(Map<String, Object> map) {
         super(map);
+    }
+
+    /**
+     * Get BoxResourceType of this object.
+     * 
+     * @return
+     */
+    public BoxResourceType resourceType() {
+        return BoxResourceType.valueOf(getType().toUpperCase(Locale.ENGLISH));
     }
 
     /**
