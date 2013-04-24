@@ -1,6 +1,7 @@
 package com.box.boxjavalibv2.requests.requestobjects;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -10,6 +11,7 @@ import org.apache.commons.codec.CharEncoding;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 
 import com.box.boxjavalibv2.httpentities.MultipartEntityWithProgressListener;
@@ -31,8 +33,6 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
      *            id of the parent folder
      * @param files
      *            files
-     * @param listener
-     *            listener listening to the file upload
      * @return BoxFileUploadRequestObject
      * @throws BoxRestException
      */
@@ -49,8 +49,6 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
      *            name of the file
      * @param file
      *            file to be uploaded
-     * @param listener
-     *            listener listening to the file upload
      * @return BoxFileUploadRequestObject
      * @throws BoxRestException
      */
@@ -58,6 +56,23 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
         LinkedHashMap<String, File> map = new LinkedHashMap<String, File>();
         map.put(fileName, file);
         return BoxFileUploadRequestObject.uploadFilesRequestObject(parentId, map);
+    }
+
+    /**
+     * BoxFileUploadRequestObject for upload file request. Note: for uploading a new version of the file, please use uploadNewVersionRequestObject().
+     * 
+     * @param parentId
+     *            id of the parent folder
+     * @param fileName
+     *            name of the file
+     * @param inputStream
+     *            InputStream of the file to be uploaded
+     * @return BoxFileUploadRequestObject
+     * @throws BoxRestException
+     */
+    public static BoxFileUploadRequestObject uploadFileRequestObject(final String parentId, final String fileName, final InputStream inputStream)
+        throws BoxRestException {
+        return (new BoxFileUploadRequestObject()).setMultipartMIME(getNewFileMultipartEntity(parentId, inputStream, fileName));
     }
 
     /**
@@ -73,6 +88,21 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
      */
     public static BoxFileUploadRequestObject uploadNewVersionRequestObject(final String name, final File file) throws BoxRestException {
         return (new BoxFileUploadRequestObject()).setMultipartMIME(getNewVersionMultipartEntity(name, file));
+    }
+
+    /**
+     * BoxFileUploadRequestObject for upload a new version of a file.
+     * 
+     * @param name
+     *            name of the file
+     * @param inputStream
+     *            input stream of the file uploaded.
+     * @return BoxFileUploadRequestObject
+     * @throws BoxRestException
+     *             exception
+     */
+    public static BoxFileUploadRequestObject uploadNewVersionRequestObject(final String name, final InputStream inputStream) throws BoxRestException {
+        return (new BoxFileUploadRequestObject()).setMultipartMIME(getNewVersionMultipartEntity(name, inputStream));
     }
 
     public BoxFileUploadRequestObject setMultipartMIME(final MultipartEntityWithProgressListener mime) throws BoxRestException {
@@ -121,6 +151,20 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
         return entity;
     }
 
+    private static MultipartEntityWithProgressListener getNewFileMultipartEntity(final String parentId, final InputStream inputStream, final String fileName)
+        throws BoxRestException {
+        MultipartEntityWithProgressListener me = new MultipartEntityWithProgressListener(HttpMultipartMode.BROWSER_COMPATIBLE);
+        try {
+            me.addPart(Constants.FOLDER_ID, new StringBody(parentId));
+        }
+        catch (UnsupportedEncodingException e1) {
+            throw new BoxRestException(e1);
+        }
+        me.addPart(fileName, new InputStreamBody(inputStream, fileName));
+
+        return me;
+    }
+
     private static MultipartEntityWithProgressListener getNewFileMultipartEntity(final String parentId, final HashMap<String, File> files)
         throws BoxRestException {
         MultipartEntityWithProgressListener me = new MultipartEntityWithProgressListener(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -139,6 +183,12 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
     private static MultipartEntityWithProgressListener getNewVersionMultipartEntity(final String name, final File file) {
         MultipartEntityWithProgressListener me = new MultipartEntityWithProgressListener(HttpMultipartMode.BROWSER_COMPATIBLE);
         me.addPart(name, new FileBody(file, name, "", CharEncoding.UTF_8));
+        return me;
+    }
+
+    private static MultipartEntityWithProgressListener getNewVersionMultipartEntity(final String name, final InputStream inputStream) {
+        MultipartEntityWithProgressListener me = new MultipartEntityWithProgressListener(HttpMultipartMode.BROWSER_COMPATIBLE);
+        me.addPart(name, new InputStreamBody(inputStream, name));
         return me;
     }
 }
