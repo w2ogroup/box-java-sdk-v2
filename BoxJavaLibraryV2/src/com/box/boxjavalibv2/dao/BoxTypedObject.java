@@ -107,12 +107,18 @@ public class BoxTypedObject extends BoxObject {
     /**
      * Get the time created at.
      * 
-     * @return
+     * @return Date representation of the created_at value. Null if there was no created_at or if it could not be parsed as an ISO8601 date.
      * @throws ParseException
      */
     public Date dateCreatedAt() throws ParseException {
-        String createdAt = getCreatedAt();
-        return StringUtils.isEmpty(createdAt) ? null : ISO8601DateParser.parse(getCreatedAt());
+        String dateCreatedAt = getCreatedAt();
+        try {
+            Date date = StringUtils.isEmpty(dateCreatedAt) ? null : ISO8601DateParser.parse(dateCreatedAt);
+            return date;
+        }
+        catch (ParseException e) {
+            return null;
+        }
     }
 
     /**
@@ -140,12 +146,18 @@ public class BoxTypedObject extends BoxObject {
     /**
      * Get the date this object is modified at.
      * 
-     * @return
+     * @return Date representation of the modified_at value. Null if there was no date_modified or if it could not be parsed as an ISO8601 date.
      * @throws ParseException
      */
-    public Date dateModifiedAt() throws ParseException {
+    public Date dateModifiedAt() {
         String dateModifiedAt = getModifiedAt();
-        return StringUtils.isEmpty(dateModifiedAt) ? null : ISO8601DateParser.parse(dateModifiedAt);
+        try {
+            Date date = StringUtils.isEmpty(dateModifiedAt) ? null : ISO8601DateParser.parse(dateModifiedAt);
+            return date;
+        }
+        catch (ParseException e) {
+            return null;
+        }
     }
 
     /**

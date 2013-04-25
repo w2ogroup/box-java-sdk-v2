@@ -111,12 +111,18 @@ public class BoxCollaboration extends BoxTypedObject {
     /**
      * Get the time this collaboration expires.
      * 
-     * @return
+     * @return Date representation of the expires_at value. Null if there was no expires_at or if it could not be parsed as an ISO8601 date.
      * @throws ParseException
      */
     public Date dateExpiresAt() throws ParseException {
-        String expiresAt = getExpiresAt();
-        return StringUtils.isEmpty(expiresAt) ? null : ISO8601DateParser.parse(expiresAt);
+        String expiresAt = getCreatedAt();
+        try {
+            Date date = StringUtils.isEmpty(expiresAt) ? null : ISO8601DateParser.parse(expiresAt);
+            return date;
+        }
+        catch (ParseException e) {
+            return null;
+        }
     }
 
     /**
