@@ -110,7 +110,7 @@ public class BoxTypedObject extends BoxObject {
      * @return Date representation of the created_at value. Null if there was no created_at or if it could not be parsed as an ISO8601 date.
      * @throws ParseException
      */
-    public Date dateCreatedAt() throws ParseException {
+    public Date dateCreatedAt() {
         String dateCreatedAt = getCreatedAt();
         try {
             Date date = StringUtils.isEmpty(dateCreatedAt) ? null : ISO8601DateParser.parse(dateCreatedAt);
