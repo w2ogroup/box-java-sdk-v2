@@ -2,7 +2,6 @@ package com.box.boxjavalibv2.requests;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
 
 import junit.framework.Assert;
 
@@ -46,10 +45,8 @@ public class UploadFileRequestTest extends RequestTestBase {
         f = TestUtils.createTempFile(content);
 
         String fileName = "testfilename998";
-        LinkedHashMap<String, File> files = new LinkedHashMap<String, File>();
-        files.put(fileName, f);
 
-        UploadFileRequest request = new UploadFileRequest(CONFIG, OBJECT_MAPPER, BoxFileUploadRequestObject.uploadFilesRequestObject(parentId, files));
+        UploadFileRequest request = new UploadFileRequest(CONFIG, OBJECT_MAPPER, BoxFileUploadRequestObject.uploadFileRequestObject(parentId, fileName, f));
         testRequestIsWellFormed(request, BoxConfig.getInstance().getUploadUrlAuthority(),
             BoxConfig.getInstance().getUploadUrlPath().concat(UploadFileRequest.getUri()), HttpStatus.SC_CREATED, RestMethod.POST);
     }

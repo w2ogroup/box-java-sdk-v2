@@ -1,7 +1,5 @@
 package com.box.boxjavalibv2.filetransfer;
 
-import java.util.List;
-
 import com.box.boxjavalibv2.dao.BoxCollection;
 import com.box.boxjavalibv2.dao.BoxFile;
 import com.box.boxjavalibv2.dao.BoxResourceType;
@@ -41,7 +39,7 @@ public class BoxFileUpload {
      *            BoxFilesManager
      * @param requestObject
      *            request objecct
-     * @return the list of the uploaded BoxFiles
+     * @return the uploaded BoxFile
      * @throws BoxServerException
      *             exception
      * @throws BoxRestException
@@ -49,12 +47,12 @@ public class BoxFileUpload {
      * @throws AuthFatalFailureException
      *             exception indicating authentication totally failed
      */
-    public List<BoxFile> execute(BoxFilesManager manager, BoxFileUploadRequestObject requestObject) throws BoxServerException, BoxRestException,
+    public BoxFile execute(BoxFilesManager manager, BoxFileUploadRequestObject requestObject) throws BoxServerException, BoxRestException,
         AuthFatalFailureException {
         UploadFileRequest request = new UploadFileRequest(mConfig, manager.getObjectMapper(), requestObject);
         Object result = manager.getResponseAndParse(request, BoxResourceType.FILES, manager.getObjectMapper());
         BoxCollection collection = (BoxCollection) manager.tryCastObject(BoxResourceType.FILES, result);
-        return BoxFilesManager.getFiles(collection);
+        return BoxFilesManager.getFiles(collection).get(0);
     }
 
     /**

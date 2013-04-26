@@ -3,9 +3,6 @@ package com.box.boxjavalibv2.requests.requestobjects;
 import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.apache.commons.codec.CharEncoding;
 import org.apache.http.HttpEntity;
@@ -16,28 +13,17 @@ import org.apache.http.entity.mime.content.StringBody;
 
 import com.box.boxjavalibv2.httpentities.MultipartEntityWithProgressListener;
 import com.box.boxjavalibv2.interfaces.IFileTransferListener;
+import com.box.boxjavalibv2.jsonentities.MapJSONStringEntity;
 import com.box.boxjavalibv2.utils.Constants;
 import com.box.restclientv2.exceptions.BoxRestException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
 
+    private static final String METADATA = "metadata";
     private MultipartEntityWithProgressListener entity = null;
 
     private BoxFileUploadRequestObject() {
-    }
-
-    /**
-     * BoxFileUploadRequestObject for upload files request.
-     * 
-     * @param parentId
-     *            id of the parent folder
-     * @param files
-     *            files
-     * @return BoxFileUploadRequestObject
-     * @throws BoxRestException
-     */
-    public static BoxFileUploadRequestObject uploadFilesRequestObject(final String parentId, final LinkedHashMap<String, File> files) throws BoxRestException {
-        return (new BoxFileUploadRequestObject()).setMultipartMIME(getNewFileMultipartEntity(parentId, files));
     }
 
     /**
@@ -53,9 +39,7 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
      * @throws BoxRestException
      */
     public static BoxFileUploadRequestObject uploadFileRequestObject(final String parentId, final String fileName, final File file) throws BoxRestException {
-        LinkedHashMap<String, File> map = new LinkedHashMap<String, File>();
-        map.put(fileName, file);
-        return BoxFileUploadRequestObject.uploadFilesRequestObject(parentId, map);
+        return (new BoxFileUploadRequestObject()).setMultipartMIME(getNewFileMultipartEntity(parentId, fileName, file));
     }
 
     /**
@@ -165,19 +149,29 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
         return me;
     }
 
-    private static MultipartEntityWithProgressListener getNewFileMultipartEntity(final String parentId, final HashMap<String, File> files)
+    private static MultipartEntityWithProgressListener getNewFileMultipartEntity(final String parentId, final String name, final File file)
         throws BoxRestException {
         MultipartEntityWithProgressListener me = new MultipartEntityWithProgressListener(HttpMultipartMode.BROWSER_COMPATIBLE);
         try {
             me.addPart(Constants.FOLDER_ID, new StringBody(parentId));
+            me.addPart("filename", new FileBody(file, "filename", "", CharEncoding.UTF_8));
+            me.addPart(METADATA, getMetadataBody(parentId, name));
         }
-        catch (UnsupportedEncodingException e1) {
-            throw new BoxRestException(e1);
+        catch (UnsupportedEncodingException e) {
+            throw new BoxRestException(e);
         }
-        for (Map.Entry<String, File> entry : files.entrySet()) {
-            me.addPart(entry.getKey(), new FileBody(entry.getValue(), entry.getKey(), "", CharEncoding.UTF_8));
-        }
+
         return me;
+    }
+
+    private static StringBody getMetadataBody(String parentId, String name) throws UnsupportedEncodingException, BoxRestException {
+        MapJSONStringEntity parentEntity = new MapJSONStringEntity();
+        parentEntity.put("id", parentId);
+
+        MapJSONStringEntity entity = new MapJSONStringEntity();
+        entity.put("parent", parentEntity);
+        entity.put("name", name);
+        return new StringBody(entity.toJSONString(new ObjectMapper()));
     }
 
     private static MultipartEntityWithProgressListener getNewVersionMultipartEntity(final String name, final File file) {

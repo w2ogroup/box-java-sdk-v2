@@ -153,7 +153,7 @@ public class BoxFilesManager extends BoxFileFoldersManager {
      * 
      * @param requestObject
      *            reqeust object
-     * @return newly created box files object
+     * @return newly created box file object
      * @throws BoxRestException
      *             exception
      * @throws BoxServerException
@@ -162,7 +162,7 @@ public class BoxFilesManager extends BoxFileFoldersManager {
      *             exception indicating authentication totally failed
      */
 
-    public List<BoxFile> uploadFiles(final BoxFileUploadRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
+    public BoxFile uploadFile(final BoxFileUploadRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
         BoxFileUpload upload = new BoxFileUpload(getConfig());
         return upload.execute(this, requestObject);
     }
