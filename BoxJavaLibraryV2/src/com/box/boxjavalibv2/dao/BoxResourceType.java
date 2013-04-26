@@ -1,5 +1,8 @@
 package com.box.boxjavalibv2.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Type of resources that can be requested by API's.
  */
@@ -12,9 +15,9 @@ public enum BoxResourceType {
     FILE,
     /** A plural format of {@link #FILE}. */
     FILES,
-    /** A box weblink.*/
+    /** A box weblink. */
     WEB_LINK,
-    /**A plural format of {@link #WEB_LINK}.*/
+    /** A plural format of {@link #WEB_LINK}. */
     WEB_LINKS,
     /** Preview of a file. */
     PREVIEW,
@@ -45,12 +48,17 @@ public enum BoxResourceType {
     /** Error. */
     ERROR;
 
+    // As a performance optimization, set up string values for all types.
+    private static final Map<BoxResourceType, String> typeToString = new HashMap<BoxResourceType, String>();
+    static {
+        for (BoxResourceType type : values()) {
+            typeToString.put(type, type.name().toLowerCase());
+        }
+    }
+
     @Override
     public String toString() {
-        switch (this) {
-            default:
-                return super.toString().toLowerCase();
-        }
+        return typeToString.get(this);
     }
 
     /**
