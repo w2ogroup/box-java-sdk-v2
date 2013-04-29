@@ -41,7 +41,7 @@ public class CreateSharedLinkRequestTest extends RequestTestBase {
 
     private void testRequestIsWellFormed(final boolean isFolder) throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
         String id = "testid123";
-        BoxSharedLinkPermissions permissions = new BoxSharedLinkPermissions(true, false);
+        BoxSharedLinkPermissions permissions = new BoxSharedLinkPermissions(true);
         String access = BoxSharedLinkAccess.COLLABORATORS;
         Date unsharedAt = new Date();
 

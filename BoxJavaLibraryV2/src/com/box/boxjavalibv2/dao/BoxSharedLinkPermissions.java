@@ -12,7 +12,6 @@ import com.box.boxjavalibv2.interfaces.IBoxParcelWrapper;
 public class BoxSharedLinkPermissions extends BoxObject {
 
     private boolean can_download;
-    private boolean can_preview;
 
     /**
      * Default constructor.
@@ -43,12 +42,9 @@ public class BoxSharedLinkPermissions extends BoxObject {
      * 
      * @param canDownload
      *            can be downloaded
-     * @param canPreview
-     *            can be previewed
      */
-    public BoxSharedLinkPermissions(final boolean canDownload, final boolean canPreview) {
+    public BoxSharedLinkPermissions(final boolean canDownload) {
         this.setCan_download(canDownload);
-        this.setCan_preview(canPreview);
     }
 
     /**
@@ -67,24 +63,6 @@ public class BoxSharedLinkPermissions extends BoxObject {
      */
     private void setCan_download(final boolean canDownload) {
         this.can_download = canDownload;
-    }
-
-    /**
-     * whether can_preview is true.
-     * 
-     * @return can_preview
-     */
-    public boolean isCan_preview() {
-        return can_preview;
-    }
-
-    /**
-     * Setter.
-     * 
-     * @param canPreview
-     */
-    private void setCan_preview(final boolean canPreview) {
-        this.can_preview = canPreview;
     }
 
     protected BoxSharedLinkPermissions(IBoxParcelWrapper parcel) {

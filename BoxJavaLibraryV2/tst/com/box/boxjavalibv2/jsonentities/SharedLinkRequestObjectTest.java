@@ -23,8 +23,8 @@ public class SharedLinkRequestObjectTest {
     public void testFull() {
         Date date = new Date();
         String access = BoxSharedLinkAccess.OPEN;
-        BoxSharedLinkRequestObject entity = BoxSharedLinkRequestObject.createSharedLinkRequestObject(access)
-            .setPermissions(new BoxSharedLinkPermissions(true, true)).setUnshared_at(date);
+        BoxSharedLinkRequestObject entity = BoxSharedLinkRequestObject.createSharedLinkRequestObject(access).setPermissions(new BoxSharedLinkPermissions(true))
+            .setUnshared_at(date);
 
         String accessStr = String.format(ACCESS_STR, access);
         String dateStr = String.format(UNSHARED_STR, ISO8601DateParser.toString(date));
@@ -44,8 +44,7 @@ public class SharedLinkRequestObjectTest {
     @Test
     public void testNoUnsharedAt() {
         String access = BoxSharedLinkAccess.OPEN;
-        BoxSharedLinkRequestObject entity = BoxSharedLinkRequestObject.createSharedLinkRequestObject(access).setPermissions(
-            new BoxSharedLinkPermissions(true, true));
+        BoxSharedLinkRequestObject entity = BoxSharedLinkRequestObject.createSharedLinkRequestObject(access).setPermissions(new BoxSharedLinkPermissions(true));
 
         String accessStr = String.format(ACCESS_STR, access);
 
