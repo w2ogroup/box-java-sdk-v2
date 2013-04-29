@@ -1,5 +1,7 @@
 package com.box.boxjavalibv2.requests.requestobjects;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.box.boxjavalibv2.dao.BoxCollaboration;
 import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.jsonentities.MapJSONStringEntity;
@@ -22,7 +24,7 @@ public class BoxCollabRequestObject extends BoxDefaultRequestObject {
      * @param folderId
      *            id of the folder
      * @param userId
-     *            id of the user to collaborate
+     *            id of the user to collaborate, this is optional, if you don't want to supply a user id, use null.
      * @param login
      *            login email of the collaborator(Can be non-box email.)
      * @param role
@@ -119,7 +121,9 @@ public class BoxCollabRequestObject extends BoxDefaultRequestObject {
 
     private static MapJSONStringEntity getAccessibilityEntity(final String userId, final String login) {
         MapJSONStringEntity entity = new MapJSONStringEntity();
-        entity.put("id", userId);
+        if (StringUtils.isNotEmpty(userId)) {
+            entity.put("id", userId);
+        }
         entity.put("login", login);
         return entity;
     }
