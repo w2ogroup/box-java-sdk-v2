@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class CreateCollaborationRequest extends DefaultBoxRequest {
 
-    private static final String URI = "/collaborations/%s";
+    private static final String URI = "/collaborations";
 
     /**
      * Constructor.
