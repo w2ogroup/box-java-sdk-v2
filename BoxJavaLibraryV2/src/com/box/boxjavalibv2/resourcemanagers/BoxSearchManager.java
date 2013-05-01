@@ -11,7 +11,7 @@ import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.interfaces.IBoxRESTClient;
 import com.box.restclientv2.interfaces.IBoxRequestAuth;
 
-public class BoxSearchManager extends BoxFileFoldersManager {
+public class BoxSearchManager extends BoxItemsManager {
 
     /**
      * Constructor.

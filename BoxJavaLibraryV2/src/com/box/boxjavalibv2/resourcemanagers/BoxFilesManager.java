@@ -38,7 +38,7 @@ import com.box.restclientv2.interfaces.IBoxRequestAuth;
 import com.box.restclientv2.responseparsers.DefaultFileResponseParser;
 import com.box.restclientv2.responses.DefaultBoxResponse;
 
-public class BoxFilesManager extends BoxFileFoldersManager {
+public class BoxFilesManager extends BoxItemsManager {
 
     /**
      * Constructor.
@@ -72,7 +72,7 @@ public class BoxFilesManager extends BoxFileFoldersManager {
      *             exception indicating authentication totally failed
      */
     public BoxFile getFile(final String fileId, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
-        return (BoxFile) super.getFileOrFolder(fileId, requestObject, false);
+        return (BoxFile) super.getItem(fileId, requestObject, BoxResourceType.FILE);
     }
 
     /**
@@ -184,7 +184,7 @@ public class BoxFilesManager extends BoxFileFoldersManager {
      */
     public BoxFile copyFile(final String fileId, final BoxFileRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        return (BoxFile) super.copyFileFolder(fileId, requestObject, false);
+        return (BoxFile) super.copyItem(fileId, requestObject, BoxResourceType.FILE);
     }
 
     /**
@@ -331,7 +331,7 @@ public class BoxFilesManager extends BoxFileFoldersManager {
      */
     public BoxFile updateFileInfo(final String fileId, BoxFileRequestObject requestObject) throws UnsupportedEncodingException, BoxRestException,
         BoxServerException, AuthFatalFailureException {
-        return (BoxFile) super.updateFileFolderInfo(fileId, requestObject, false);
+        return (BoxFile) super.updateItemInfo(fileId, requestObject, BoxResourceType.FILE);
     }
 
     /**
@@ -351,7 +351,7 @@ public class BoxFilesManager extends BoxFileFoldersManager {
      */
     public BoxFile createSharedLink(final String fileId, BoxFileRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        return (BoxFile) super.createSharedLink(fileId, requestObject, false);
+        return (BoxFile) super.createSharedLink(fileId, requestObject, BoxResourceType.FILE);
     }
 
     /**

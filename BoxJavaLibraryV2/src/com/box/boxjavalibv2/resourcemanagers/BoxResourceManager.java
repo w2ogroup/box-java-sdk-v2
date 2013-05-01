@@ -219,8 +219,8 @@ public abstract class BoxResourceManager {
      * @throws BoxRestException
      *             exception
      */
-    protected Object tryCastBoxItem(final boolean isFolder, final Object item) throws BoxServerException, BoxRestException {
-        return tryCastObject(isFolder ? BoxResourceType.FOLDER : BoxResourceType.FILE, item);
+    protected Object tryCastBoxItem(final BoxResourceType type, final Object item) throws BoxServerException, BoxRestException {
+        return tryCastObject(type, item);
     }
 
     /**

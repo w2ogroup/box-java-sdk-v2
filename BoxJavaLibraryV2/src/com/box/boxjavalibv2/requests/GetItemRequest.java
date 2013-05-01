@@ -9,9 +9,9 @@ import com.box.restclientv2.requests.DefaultBoxRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Request to create a shared link for a file or folder.
+ * Request to get info of a file or folder.
  */
-public class CreateSharedLinkRequest extends DefaultBoxRequest {
+public class GetItemRequest extends DefaultBoxRequest {
 
     private static final String URI = "/%s/%s";
 
@@ -24,29 +24,28 @@ public class CreateSharedLinkRequest extends DefaultBoxRequest {
      *            object mapper
      * @param id
      *            id of the item
+     * @param type
+     *            resource type
      * @param requestObject
      *            request object
-     * @param type
-     *            type of the item
-     * 
      * @throws BoxRestException
-     *             exception
+     *             excepition
      */
-    public CreateSharedLinkRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String id, BoxDefaultRequestObject requestObject,
-        final BoxResourceType type) throws BoxRestException {
-        super(config, objectMapper, getUri(id, type), RestMethod.PUT, requestObject);
+    public GetItemRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String id, final BoxResourceType type,
+        BoxDefaultRequestObject requestObject) throws BoxRestException {
+        super(config, objectMapper, getUri(id, type), RestMethod.GET, requestObject);
     }
 
     /**
      * Get uri.
      * 
-     * @param fileFolderId
-     *            id of this file/folder
+     * @param id
+     *            id of the item
      * @param type
-     *            whether it is folder
+     *            resource type
      * @return uri
      */
-    public static String getUri(final String fileFolderId, final BoxResourceType type) {
-        return String.format(URI, type.toPluralString(), fileFolderId);
+    public static String getUri(final String id, final BoxResourceType type) {
+        return String.format(URI, type.toPluralString(), id);
     }
 }

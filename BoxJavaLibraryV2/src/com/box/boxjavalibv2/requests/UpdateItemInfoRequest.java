@@ -1,5 +1,7 @@
 package com.box.boxjavalibv2.requests;
 
+import java.io.UnsupportedEncodingException;
+
 import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
 import com.box.boxjavalibv2.utils.Utils;
@@ -10,9 +12,9 @@ import com.box.restclientv2.requests.DefaultBoxRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Request to get info of a file or folder.
+ * Request to update info of a file or folder.
  */
-public class GetFileFolderRequest extends DefaultBoxRequest {
+public class UpdateItemInfoRequest extends DefaultBoxRequest {
 
     private static final String URI = "/%s/%s";
 
@@ -23,18 +25,18 @@ public class GetFileFolderRequest extends DefaultBoxRequest {
      *            config
      * @param objectMapper
      *            object mapper
-     * @param fileFolderId
-     *            id of the file/folder
-     * @param isFolder
-     *            whether it is a folder
+     * @param id
+     *            id of the item
      * @param requestObject
      *            request object
+     * @param type
+     *            resource type of the objects
      * @throws BoxRestException
-     *             excepition
+     * @throws UnsupportedEncodingException
      */
-    public GetFileFolderRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String fileFolderId, boolean isFolder,
-        BoxDefaultRequestObject requestObject) throws BoxRestException {
-        super(config, objectMapper, getUri(fileFolderId, isFolder), RestMethod.GET, requestObject);
+    public UpdateItemInfoRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String fileFolderId,
+        final BoxDefaultRequestObject requestObject, final BoxResourceType type) throws BoxRestException, UnsupportedEncodingException {
+        super(config, objectMapper, getUri(fileFolderId, type), RestMethod.PUT, requestObject);
     }
 
     /**
@@ -42,11 +44,11 @@ public class GetFileFolderRequest extends DefaultBoxRequest {
      * 
      * @param fileFolderId
      *            id of the file/folder
-     * @param isFolder
+     * @param type
      *            whether it is a folder
      * @return uri
      */
-    public static String getUri(final String fileFolderId, boolean isFolder) {
-        return String.format(URI, Utils.getContainerString(isFolder ? BoxResourceType.FOLDER : BoxResourceType.FILE), fileFolderId);
+    public static String getUri(final String fileFolderId, final BoxResourceType type) {
+        return String.format(URI, type.toPluralString(), fileFolderId);
     }
 }

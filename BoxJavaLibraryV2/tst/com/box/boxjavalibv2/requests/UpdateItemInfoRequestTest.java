@@ -10,37 +10,38 @@ import org.apache.http.entity.StringEntity;
 import org.junit.Test;
 
 import com.box.boxjavalibv2.BoxConfig;
+import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.requests.requestobjects.BoxFileRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 
-public class UpdateFileFolderInfoRequestTest extends RequestTestBase {
+public class UpdateItemInfoRequestTest extends RequestTestBase {
 
     @Test
     public void testUri() {
-        Assert.assertEquals("/files/123", UpdateFileFolderInfoRequest.getUri("123", false));
-        Assert.assertEquals("/folders/123", UpdateFileFolderInfoRequest.getUri("123", true));
+        Assert.assertEquals("/files/123", UpdateItemInfoRequest.getUri("123", BoxResourceType.FILE));
+        Assert.assertEquals("/folders/123", UpdateItemInfoRequest.getUri("123", BoxResourceType.FOLDER));
     }
 
     @Test
     public void testFolderRequestIsWellFormed() throws IllegalStateException, BoxRestException, IOException, AuthFatalFailureException {
-        testRequestIsWellFormed(true);
+        testRequestIsWellFormed(BoxResourceType.FOLDER);
     }
 
     @Test
     public void testFileRequestIsWellFormed() throws IllegalStateException, BoxRestException, IOException, AuthFatalFailureException {
-        testRequestIsWellFormed(false);
+        testRequestIsWellFormed(BoxResourceType.FILE);
     }
 
-    public void testRequestIsWellFormed(boolean isFolder) throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
+    public void testRequestIsWellFormed(BoxResourceType type) throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
         String id = "testid123";
         String parentId = "testparentid456";
 
-        UpdateFileFolderInfoRequest request = new UpdateFileFolderInfoRequest(CONFIG, OBJECT_MAPPER, id, BoxFileRequestObject.updateFileRequestObject()
-            .setParent(parentId), isFolder);
+        UpdateItemInfoRequest request = new UpdateItemInfoRequest(CONFIG, OBJECT_MAPPER, id,
+            BoxFileRequestObject.updateFileRequestObject().setParent(parentId), type);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
-            BoxConfig.getInstance().getApiUrlPath().concat(UpdateFileFolderInfoRequest.getUri(id, isFolder)), HttpStatus.SC_OK, RestMethod.PUT);
+            BoxConfig.getInstance().getApiUrlPath().concat(UpdateItemInfoRequest.getUri(id, type)), HttpStatus.SC_OK, RestMethod.PUT);
 
         HttpEntity entity = request.getRequestEntity();
         Assert.assertTrue(entity instanceof StringEntity);

@@ -23,7 +23,7 @@ import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.interfaces.IBoxRESTClient;
 import com.box.restclientv2.interfaces.IBoxRequestAuth;
 
-public class BoxFoldersManager extends BoxFileFoldersManager {
+public class BoxFoldersManager extends BoxItemsManager {
 
     /**
      * Constructor.
@@ -58,7 +58,7 @@ public class BoxFoldersManager extends BoxFileFoldersManager {
      */
     public BoxFolder getFolder(final String folderId, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        return (BoxFolder) super.getFileOrFolder(folderId, requestObject, true);
+        return (BoxFolder) super.getItem(folderId, requestObject, BoxResourceType.FOLDER);
     }
 
     /**
@@ -116,7 +116,7 @@ public class BoxFoldersManager extends BoxFileFoldersManager {
      */
     public BoxFolder copyFolder(final String folderId, BoxFolderRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        return (BoxFolder) super.copyFileFolder(folderId, requestObject, true);
+        return (BoxFolder) super.copyItem(folderId, requestObject, BoxResourceType.FOLDER);
     }
 
     /**
@@ -160,7 +160,7 @@ public class BoxFoldersManager extends BoxFileFoldersManager {
      */
     public BoxFolder updateFolderInfo(final String folderId, final BoxFolderRequestObject requestObject) throws UnsupportedEncodingException, BoxRestException,
         BoxServerException, AuthFatalFailureException {
-        return (BoxFolder) super.updateFileFolderInfo(folderId, requestObject, true);
+        return (BoxFolder) super.updateItemInfo(folderId, requestObject, BoxResourceType.FOLDER);
     }
 
     /**
@@ -186,7 +186,7 @@ public class BoxFoldersManager extends BoxFileFoldersManager {
      */
     public BoxFolder createSharedLink(final String folderId, BoxFolderRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        return (BoxFolder) super.createSharedLink(folderId, requestObject, true);
+        return (BoxFolder) super.createSharedLink(folderId, requestObject, BoxResourceType.FOLDER);
     }
 
     /**

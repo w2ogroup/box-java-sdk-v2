@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.box.boxjavalibv2.BoxConfig;
+import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.dao.BoxSharedLinkAccess;
 import com.box.boxjavalibv2.dao.BoxSharedLinkPermissions;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
@@ -25,30 +26,30 @@ public class CreateSharedLinkRequestTest extends RequestTestBase {
     // CHECKSTYLE:OFF
     @Test
     public void testUri() {
-        Assert.assertEquals("/folders/123", CreateSharedLinkRequest.getUri("123", true));
-        Assert.assertEquals("/files/123", CreateSharedLinkRequest.getUri("123", false));
+        Assert.assertEquals("/folders/123", CreateSharedLinkRequest.getUri("123", BoxResourceType.FOLDER));
+        Assert.assertEquals("/files/123", CreateSharedLinkRequest.getUri("123", BoxResourceType.FILE));
     }
 
     @Test
     public void testFileRequestWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
-        testRequestIsWellFormed(false);
+        testRequestIsWellFormed(BoxResourceType.FILE);
     }
 
     @Test
     public void testFolderRequestWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
-        testRequestIsWellFormed(true);
+        testRequestIsWellFormed(BoxResourceType.FOLDER);
     }
 
-    private void testRequestIsWellFormed(final boolean isFolder) throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
+    private void testRequestIsWellFormed(final BoxResourceType type) throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
         String id = "testid123";
         BoxSharedLinkPermissions permissions = new BoxSharedLinkPermissions(true);
         String access = BoxSharedLinkAccess.COLLABORATORS;
         Date unsharedAt = new Date();
 
         CreateSharedLinkRequest request = new CreateSharedLinkRequest(CONFIG, OBJECT_MAPPER, id, BoxSharedLinkRequestObject
-            .createSharedLinkRequestObject(access).setPermissions(permissions).setUnshared_at(unsharedAt), isFolder);
+            .createSharedLinkRequestObject(access).setPermissions(permissions).setUnshared_at(unsharedAt), type);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
-            BoxConfig.getInstance().getApiUrlPath().concat(CreateSharedLinkRequest.getUri(id, isFolder)), HttpStatus.SC_OK, RestMethod.PUT);
+            BoxConfig.getInstance().getApiUrlPath().concat(CreateSharedLinkRequest.getUri(id, type)), HttpStatus.SC_OK, RestMethod.PUT);
         HttpEntity entity = request.getRequestEntity();
         Assert.assertTrue(entity instanceof StringEntity);
 
