@@ -146,4 +146,4 @@ boxClient.authenticate(oauthObject);
 Known Issues
 ------------
 
-Not all features, such as trash, are supported yet.
+
