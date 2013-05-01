@@ -26,6 +26,10 @@ public class BoxFolderRequestObject extends BoxItemRequestObject {
         return (new BoxFolderRequestObject()).setRecursive(recursive);
     }
 
+    public static BoxFolderRequestObject getTrashItemsRequestObject(final int limit, final int offset) {
+        return getFolderItemsRequestObject(limit, offset);
+    }
+
     /**
      * BoxFolderRequestObject for get folder items request.
      * 

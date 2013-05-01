@@ -16,8 +16,11 @@ import com.box.boxjavalibv2.requests.CreateNewFolderRequest;
 import com.box.boxjavalibv2.requests.DeleteFolderRequest;
 import com.box.boxjavalibv2.requests.GetFolderCollaborationsRequest;
 import com.box.boxjavalibv2.requests.GetFolderItemsRequest;
+import com.box.boxjavalibv2.requests.GetFolderTrashItemsRequest;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
+import com.box.boxjavalibv2.requests.requestobjects.BoxFileRequestObject;
 import com.box.boxjavalibv2.requests.requestobjects.BoxFolderRequestObject;
+import com.box.boxjavalibv2.requests.requestobjects.BoxItemRestoreRequestObject;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.interfaces.IBoxRESTClient;
@@ -62,6 +65,26 @@ public class BoxFoldersManager extends BoxItemsManager {
     }
 
     /**
+     * Get trash folder given a folder id.
+     * 
+     * @param folderId
+     *            id of the folder
+     * @param requestObject
+     *            object that goes into request.
+     * @return requested box folder
+     * @throws BoxRestException
+     *             exception
+     * @throws BoxServerException
+     *             exception
+     * @throws AuthFatalFailureException
+     *             exception indicating authentication totally failed
+     */
+    public BoxFolder getTrashFolder(final String folderId, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
+        AuthFatalFailureException {
+        return (BoxFolder) super.getTrashItem(folderId, BoxResourceType.FOLDER, requestObject);
+    }
+
+    /**
      * Create a folder.
      * 
      * @param requestObject
@@ -97,6 +120,38 @@ public class BoxFoldersManager extends BoxItemsManager {
         AuthFatalFailureException {
         DeleteFolderRequest request = new DeleteFolderRequest(getConfig(), getObjectMapper(), folderId, requestObject);
         executeRequestWithNoResponseBody(request);
+    }
+
+    /**
+     * Permanently delete a trashed folder.
+     * 
+     * @param id
+     *            id of the folder
+     * @param requestObject
+     *            request object
+     * @throws BoxRestException
+     * @throws AuthFatalFailureException
+     * @throws BoxServerException
+     */
+    public void deleteTrashFolder(final String id, final BoxFileRequestObject requestObject) throws BoxRestException, BoxServerException,
+        AuthFatalFailureException {
+        super.deleteTrashItem(id, BoxResourceType.FOLDER, requestObject);
+    }
+
+    /**
+     * Restore a trashed folder.
+     * 
+     * @param id
+     *            id of the trashed folder.
+     * @param requestObject
+     * @return the folder
+     * @throws BoxRestException
+     * @throws AuthFatalFailureException
+     * @throws BoxServerException
+     */
+    public BoxFolder restoreTrashFolder(final String id, final BoxItemRestoreRequestObject requestObject) throws BoxRestException, AuthFatalFailureException,
+        BoxServerException {
+        return (BoxFolder) super.restoreTrashItem(id, BoxResourceType.FOLDER, requestObject);
     }
 
     /**
@@ -138,7 +193,29 @@ public class BoxFoldersManager extends BoxItemsManager {
     public BoxCollection getFolderItems(final String folderId, BoxFolderRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
         GetFolderItemsRequest request = new GetFolderItemsRequest(getConfig(), getObjectMapper(), folderId, requestObject);
-        return getFolderItems(request, getObjectMapper());
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getObjectMapper());
+    }
+
+    /**
+     * Get the trashed items(subfolders, files, weblinks...) under a folder. By default, returning maximum of
+     * {@link GetFolderItemsRequest#DEFAULT_FOLDER_ITEMS_LIMIT} items, at an offset of {@link GetFolderItemsRequest#DEFAULT_FOLDER_ITEMS_OFFSET}
+     * 
+     * @param folderId
+     *            id of the folder.
+     * @param requestObject
+     *            request object
+     * @return Items(subfolders, files, weblinks...) under the folder.
+     * @throws BoxRestException
+     *             exception
+     * @throws BoxServerException
+     *             exception
+     * @throws AuthFatalFailureException
+     *             exception indicating authentication totally failed
+     */
+    public BoxCollection getFolderTrashItems(final String folderId, BoxFolderRequestObject requestObject) throws BoxRestException, BoxServerException,
+        AuthFatalFailureException {
+        GetFolderTrashItemsRequest request = new GetFolderTrashItemsRequest(getConfig(), getObjectMapper(), folderId, requestObject);
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getObjectMapper());
     }
 
     /**

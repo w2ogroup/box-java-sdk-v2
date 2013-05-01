@@ -29,6 +29,7 @@ import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
 import com.box.boxjavalibv2.requests.requestobjects.BoxFileRequestObject;
 import com.box.boxjavalibv2.requests.requestobjects.BoxFileUploadRequestObject;
 import com.box.boxjavalibv2.requests.requestobjects.BoxImageRequestObject;
+import com.box.boxjavalibv2.requests.requestobjects.BoxItemRestoreRequestObject;
 import com.box.boxjavalibv2.responseparsers.ErrorResponseParser;
 import com.box.boxjavalibv2.responseparsers.PreviewResponseParser;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -71,8 +72,29 @@ public class BoxFilesManager extends BoxItemsManager {
      * @throws AuthFatalFailureException
      *             exception indicating authentication totally failed
      */
-    public BoxFile getFile(final String fileId, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
+    public BoxFile getFile(final String fileId, final BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
+        AuthFatalFailureException {
         return (BoxFile) super.getItem(fileId, requestObject, BoxResourceType.FILE);
+    }
+
+    /**
+     * Get trashed file given a file id.
+     * 
+     * @param fileId
+     *            id of the file
+     * @param requestObject
+     *            object that goes into request.
+     * @return requested box file
+     * @throws BoxRestException
+     *             exception
+     * @throws BoxServerException
+     *             exception
+     * @throws AuthFatalFailureException
+     *             exception indicating authentication totally failed
+     */
+    public BoxFile getTrashFile(final String fileId, final BoxDefaultRequestObject requestObject) throws BoxRestException, AuthFatalFailureException,
+        BoxServerException {
+        return (BoxFile) super.getTrashItem(fileId, BoxResourceType.FILE, requestObject);
     }
 
     /**
@@ -89,9 +111,42 @@ public class BoxFilesManager extends BoxItemsManager {
      * @throws AuthFatalFailureException
      *             exception indicating authentication totally failed
      */
-    public void deleteFile(final String fileId, BoxFileRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
+    public void deleteFile(final String fileId, final BoxFileRequestObject requestObject) throws BoxRestException, BoxServerException,
+        AuthFatalFailureException {
         DeleteFileRequest request = new DeleteFileRequest(getConfig(), getObjectMapper(), fileId, requestObject);
         executeRequestWithNoResponseBody(request);
+    }
+
+    /**
+     * Permanently delete a trashed file.
+     * 
+     * @param id
+     *            id of the file
+     * @param requestObject
+     *            request object
+     * @throws BoxRestException
+     * @throws AuthFatalFailureException
+     * @throws BoxServerException
+     */
+    public void deleteTrashFile(final String id, final BoxFileRequestObject requestObject) throws BoxRestException, BoxServerException,
+        AuthFatalFailureException {
+        super.deleteTrashItem(id, BoxResourceType.FILE, requestObject);
+    }
+
+    /**
+     * Restore a trashed file.
+     * 
+     * @param id
+     *            id of the trashed file.
+     * @param requestObject
+     * @return the file
+     * @throws BoxRestException
+     * @throws AuthFatalFailureException
+     * @throws BoxServerException
+     */
+    public BoxFile restoreTrashFile(final String id, final BoxItemRestoreRequestObject requestObject) throws BoxRestException, AuthFatalFailureException,
+        BoxServerException {
+        return (BoxFile) super.restoreTrashItem(id, BoxResourceType.FILE, requestObject);
     }
 
     /**

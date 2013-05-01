@@ -8,7 +8,6 @@ import com.box.boxjavalibv2.exceptions.BoxServerException;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedHttpStatusException;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedStatus;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
-import com.box.boxjavalibv2.requests.GetFolderItemsRequest;
 import com.box.boxjavalibv2.requests.SearchRequest;
 import com.box.boxjavalibv2.responseparsers.BoxObjectResponseParser;
 import com.box.boxjavalibv2.responseparsers.ErrorResponseParser;
@@ -114,28 +113,6 @@ public abstract class BoxResourceManager {
         if (response.getExpectedResponseCode() != response.getResponseStatusCode()) {
             throw new BoxServerException("Unexpected response code:" + response.getResponseStatusCode() + ", expecting:" + response.getExpectedResponseCode());
         }
-    }
-
-    /**
-     * Get folder items, given a GetFolderItemsRequest.
-     * 
-     * @param auth
-     *            auth
-     * @param request
-     *            request
-     * @param objectMapper
-     *            ObjectMapper
-     * @return box items
-     * @throws BoxServerException
-     *             exception
-     * @throws BoxRestException
-     *             exception
-     * @throws AuthFatalFailureException
-     *             exception indicating authenticating totally failed
-     */
-    protected BoxCollection getFolderItems(final GetFolderItemsRequest request, final ObjectMapper objectMapper) throws BoxServerException, BoxRestException,
-        AuthFatalFailureException {
-        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, objectMapper);
     }
 
     /**

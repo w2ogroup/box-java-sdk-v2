@@ -9,11 +9,15 @@ import com.box.boxjavalibv2.exceptions.BoxServerException;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.requests.CopyItemRequest;
 import com.box.boxjavalibv2.requests.CreateSharedLinkRequest;
+import com.box.boxjavalibv2.requests.DeleteTrashItemRequest;
 import com.box.boxjavalibv2.requests.GetItemRequest;
 import com.box.boxjavalibv2.requests.GetTrashItemRequest;
+import com.box.boxjavalibv2.requests.RestoreTrashItemRequest;
 import com.box.boxjavalibv2.requests.UpdateItemInfoRequest;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
+import com.box.boxjavalibv2.requests.requestobjects.BoxFileRequestObject;
 import com.box.boxjavalibv2.requests.requestobjects.BoxItemRequestObject;
+import com.box.boxjavalibv2.requests.requestobjects.BoxItemRestoreRequestObject;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.interfaces.IBoxRESTClient;
@@ -162,6 +166,44 @@ public class BoxItemsManager extends BoxResourceManager {
         BoxServerException, AuthFatalFailureException {
         CreateSharedLinkRequest request = new CreateSharedLinkRequest(getConfig(), getObjectMapper(), id, requestObject, type);
 
+        return (BoxItem) getResponseAndParseAndTryCast(request, type, getObjectMapper());
+    }
+
+    /**
+     * Permanently delete a trashed item.
+     * 
+     * @param id
+     *            id of the item
+     * @param type
+     *            resource type of the item.
+     * @param requestObject
+     *            request object
+     * @throws BoxRestException
+     * @throws AuthFatalFailureException
+     * @throws BoxServerException
+     */
+    public void deleteTrashItem(final String id, final BoxResourceType type, final BoxFileRequestObject requestObject) throws BoxRestException,
+        BoxServerException, AuthFatalFailureException {
+        DeleteTrashItemRequest request = new DeleteTrashItemRequest(getConfig(), getObjectMapper(), id, type, requestObject);
+        executeRequestWithNoResponseBody(request);
+    }
+
+    /**
+     * Restore a trashed item.
+     * 
+     * @param id
+     *            id of the trashed item.
+     * @param type
+     *            type of the item
+     * @param requestObject
+     * @return the item.
+     * @throws BoxRestException
+     * @throws AuthFatalFailureException
+     * @throws BoxServerException
+     */
+    public BoxItem restoreTrashItem(final String id, final BoxResourceType type, final BoxItemRestoreRequestObject requestObject) throws BoxRestException,
+        AuthFatalFailureException, BoxServerException {
+        RestoreTrashItemRequest request = new RestoreTrashItemRequest(getConfig(), getObjectMapper(), id, type, requestObject);
         return (BoxItem) getResponseAndParseAndTryCast(request, type, getObjectMapper());
     }
 }
