@@ -1,6 +1,7 @@
 package com.box.boxjavalibv2.dao;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -53,16 +54,19 @@ public enum BoxResourceType {
     REALTIME_SERVER;
 
     // As a performance optimization, set up string values for all types.
-    private static final Map<BoxResourceType, String> typeToString = new HashMap<BoxResourceType, String>();
+    private static final Map<BoxResourceType, String> typeToLowercaseString = new HashMap<BoxResourceType, String>();
+    private static final Map<String, BoxResourceType> lowercaseStringToType = new HashMap<String, BoxResourceType>();
     static {
         for (BoxResourceType type : values()) {
-            typeToString.put(type, type.name().toLowerCase());
+            String str = type.name().toLowerCase(Locale.ENGLISH);
+            typeToLowercaseString.put(type, str);
+            lowercaseStringToType.put(str, type);
         }
     }
 
     @Override
     public String toString() {
-        return typeToString.get(this);
+        return typeToLowercaseString.get(this);
     }
 
     /**
@@ -72,5 +76,15 @@ public enum BoxResourceType {
      */
     public String toPluralString() {
         return toString() + "s";
+    }
+
+    /**
+     * Get the BoxResourceType from a lower case string value. For example "file" would return BoxResourceType.FILE
+     * 
+     * @param string
+     * @return
+     */
+    public static BoxResourceType getTypeFromLowercaseString(final String string) {
+        return lowercaseStringToType.get(string);
     }
 }
