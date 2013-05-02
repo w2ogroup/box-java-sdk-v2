@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.box.boxjavalibv2.dao.BoxCollection;
 import com.box.boxjavalibv2.dao.BoxEvent;
+import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
@@ -12,6 +13,7 @@ import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.requests.EventOptionsRequest;
 import com.box.boxjavalibv2.requests.GetEventsRequest;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
+import com.box.boxjavalibv2.requests.requestobjects.BoxEventRequestObject;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.interfaces.IBoxRESTClient;
@@ -53,10 +55,9 @@ public class BoxEventsManager extends BoxResourceManager {
      * @throws BoxServerException
      * @throws AuthFatalFailureException
      */
-    public BoxCollection getEvents(final long stream_position, final String stream_type, final int limit, BoxDefaultRequestObject requestObject)
-        throws BoxRestException, BoxServerException, AuthFatalFailureException {
-        GetEventsRequest request = new GetEventsRequest(getConfig(), getObjectMapper(), stream_position, stream_type, limit, requestObject);
-        return getEvents(request, getObjectMapper());
+    public BoxCollection getEvents(BoxEventRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
+        GetEventsRequest request = new GetEventsRequest(getConfig(), getObjectMapper(), requestObject);
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getObjectMapper());
     }
 
     /**
@@ -70,7 +71,7 @@ public class BoxEventsManager extends BoxResourceManager {
      */
     public BoxCollection getEventOptions(BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
         EventOptionsRequest request = new EventOptionsRequest(getConfig(), getObjectMapper(), requestObject);
-        return getEventOptions(request, getObjectMapper());
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getObjectMapper());
     }
 
     /**

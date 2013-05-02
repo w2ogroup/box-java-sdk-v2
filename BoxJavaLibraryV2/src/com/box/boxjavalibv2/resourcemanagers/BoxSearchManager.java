@@ -1,6 +1,7 @@
 package com.box.boxjavalibv2.resourcemanagers;
 
 import com.box.boxjavalibv2.dao.BoxCollection;
+import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
@@ -47,6 +48,6 @@ public class BoxSearchManager extends BoxItemsManager {
     public BoxCollection search(final String searchQuery, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
         SearchRequest request = new SearchRequest(getConfig(), getObjectMapper(), searchQuery, requestObject);
-        return getSearchResults(request, getObjectMapper());
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getObjectMapper());
     }
 }

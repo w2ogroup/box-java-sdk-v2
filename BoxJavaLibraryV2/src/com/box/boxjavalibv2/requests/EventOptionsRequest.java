@@ -8,7 +8,8 @@ import com.box.restclientv2.requests.DefaultBoxRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Request to get the items inside a folder. These items can be files, sub-folders, weblinks, and etc.
+ * Request to get the options for the Events api. Among other things, you can use this to get the RealTime server for long polling.
+ * http://developers.box.com/docs/#events-long-polling
  */
 public class EventOptionsRequest extends DefaultBoxRequest {
 
