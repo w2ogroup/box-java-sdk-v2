@@ -46,7 +46,11 @@ public enum BoxResourceType {
     /** OAuth data. */
     OAUTH_DATA,
     /** Error. */
-    ERROR;
+    ERROR,
+    /** Event. */
+    EVENT,
+    /** Realtime server. */
+    REALTIME_SERVER;
 
     // As a performance optimization, set up string values for all types.
     private static final Map<BoxResourceType, String> typeToString = new HashMap<BoxResourceType, String>();

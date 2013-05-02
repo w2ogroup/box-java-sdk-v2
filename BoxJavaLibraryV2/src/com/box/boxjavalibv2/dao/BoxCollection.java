@@ -10,6 +10,8 @@ public class BoxCollection extends BoxObject {
 
     public static final String FIELD_ENTRIES = "entries";
     public static final String FIELD_TOTAL_COUNT = "total_count";
+    public static final String FIELD_CHUNK_SIZE = "chunk_size";
+    public static final String FIELD_NEXT_STREAM_POSITION = "next_stream_position";
 
     public BoxCollection() {
     }
@@ -48,6 +50,40 @@ public class BoxCollection extends BoxObject {
     @JsonProperty("entries")
     private void setEntries(ArrayList<BoxTypedObject> entries) {
         put(FIELD_ENTRIES, entries);
+    }
+
+    /**
+     * @return the chunk size
+     */
+    @JsonProperty(FIELD_CHUNK_SIZE)
+    public Integer getChunkSize() {
+        return (Integer) getValue(FIELD_CHUNK_SIZE);
+    }
+
+    /**
+     * @param chunk
+     *            size the chunk size
+     */
+    @JsonProperty(FIELD_CHUNK_SIZE)
+    private void setChunkSize(Integer chunkSize) {
+        put(FIELD_CHUNK_SIZE, chunkSize);
+    }
+
+    /**
+     * @return the next stream_position
+     */
+    @JsonProperty(FIELD_NEXT_STREAM_POSITION)
+    public Long getNextStreamPosition() {
+        return (Long) getValue(FIELD_NEXT_STREAM_POSITION);
+    }
+
+    /**
+     * @param nextStreamPosition
+     *            the next stream position
+     */
+    @JsonProperty(FIELD_NEXT_STREAM_POSITION)
+    private void setNextStreamPosition(Long nextStreamPosition) {
+        put(FIELD_NEXT_STREAM_POSITION, nextStreamPosition);
     }
 
     /**

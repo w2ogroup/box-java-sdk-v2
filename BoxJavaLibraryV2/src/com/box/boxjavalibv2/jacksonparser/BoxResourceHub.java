@@ -4,12 +4,14 @@ import com.box.boxjavalibv2.dao.BoxCollaboration;
 import com.box.boxjavalibv2.dao.BoxCollection;
 import com.box.boxjavalibv2.dao.BoxComment;
 import com.box.boxjavalibv2.dao.BoxEmailAlias;
+import com.box.boxjavalibv2.dao.BoxEvent;
 import com.box.boxjavalibv2.dao.BoxFile;
 import com.box.boxjavalibv2.dao.BoxFileVersion;
 import com.box.boxjavalibv2.dao.BoxFolder;
 import com.box.boxjavalibv2.dao.BoxItem;
 import com.box.boxjavalibv2.dao.BoxOAuthToken;
 import com.box.boxjavalibv2.dao.BoxPreview;
+import com.box.boxjavalibv2.dao.BoxRealTimeServer;
 import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.dao.BoxUser;
@@ -61,6 +63,10 @@ public class BoxResourceHub implements IBoxResourceHub {
                 return BoxEmailAlias.class;
             case OAUTH_DATA:
                 return BoxOAuthToken.class;
+            case EVENT:
+                return BoxEvent.class;
+            case REALTIME_SERVER:
+                return BoxRealTimeServer.class;
             case ITEMS:
             case FILES:
             case USERS:

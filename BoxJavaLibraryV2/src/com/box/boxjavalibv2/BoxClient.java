@@ -22,6 +22,7 @@ import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.jacksonparser.BoxResourceHub;
 import com.box.boxjavalibv2.resourcemanagers.BoxCollaborationsManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxCommentsManager;
+import com.box.boxjavalibv2.resourcemanagers.BoxEventsManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxFilesManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxFoldersManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxOAuthManager;
@@ -53,6 +54,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
     private final BoxFilesManager filesManager;
     private final BoxFoldersManager foldersManager;
     private final BoxSearchManager searchManager;
+    private final BoxEventsManager eventsManager;
     private final BoxCollaborationsManager collaborationsManager;
     private final BoxCommentsManager commentsManager;
     private final BoxUsersManager usersManager;
@@ -68,6 +70,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
         filesManager = new BoxFilesManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
         foldersManager = new BoxFoldersManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
         searchManager = new BoxSearchManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
+        eventsManager = new BoxEventsManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
         collaborationsManager = new BoxCollaborationsManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
         commentsManager = new BoxCommentsManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
         usersManager = new BoxUsersManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
@@ -238,6 +241,14 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      */
     public BoxSearchManager getSearchManager() {
         return searchManager;
+    }
+
+    /**
+     * 
+     * @return BoxEventsManager through which the Box Events API can be queried.
+     */
+    public BoxEventsManager getEventsManager() {
+        return eventsManager;
     }
 
     /**
