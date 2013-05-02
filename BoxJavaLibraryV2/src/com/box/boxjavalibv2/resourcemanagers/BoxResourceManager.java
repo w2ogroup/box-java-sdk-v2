@@ -1,6 +1,5 @@
 package com.box.boxjavalibv2.resourcemanagers;
 
-import com.box.boxjavalibv2.dao.BoxCollection;
 import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.dao.BoxServerError;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
@@ -8,9 +7,6 @@ import com.box.boxjavalibv2.exceptions.BoxServerException;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedHttpStatusException;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedStatus;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
-import com.box.boxjavalibv2.requests.EventOptionsRequest;
-import com.box.boxjavalibv2.requests.GetEventsRequest;
-import com.box.boxjavalibv2.requests.SearchRequest;
 import com.box.boxjavalibv2.responseparsers.BoxObjectResponseParser;
 import com.box.boxjavalibv2.responseparsers.ErrorResponseParser;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -115,66 +111,6 @@ public abstract class BoxResourceManager {
         if (response.getExpectedResponseCode() != response.getResponseStatusCode()) {
             throw new BoxServerException("Unexpected response code:" + response.getResponseStatusCode() + ", expecting:" + response.getExpectedResponseCode());
         }
-    }
-
-    /**
-     * Get results of a search.
-     * 
-     * @param request
-     *            SearchRequest.
-     * @param objectMapper
-     *            ObjectMapper for deserializing.
-     * @return Box items.
-     * @throws BoxServerException
-     *             Thrown if there was a problem with the server.
-     * @throws BoxRestException
-     *             Thrown if there was a problem with the request.
-     * @throws AuthFatalFailureException
-     *             Thrown if there was an authentication problem.
-     */
-    protected BoxCollection getSearchResults(final SearchRequest request, final ObjectMapper objectMapper) throws BoxServerException, BoxRestException,
-        AuthFatalFailureException {
-        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, objectMapper);
-    }
-
-    /**
-     * Get Events.
-     * 
-     * @param request
-     *            GetEventsRequest
-     * @param objectMapper
-     *            ObjectMapper for deserializing.
-     * @return BoxCollection that contains BoxEvent objects.
-     * @throws BoxServerException
-     *             Thrown if there was a problem with the server.
-     * @throws BoxRestException
-     *             Thrown if there was a problem with the request.
-     * @throws AuthFatalFailureException
-     *             Thrown if there was an authentication problem.
-     */
-    protected BoxCollection getEvents(final GetEventsRequest request, final ObjectMapper objectMapper) throws BoxServerException, BoxRestException,
-        AuthFatalFailureException {
-        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, objectMapper);
-    }
-
-    /**
-     * Get Event options. Among other things, this can be used to retrieve the BoxRealTimeServer needed to implement long polling.
-     * 
-     * @param request
-     *            EventOptionsRequest
-     * @param objectMapper
-     *            ObjectMapper for deserializing.
-     * @return BoxCollection that contains a set of options. For example, it may contain a BoxRealTimeServer as an entry.
-     * @throws BoxServerException
-     *             Thrown if there was a problem with the server.
-     * @throws BoxRestException
-     *             Thrown if there was a problem with the request.
-     * @throws AuthFatalFailureException
-     *             Thrown if there was an authentication problem.
-     */
-    protected BoxCollection getEventOptions(final EventOptionsRequest request, final ObjectMapper objectMapper) throws BoxServerException, BoxRestException,
-        AuthFatalFailureException {
-        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, objectMapper);
     }
 
     /**
