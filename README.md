@@ -145,5 +145,5 @@ boxClient.authenticate(oauthObject);
 
 Known Issues
 ------------
-
+Java sdk does not provide an OAuth UI.
 
