@@ -4,6 +4,8 @@ Box Java SDK
 API Calls Quickstart
 --------------------
 
+### Hello World example:  https://github.com/box/box-java-sdk-private/wiki/HelloWorld
+
 ### Authenticate
 
 Authenticate the client with OAuth. See the authentication section below for
