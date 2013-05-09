@@ -4,7 +4,7 @@ Box Java SDK
 API Calls Quickstart
 --------------------
 
-### Hello World example:  https://github.com/box/box-java-sdk-private/wiki/HelloWorld
+### <a href="https://github.com/box/box-java-sdk-private/wiki/HelloWorld">Hello World example</a> 
 
 ### Authenticate
 
