@@ -8,12 +8,13 @@ API Calls Quickstart
 
 ### Authenticate
 
-Authenticate the client with OAuth. See the authentication section below for
-more information.
-
+Authenticate the client with OAuth. This java sdk does not provide a authentication UI. 
+You can use your own UI to get the authentication code and use the sdk OAuthManager to get a BoxOAuthToken.
+Then you can authenticate the client using:
 ```java
-boxClient.authenticate(oAuthView, autoRefreshToken, listener);
+boxClient.authenticate(boxOAuthToken);
 ```
+For more details plese see: <a href="https://github.com/box/box-java-sdk-private/wiki/HelloWorld">Hello World example</a> 
 
 ### Get Default File Info
 
@@ -80,70 +81,6 @@ BoxFileRequestObject requestObj =
 boxClient.deleteFile(fileId, requestObj);
 ```
 
-Authentication
---------------
-
-You can find a full example of how to perform authentication in the sample app.
-
-### Basic Authentication
-
-The easiest way to authenticate is to use the OAuthActivity, which is included
-in the SDK. Add it to your manifest to use it.
-
-```java
-Intent intent = OAuthActivity.createOAuthActivityIntent(this, clientId, 
-	clientSecret);
-startActivityForResult(intent);
-
-@Override
-public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	if (resultCode == Activity.RESULT_CANCELED) {
-		// Get the error message for why authentication failed.
-		String failMessage = data.getStringExtra(OAuthActivity.ERROR_MESSAGE);
-		// Implement your own logic to handle the error.
-	   handleFail(failMessage);
-	} else {
-		// You will get an authenticated BoxClient object back upon success.
-		BoxClient client =
-			data.getParcelableExtra(OAuthActivity.BOX_CLIENT);
-		youOwnMethod(client);
-	}
-}
-```
-
-### Advanced Authentication
-
-Alternatively, you can use your own custom login activity with a WebView for
-authentication.
-
-```java
-oauthView = (OAuthWebView) findViewById(R.id.oauthview);
-oauthView.initializeAuthFlow(boxClient, this);
-boxClient.authenticate(oauthView, autoRefreshOAuth, getOAuthFlowListener());
-
-// Create a listener listening to OAuth flow. The most important part you need
-// to implement is onAuthFlowEvent and catch the OAUTH_CREATED event. This event
-// indicates that the OAuth flow is done, the BoxClient is authenticated and
-// that you can start making API calls. 
-private OAuthWebViewListener getOAuthFlowListener() {
-	return new OAuthWebViewListener() {
-		@Override
-		public onAuthFlowEvent(final IAuthEvent event,
-			final IAuthFlowMessage message) {
-
-			// Authentication is done, you can start using your BoxClient
-			// instance.
-		}
-	}
-}
-
-// You can get a BoxOAuthToken and use it to authenticate the client at a later
-// time or in a different activity.
-BoxOAuthToken oauthObject = boxClient.getAuthData();
-
-// Re-authenticate using the previously obtained OAuth object.
-boxClient.authenticate(oauthObject);
-```
 
 Known Issues
 ------------
