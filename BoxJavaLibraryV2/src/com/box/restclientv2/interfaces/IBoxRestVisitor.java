@@ -13,22 +13,28 @@ public interface IBoxRestVisitor {
      * 
      * @param request
      *            http request
+     * @param sequence
+     *            id of the api request
      */
-    void visitRequestBeforeSend(HttpRequest request);
+    void visitRequestBeforeSend(HttpRequest request, int sequenceId);
 
     /**
      * Visit the http response after response is received.
      * 
      * @param response
      *            http response.
+     * @param sequence
+     *            id of the api request
      */
-    void visitResponseUponReceiving(HttpResponse response);
+    void visitResponseUponReceiving(HttpResponse response, int sequenceId);
 
     /**
      * Visit the exception when exception is thrown during http call.
      * 
      * @param e
      *            Exception.
+     * @param sequence
+     *            id of the api request
      */
-    void visitException(Exception e);
+    void visitException(Exception e, int sequenceId);
 }

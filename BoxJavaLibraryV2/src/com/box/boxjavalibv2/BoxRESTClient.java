@@ -3,6 +3,7 @@ package com.box.boxjavalibv2;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -26,6 +27,7 @@ import com.box.restclientv2.responses.DefaultBoxResponse;
  */
 public class BoxRESTClient extends BoxBasicRestClient {
 
+    private static AtomicInteger apiSequenceId = new AtomicInteger(0);
     public final static String OAUTH_ERROR_HEADER = "error";
     public final static String OAUTH_INVALID_TOKEN = "invalid_token";
     public final static String WWW_AUTHENTICATE = "WWW-Authenticate";
@@ -63,14 +65,15 @@ public class BoxRESTClient extends BoxBasicRestClient {
         HttpUriRequest httpRequest = boxRequest.prepareRequest();
         HttpResponse response = null;
 
+        int sequenceId = apiSequenceId.incrementAndGet();
         for (IBoxRestVisitor v : visitors) {
-            v.visitRequestBeforeSend(httpRequest);
+            v.visitRequestBeforeSend(httpRequest, sequenceId);
         }
 
         try {
             response = getResponse(httpRequest);
             for (IBoxRestVisitor v : visitors) {
-                v.visitResponseUponReceiving(response);
+                v.visitResponseUponReceiving(response, sequenceId);
             }
 
             if (usingOAuth && oauthExpired(response)) {
@@ -80,17 +83,17 @@ public class BoxRESTClient extends BoxBasicRestClient {
                 catch (AuthFatalFailureException e) {
                     // Swallow the OAuthRefreshFailException here, the response will be parsed and caller will see the unauthorized error.
                     for (IBoxRestVisitor v : visitors) {
-                        v.visitException(e);
+                        v.visitException(e, sequenceId);
                     }
                     throw e;
                 }
             }
         }
         catch (IOException e) {
-            handleException(e);
+            handleException(e, sequenceId);
         }
         catch (BoxUnexpectedHttpStatusException e) {
-            handleException(e);
+            handleException(e, sequenceId);
         }
 
         DefaultBoxResponse boxResponse = new DefaultBoxResponse(response);
@@ -130,9 +133,9 @@ public class BoxRESTClient extends BoxBasicRestClient {
         return false;
     }
 
-    private void handleException(final Exception e) throws BoxRestException {
+    private void handleException(final Exception e, final int sequenceId) throws BoxRestException {
         for (IBoxRestVisitor v : visitors) {
-            v.visitException(e);
+            v.visitException(e, sequenceId);
         }
         throw new BoxRestException(e);
     }
