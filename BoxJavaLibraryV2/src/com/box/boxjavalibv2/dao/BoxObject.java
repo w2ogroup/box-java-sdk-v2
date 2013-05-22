@@ -29,6 +29,16 @@ public class BoxObject extends DefaultJSONStringEntity implements IBoxParcelable
     }
 
     /**
+     * Whether the two objects are equal. This strictly compares all the fields in the two objects, if any fields are different this returns false.
+     * 
+     * @param obj
+     * @return Whether the two objects are equal.
+     */
+    public boolean equals(BoxObject obj) {
+        return this == obj || (map.equals(obj.map) && extraMap.equals(obj.extraMap));
+    }
+
+    /**
      * Copy constructor, this does deep copy for all the fields.
      * 
      * @param obj
