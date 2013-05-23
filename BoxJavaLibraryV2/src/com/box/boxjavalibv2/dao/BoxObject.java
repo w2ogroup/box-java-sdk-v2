@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.box.boxjavalibv2.interfaces.IBoxParcelWrapper;
 import com.box.boxjavalibv2.interfaces.IBoxParcelable;
 import com.box.boxjavalibv2.jsonentities.DefaultJSONStringEntity;
@@ -34,8 +36,23 @@ public class BoxObject extends DefaultJSONStringEntity implements IBoxParcelable
      * @param obj
      * @return Whether the two objects are equal.
      */
-    public boolean equals(BoxObject obj) {
-        return this == obj || (map.equals(obj.map) && extraMap.equals(obj.extraMap));
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof BoxObject)) {
+            return false;
+        }
+
+        if (this == obj) {
+            return true;
+        }
+
+        BoxObject bObj = (BoxObject) obj;
+        return map.equals(bObj.map) && extraMap.equals(bObj.extraMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(map).append(extraMap).toHashCode();
     }
 
     /**
