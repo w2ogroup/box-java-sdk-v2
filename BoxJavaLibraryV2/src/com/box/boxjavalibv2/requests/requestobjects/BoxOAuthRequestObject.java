@@ -21,6 +21,7 @@ public class BoxOAuthRequestObject extends BoxDefaultRequestObject {
     private final static String REDIRECT_URL = "redirect_url";
     private final static String REFRESH_TOKEN = "refresh_token";
     private final static String AUTHORIZATION_CODE = "authorization_code";
+    private final static String REVOKE_TOKEN = "token";
 
     private BoxOAuthRequestObject() {
     }
@@ -45,6 +46,31 @@ public class BoxOAuthRequestObject extends BoxDefaultRequestObject {
 
     public static BoxOAuthRequestObject refreshOAuthRequestObject(final String refreshToken, final String clientId, final String clientSecret) {
         return (new BoxOAuthRequestObject()).setRefreshToken(refreshToken).setClient(clientId, clientSecret);
+    }
+
+    /**
+     * Request object to revoke OAuth.
+     * 
+     * @param revokeToken
+     *            The access_token or refresh_token to be destroyed. Only one is required, though both will be destroyed.
+     * @param clientId
+     * @param clientSecret
+     * @return
+     */
+    public static BoxOAuthRequestObject revokeOAuthRequestObject(final String revokeToken, final String clientId, final String clientSecret) {
+        return (new BoxOAuthRequestObject()).setRevokeToken(revokeToken).setClient(clientId, clientSecret);
+    }
+
+    /**
+     * Set the token to revoke.
+     * 
+     * @param token
+     *            The access_token or refresh_token to be destroyed. Only one is required, though both will be destroyed.
+     * @return
+     */
+    public BoxOAuthRequestObject setRevokeToken(final String token) {
+        put(REVOKE_TOKEN, token);
+        return this;
     }
 
     public BoxOAuthRequestObject setRefreshToken(final String refreshToken) {

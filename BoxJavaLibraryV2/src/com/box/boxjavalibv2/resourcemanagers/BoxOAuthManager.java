@@ -7,6 +7,7 @@ import com.box.boxjavalibv2.exceptions.BoxServerException;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.requests.CreateOAuthRequest;
 import com.box.boxjavalibv2.requests.RefreshOAuthRequest;
+import com.box.boxjavalibv2.requests.RevokeOAuthRequest;
 import com.box.boxjavalibv2.requests.requestobjects.BoxOAuthRequestObject;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
@@ -65,5 +66,10 @@ public class BoxOAuthManager extends BoxResourceManager {
     public BoxOAuthToken refreshOAuth(final BoxOAuthRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
         RefreshOAuthRequest request = new RefreshOAuthRequest(getConfig(), getObjectMapper(), requestObject);
         return (BoxOAuthToken) getResponseAndParseAndTryCast(request, BoxResourceType.OAUTH_DATA, getObjectMapper());
+    }
+
+    public void revokeOAuth(final BoxOAuthRequestObject requestObject) throws BoxServerException, BoxRestException, AuthFatalFailureException {
+        RevokeOAuthRequest request = new RevokeOAuthRequest(getConfig(), getObjectMapper(), requestObject);
+        executeRequestWithNoResponseBody(request);
     }
 }
