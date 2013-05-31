@@ -15,20 +15,67 @@ Copyright 2013 Box, Inc.
 Box Java SDK
 =============
 
+Building
+--------
+
+### Eclipse
+
+To build from Eclipse, simply import the project into your workspace
+as an existing project.
+
+### Ant
+
+The easiest way of building with Ant is by running `ant` from the
+BoxJavaLibraryV2 directory. This will output a JAR to
+`dist/debug/BoxJavaLibraryV2.jar`. You can see a full list of additional targets
+by running `ant -p`.
+
+	$ ant -p
+
+	Main targets:
+
+	clean    Removes any built files.
+	debug    Performs a debug build.
+	release  Performs a release build.
+	test     Performs a debug build and then runs tests.
+	Default target: debug
+
+### Gradle (Experimental)
+
+There is also experimental support for Gradle, allowing you to use the SDK with
+Android Studio. You must have [Gradle 1.6](http://www.gradle.org/downloads)
+installed.
+
+Running `gradle build` will build the SDK and run its tests. A JAR will be
+placed in `build/libs/BoxJavaLibraryV2-1.0.jar`. Alternatively, you can run
+`gradle install` which will install the SDK to you local Maven repository. It
+can then be referenced from other projects with the dependency string
+`com.box.boxjavalibv2:BoxJavaLibraryV2:1.0`.
+
+**Note for Android users:** You might get a warning that says "WARNING:
+Dependency commons-logging :commons-logging:1.1.1 is ignored for the default
+configuration as it may be conflicting with the internal version provided by
+Android." This is expected and shouldn't affect your build.
+
 API Calls Quickstart
 --------------------
 
-### <a href="https://github.com/box/box-java-sdk-private/wiki/HelloWorld">Hello World example</a> 
+### Hello World
+
+You can find a hello world example [here][hello-world].
 
 ### Authenticate
 
-Authenticate the client with OAuth. This java sdk does not provide a authentication UI. 
-You can use your own UI to get the authentication code and use the sdk OAuthManager to get a BoxOAuthToken.
-Then you can authenticate the client using:
+Authenticate the client with OAuth. The SDK does not currently provide an
+authentication UI out of the box.  You can use your own UI to get the
+authentication code. After you have auth code, you can use the SDK OAuthManager
+to get a BoxOAuthToken:
+
 ```java
 boxClient.authenticate(boxOAuthToken);
 ```
-For more details plese see: <a href="https://github.com/box/box-java-sdk-private/wiki/HelloWorld">Hello World example</a> 
+
+For more details please see the [hello world example][hello-world].
 
 ### Get Default File Info
 
@@ -95,8 +142,8 @@ BoxFileRequestObject requestObj =
 boxClient.deleteFile(fileId, requestObj);
 ```
 
-
 Known Issues
 ------------
-Java sdk does not provide an OAuth UI.
+The SDK does not currently provide an OAuth UI.
 
+[hello-world]: https://github.com/box/box-java-sdk-private/wiki/HelloWorld

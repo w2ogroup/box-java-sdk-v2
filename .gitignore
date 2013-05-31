@@ -4,6 +4,7 @@ bin/
 gen/
 dist/
 reports/
+build/
 *.class
 local.properties
 BoxJavaLibraryV2.jar
