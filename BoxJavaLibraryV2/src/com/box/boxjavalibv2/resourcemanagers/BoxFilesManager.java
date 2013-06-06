@@ -215,9 +215,11 @@ public class BoxFilesManager extends BoxItemsManager {
      *             exception
      * @throws AuthFatalFailureException
      *             exception indicating authentication totally failed
+     * @throws InterruptedException
      */
 
-    public BoxFile uploadFile(final BoxFileUploadRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
+    public BoxFile uploadFile(final BoxFileUploadRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException,
+        InterruptedException {
         BoxFileUpload upload = new BoxFileUpload(getConfig());
         return upload.execute(this, requestObject);
     }
@@ -338,9 +340,10 @@ public class BoxFilesManager extends BoxItemsManager {
      *             exception
      * @throws AuthFatalFailureException
      *             exception
+     * @throws InterruptedException
      */
     public BoxFile uploadNewVersion(final String fileId, final BoxFileUploadRequestObject requestObject) throws BoxRestException, BoxServerException,
-        AuthFatalFailureException {
+        AuthFatalFailureException, InterruptedException {
         BoxFileUpload upload = new BoxFileUpload(getConfig());
         return upload.execute(fileId, this, requestObject);
     }

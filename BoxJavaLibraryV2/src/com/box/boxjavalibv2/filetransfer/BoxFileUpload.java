@@ -6,6 +6,7 @@ import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxMalformedResponseException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
+import com.box.boxjavalibv2.httpentities.MultipartEntityWithProgressListener.InterruptedMultipartException;
 import com.box.boxjavalibv2.interfaces.IFileTransferListener;
 import com.box.boxjavalibv2.requests.UploadFileRequest;
 import com.box.boxjavalibv2.requests.UploadNewVersionFileRequest;
@@ -46,13 +47,25 @@ public class BoxFileUpload {
      *             exception
      * @throws AuthFatalFailureException
      *             exception indicating authentication totally failed
+     * @throws InterruptedException
+     *             interrupted exception.
      */
     public BoxFile execute(BoxFilesManager manager, BoxFileUploadRequestObject requestObject) throws BoxServerException, BoxRestException,
-        AuthFatalFailureException {
+        AuthFatalFailureException, InterruptedException {
         UploadFileRequest request = new UploadFileRequest(mConfig, manager.getObjectMapper(), requestObject);
-        Object result = manager.getResponseAndParse(request, BoxResourceType.FILES, manager.getObjectMapper());
-        BoxCollection collection = (BoxCollection) manager.tryCastObject(BoxResourceType.FILES, result);
-        return BoxFilesManager.getFiles(collection).get(0);
+        try {
+            Object result = manager.getResponseAndParse(request, BoxResourceType.FILES, manager.getObjectMapper());
+            BoxCollection collection = (BoxCollection) manager.tryCastObject(BoxResourceType.FILES, result);
+            return BoxFilesManager.getFiles(collection).get(0);
+        }
+        catch (BoxRestException e) {
+            if (isInterruptedMultipartException(e)) {
+                throw new InterruptedException();
+            }
+            else {
+                throw e;
+            }
+        }
     }
 
     /**
@@ -69,15 +82,32 @@ public class BoxFileUpload {
      *             exception
      * @throws AuthFatalFailureException
      *             exception
+     * @throws InterruptedException
+     *             interrupted exception.
      */
     public BoxFile execute(final String fileId, BoxFilesManager manager, BoxFileUploadRequestObject requestObject) throws BoxServerException, BoxRestException,
-        AuthFatalFailureException {
+        AuthFatalFailureException, InterruptedException {
         UploadNewVersionFileRequest request = new UploadNewVersionFileRequest(mConfig, manager.getObjectMapper(), fileId, requestObject);
-        Object result = manager.getResponseAndParse(request, BoxResourceType.FILE_VERSIONS, manager.getObjectMapper());
-        BoxCollection versions = (BoxCollection) manager.tryCastObject(BoxResourceType.FILE_VERSIONS, result);
-        if (versions.getTotalCount() != 1) {
-            throw new BoxMalformedResponseException();
+        try {
+            Object result = manager.getResponseAndParse(request, BoxResourceType.FILE_VERSIONS, manager.getObjectMapper());
+            BoxCollection versions = (BoxCollection) manager.tryCastObject(BoxResourceType.FILE_VERSIONS, result);
+            if (versions.getTotalCount() != 1) {
+                throw new BoxMalformedResponseException();
+            }
+            return (BoxFile) versions.getEntries().get(0);
         }
-        return (BoxFile) versions.getEntries().get(0);
+        catch (BoxRestException e) {
+            if (isInterruptedMultipartException(e)) {
+                throw new InterruptedException();
+            }
+            else {
+                throw e;
+            }
+        }
+    }
+
+    private boolean isInterruptedMultipartException(BoxRestException e) {
+        Throwable t = e.getCause();
+        return t != null && t instanceof InterruptedMultipartException;
     }
 }

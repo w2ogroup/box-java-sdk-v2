@@ -108,7 +108,7 @@ public class MultipartEntityWithProgressListener extends MultipartEntity {
         }
 
         @Override
-        public void write(final byte[] buffer, final int offset, final int length) {
+        public void write(final byte[] buffer, final int offset, final int length) throws IOException {
             try {
                 out.write(buffer, offset, length);
             }
@@ -126,6 +126,7 @@ public class MultipartEntityWithProgressListener extends MultipartEntity {
             // Allow canceling of downloads through thread interrupt.
             if (Thread.currentThread().isInterrupted() && mProgresslistener != null) {
                 mProgresslistener.onCanceled();
+                throw new InterruptedMultipartException();
             }
         }
 
@@ -137,5 +138,10 @@ public class MultipartEntityWithProgressListener extends MultipartEntity {
         public long getBytesTransferred() {
             return bytesBransferred;
         }
+    }
+
+    public static class InterruptedMultipartException extends IOException {
+
+        private static final long serialVersionUID = 1L;
     }
 }
