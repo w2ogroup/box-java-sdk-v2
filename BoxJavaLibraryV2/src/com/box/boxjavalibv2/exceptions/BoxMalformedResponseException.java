@@ -9,8 +9,8 @@ public class BoxMalformedResponseException extends BoxServerException {
     private static final long serialVersionUID = 1L;
     public static final String MALFORM = "malformed response";
 
-    public BoxMalformedResponseException() {
-        super(MALFORM);
+    public BoxMalformedResponseException(int statusCode) {
+        super(MALFORM, statusCode);
     }
 
 }

@@ -92,7 +92,7 @@ public class BoxFileUpload {
             Object result = manager.getResponseAndParse(request, BoxResourceType.FILE_VERSIONS, manager.getObjectMapper());
             BoxCollection versions = (BoxCollection) manager.tryCastObject(BoxResourceType.FILE_VERSIONS, result);
             if (versions.getTotalCount() != 1) {
-                throw new BoxMalformedResponseException();
+                throw new BoxMalformedResponseException(request.getExpectedResponseCode());
             }
             return (BoxFile) versions.getEntries().get(0);
         }

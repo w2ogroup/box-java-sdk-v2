@@ -64,7 +64,12 @@ public class DefaultBoxJSONResponseParser implements IBoxResponseParser {
         InputStream in = null;
         try {
             in = httpResponse.getEntity().getContent();
-            return parseInputStream(in);
+            if (in == null) {
+                return null;
+            }
+            else {
+                return parseInputStream(in);
+            }
         }
         catch (Exception e) {
             throw new BoxRestException(e.getMessage());

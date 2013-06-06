@@ -109,7 +109,15 @@ public abstract class BoxResourceManager {
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
         if (response.getExpectedResponseCode() != response.getResponseStatusCode()) {
-            throw new BoxServerException("Unexpected response code:" + response.getResponseStatusCode() + ", expecting:" + response.getExpectedResponseCode());
+            ErrorResponseParser errorParser = new ErrorResponseParser(getObjectMapper());
+            BoxServerError error = (BoxServerError) errorParser.parse(response);
+            if (error == null) {
+                throw new BoxServerException("Unexpected response code:" + response.getResponseStatusCode() + ", expecting:"
+                                             + response.getExpectedResponseCode(), response.getResponseStatusCode());
+            }
+            else {
+                throw new BoxServerException(error);
+            }
         }
     }
 

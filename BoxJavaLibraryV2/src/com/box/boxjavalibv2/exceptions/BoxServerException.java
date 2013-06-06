@@ -15,6 +15,7 @@ public class BoxServerException extends BoxSDKException {
 
     private BoxServerError error;
     private String customMessage;
+    private int statusCode;
 
     public BoxServerException() {
     }
@@ -24,9 +25,12 @@ public class BoxServerException extends BoxSDKException {
      * 
      * @param customMessage
      *            message
+     * @param statusCode
+     *            http status code
      */
-    public BoxServerException(String customMessage) {
+    public BoxServerException(String customMessage, int statusCode) {
         this.customMessage = customMessage;
+        this.statusCode = statusCode;
     }
 
     /**
@@ -37,6 +41,7 @@ public class BoxServerException extends BoxSDKException {
      */
     public BoxServerException(BoxServerError error) {
         this.error = error;
+        this.statusCode = error.getStatus();
     }
 
     /**
@@ -59,6 +64,6 @@ public class BoxServerException extends BoxSDKException {
 
     @Override
     public int getStatusCode() {
-        return error.getStatus();
+        return statusCode;
     }
 }

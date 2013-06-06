@@ -137,7 +137,7 @@ public final class BoxCollaborationsManager extends BoxResourceManager {
      * @param collabId
      *            id of the collaboration
      * @param requestObject
-     *            request object. Note the you can set the status in this object to ‘accepted’ or ‘rejected’ if you are the ‘accessible_by’ user and the current
+     *            request object. Note the you can set the status in this object to 'accepted' or 'rejected' if you are the 'accessible_by' user and the current
      *            status is 'pending'
      * @return updated BoxCollaboration
      */
