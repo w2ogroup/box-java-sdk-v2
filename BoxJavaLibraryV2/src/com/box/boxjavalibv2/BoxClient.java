@@ -101,6 +101,15 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
     }
 
     /**
+     * Set connection time out.
+     * 
+     * @param timeOut
+     */
+    public void setConnectionTimeOut(final int timeOut) {
+        ((BoxRESTClient) getRestClient()).setConnectionTimeOut(timeOut);
+    }
+
+    /**
      * Get the OAuthDataController that controls OAuth data.
      */
     public OAuthDataController getOAuthDataController() {

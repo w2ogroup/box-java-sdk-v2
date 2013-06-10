@@ -10,6 +10,8 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import com.box.boxjavalibv2.authorization.OAuthAuthorization;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
@@ -32,6 +34,8 @@ public class BoxRESTClient extends BoxBasicRestClient {
     public final static String OAUTH_INVALID_TOKEN = "invalid_token";
     public final static String WWW_AUTHENTICATE = "WWW-Authenticate";
     private final List<IBoxRestVisitor> visitors = new ArrayList<IBoxRestVisitor>();
+
+    private int clientTimeOut = -1;
 
     /**
      * Accept a visitor to visit http request/response.
@@ -101,7 +105,16 @@ public class BoxRESTClient extends BoxBasicRestClient {
         return boxResponse;
     }
 
+    public void setConnectionTimeOut(final int timeOut) {
+        this.clientTimeOut = timeOut;
+    }
+
     protected HttpResponse getResponse(HttpUriRequest request) throws ClientProtocolException, IOException {
+        DefaultHttpClient client = new DefaultHttpClient();
+        if (clientTimeOut > 0) {
+            HttpParams params = client.getParams();
+            HttpConnectionParams.setConnectionTimeout(params, clientTimeOut);
+        }
         return (new DefaultHttpClient()).execute(request);
     }
 
