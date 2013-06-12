@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class BoxFile extends BoxItem {
 
     public final static String FIELD_SHA1 = "sha1";
+    public final static String FIELD_VERSION_NUMBER = "version_number";
 
     /**
      * Constructor.
@@ -56,6 +57,27 @@ public class BoxFile extends BoxItem {
     @JsonProperty(FIELD_SHA1)
     private void setSha1(String sha1) {
         put(FIELD_SHA1, sha1);
+    }
+    
+    /**
+     * Get version number of the file.
+     * 
+     * @return version number of the file.
+     */
+    @JsonProperty(FIELD_VERSION_NUMBER)
+    public String getVersionNumber() {
+        return (String) getValue(FIELD_VERSION_NUMBER);
+    }
+
+    /**
+     * Setter. This is only used by {@see <a href="http://jackson.codehaus.org">Jackson JSON processer</a>}
+     * 
+     * @param versionNumber
+     *            version number
+     */
+    @JsonProperty(FIELD_VERSION_NUMBER)
+    private void setVersionNumber(String versionNumber) {
+        put(FIELD_VERSION_NUMBER, versionNumber);
     }
 
     public BoxFile(IBoxParcelWrapper in) {
