@@ -25,5 +25,7 @@ public class BoxFileTest {
         Assert.assertEquals("file", fromParcel.getType());
         Assert.assertEquals("testfileid", fromParcel.getId());
         Assert.assertEquals("testsha1", fromParcel.getSha1());
+        Assert.assertEquals("version_number", fromParcel.getVersionNumber());
+        Assert.assertEquals("comment_count", fromParcel.getCommentCount());
     }
 }
