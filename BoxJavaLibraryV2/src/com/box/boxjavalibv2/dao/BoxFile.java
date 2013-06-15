@@ -12,6 +12,7 @@ public class BoxFile extends BoxItem {
 
     public final static String FIELD_SHA1 = "sha1";
     public final static String FIELD_VERSION_NUMBER = "version_number";
+    public final static String FIELD_COMMENT_COUNT = "comment_count";
 
     /**
      * Constructor.
@@ -58,7 +59,7 @@ public class BoxFile extends BoxItem {
     private void setSha1(String sha1) {
         put(FIELD_SHA1, sha1);
     }
-    
+
     /**
      * Get version number of the file.
      * 
@@ -78,6 +79,27 @@ public class BoxFile extends BoxItem {
     @JsonProperty(FIELD_VERSION_NUMBER)
     private void setVersionNumber(String versionNumber) {
         put(FIELD_VERSION_NUMBER, versionNumber);
+    }
+
+    /**
+     * Get comment count of the file.
+     * 
+     * @return comment count of the file.
+     */
+    @JsonProperty(FIELD_COMMENT_COUNT)
+    public Integer getCommentCount() {
+        return (Integer) getValue(FIELD_COMMENT_COUNT);
+    }
+
+    /**
+     * Setter. This is only used by {@see <a href="http://jackson.codehaus.org">Jackson JSON processer</a>}
+     * 
+     * @param commentCount
+     *            comment count
+     */
+    @JsonProperty(FIELD_COMMENT_COUNT)
+    private void setCommentCount(Integer commentCount) {
+        put(FIELD_COMMENT_COUNT, commentCount);
     }
 
     public BoxFile(IBoxParcelWrapper in) {
