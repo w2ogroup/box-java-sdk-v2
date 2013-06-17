@@ -12,6 +12,7 @@ public class BoxFolder extends BoxItem {
 
     public static final String FIELD_FOLDER_UPLOAD_EMAIL = "folder_upload_email";
     public static final String FIELD_ITEM_COLLECTION = "item_collection";
+    public static final String FIELD_HAS_COLLABORATIONS = "has_collaborations";
 
     /**
      * Constructor.
@@ -77,6 +78,27 @@ public class BoxFolder extends BoxItem {
     @JsonProperty(FIELD_ITEM_COLLECTION)
     protected void setItemCollection(BoxCollection itemCollection) {
         put(FIELD_ITEM_COLLECTION, itemCollection);
+    }
+
+    /**
+     * Getter.Get whether this box folder has collaborations.
+     * 
+     * @return whether this box folder has collaborations
+     */
+    @JsonProperty(FIELD_HAS_COLLABORATIONS)
+    public Boolean getHasCollaborations() {
+        return (Boolean) getValue(FIELD_HAS_COLLABORATIONS);
+    }
+
+    /**
+     * Setter. This is only used by {@see <a href="http://jackson.codehaus.org">Jackson JSON processer</a>}
+     * 
+     * @param hasCollaborations
+     *            whether folder has collaborations.
+     */
+    @JsonProperty(FIELD_HAS_COLLABORATIONS)
+    protected void setHasCollaborations(Boolean hasCollaborations) {
+        put(FIELD_HAS_COLLABORATIONS, hasCollaborations);
     }
 
     public BoxFolder(IBoxParcelWrapper in) {
