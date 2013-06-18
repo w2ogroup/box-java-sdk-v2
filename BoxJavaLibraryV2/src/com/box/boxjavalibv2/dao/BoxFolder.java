@@ -92,7 +92,7 @@ public class BoxFolder extends BoxItem {
     
     public boolean hasCollaborations(boolean defaultValue) {
         Boolean hasCollabs = hasCollaborations();
-        return hasCollabs != null && hasCollabs;
+        return hasCollabs != null ? hasCollabs : defaultValue;
     }
 
     /**
