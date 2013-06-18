@@ -86,8 +86,13 @@ public class BoxFolder extends BoxItem {
      * @return whether this box folder has collaborations
      */
     @JsonProperty(FIELD_HAS_COLLABORATIONS)
-    public Boolean getHasCollaborations() {
+    public Boolean hasCollaborations() {
         return (Boolean) getValue(FIELD_HAS_COLLABORATIONS);
+    }
+    
+    public boolean hasCollaborations(boolean defaultValue) {
+        Boolean hasCollabs = hasCollaborations();
+        return hasCollabs != null && hasCollabs;
     }
 
     /**

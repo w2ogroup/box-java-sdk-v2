@@ -30,6 +30,6 @@ public class BoxFolderTest {
         Assert.assertEquals(2, parts.length);
         Assert.assertTrue(emailJson.contains(parts[0]));
         Assert.assertTrue(emailJson.contains(parts[1]));
-        Assert.assertEquals(false, (boolean) fromParcel.getHasCollaborations());
+        Assert.assertEquals(false, (boolean) fromParcel.hasCollaborations());
     }
 }
