@@ -66,8 +66,9 @@ public class BoxEvent extends BoxItem {
      * 
      * @return event id.
      */
+    @Override
     @JsonProperty(FIELD_EVENT_ID)
-    public String getEventId() {
+    public String getId() {
         return (String) getValue(FIELD_EVENT_ID);
     }
 
@@ -78,7 +79,7 @@ public class BoxEvent extends BoxItem {
      *            Event id.
      */
     @JsonProperty(FIELD_EVENT_ID)
-    private void setEventId(String eventId) {
+    private void setId(String eventId) {
         put(FIELD_EVENT_ID, eventId);
     }
 
