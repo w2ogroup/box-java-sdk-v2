@@ -7,8 +7,10 @@ import com.box.boxjavalibv2.dao.BoxEvent;
 import com.box.boxjavalibv2.dao.BoxFile;
 import com.box.boxjavalibv2.dao.BoxFileVersion;
 import com.box.boxjavalibv2.dao.BoxFolder;
+import com.box.boxjavalibv2.dao.BoxLock;
 import com.box.boxjavalibv2.dao.BoxRealTimeServer;
 import com.box.boxjavalibv2.dao.BoxServerError;
+import com.box.boxjavalibv2.dao.BoxServiceAction;
 import com.box.boxjavalibv2.dao.BoxUser;
 import com.box.boxjavalibv2.dao.BoxWebLink;
 import com.box.boxjavalibv2.interfaces.IJacksonMixIn;
@@ -24,8 +26,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
                @Type(value = BoxWebLink.class, name = "web_link"), @Type(value = BoxCollaboration.class, name = "collaboration"),
                @Type(value = BoxComment.class, name = "comment"), @Type(value = BoxEmailAlias.class, name = "email_alias"),
                @Type(value = BoxFileVersion.class, name = "file_version"), @Type(value = BoxUser.class, name = "user"),
-               @Type(value = BoxServerError.class, name = "error"), @Type(value = BoxEvent.class, name = "event"),
-               @Type(value = BoxRealTimeServer.class, name = "realtime_server")})
+               @Type(value = BoxServerError.class, name = "error"), @Type(value = BoxEvent.class, name = "event"), @Type(value = BoxLock.class, name = "lock"),
+               @Type(value = BoxServiceAction.class, name = "service_action"), @Type(value = BoxRealTimeServer.class, name = "realtime_server")})
 public class BoxTypedObjectMixIn implements IJacksonMixIn {
 
 }

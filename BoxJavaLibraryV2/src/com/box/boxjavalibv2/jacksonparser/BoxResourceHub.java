@@ -9,6 +9,7 @@ import com.box.boxjavalibv2.dao.BoxFile;
 import com.box.boxjavalibv2.dao.BoxFileVersion;
 import com.box.boxjavalibv2.dao.BoxFolder;
 import com.box.boxjavalibv2.dao.BoxItem;
+import com.box.boxjavalibv2.dao.BoxLock;
 import com.box.boxjavalibv2.dao.BoxOAuthToken;
 import com.box.boxjavalibv2.dao.BoxPreview;
 import com.box.boxjavalibv2.dao.BoxRealTimeServer;
@@ -67,6 +68,8 @@ public class BoxResourceHub implements IBoxResourceHub {
                 return BoxEvent.class;
             case REALTIME_SERVER:
                 return BoxRealTimeServer.class;
+            case LOCK:
+                return BoxLock.class;
             case ITEMS:
             case FILES:
             case USERS:
