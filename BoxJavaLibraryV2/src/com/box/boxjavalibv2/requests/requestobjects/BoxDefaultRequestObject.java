@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.codec.CharEncoding;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 
@@ -43,7 +44,7 @@ public class BoxDefaultRequestObject implements IBoxRequestObject {
     @Override
     public HttpEntity getEntity() throws BoxRestException {
         try {
-            return new StringEntity(getJSONEntity().toJSONString(objectMapper));
+            return new StringEntity(getJSONEntity().toJSONString(objectMapper), CharEncoding.UTF_8);
         }
         catch (Exception e) {
             throw new BoxRestException(e);
