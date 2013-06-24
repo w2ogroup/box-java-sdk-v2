@@ -3,6 +3,7 @@ package com.box.boxjavalibv2.requests.requestobjects;
 import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 import org.apache.commons.codec.CharEncoding;
 import org.apache.http.HttpEntity;
@@ -171,7 +172,7 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
         MapJSONStringEntity entity = new MapJSONStringEntity();
         entity.put("parent", parentEntity);
         entity.put("name", name);
-        return new StringBody(entity.toJSONString(new ObjectMapper()));
+        return new StringBody(entity.toJSONString(new ObjectMapper()), Charset.forName(CharEncoding.UTF_8));
     }
 
     private static MultipartEntityWithProgressListener getNewVersionMultipartEntity(final String name, final File file) {
