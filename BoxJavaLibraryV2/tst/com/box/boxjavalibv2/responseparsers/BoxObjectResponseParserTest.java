@@ -40,7 +40,7 @@ public class BoxObjectResponseParserTest {
     @Test
     public void testCanParseBoxObject() throws IllegalStateException, IOException, BoxRestException {
         EasyMock.reset(boxResponse, response, entity);
-        inputStream = new ByteArrayInputStream(file.toJSONString(new ObjectMapper()).getBytes());
+        inputStream = new ByteArrayInputStream(file.toJSONString((new BoxResourceHub()).getObjectMapper()).getBytes());
         EasyMock.expect(boxResponse.getHttpResponse()).andReturn(response);
         EasyMock.expect(response.getEntity()).andReturn(entity);
         EasyMock.expect(entity.getContent()).andReturn(inputStream);

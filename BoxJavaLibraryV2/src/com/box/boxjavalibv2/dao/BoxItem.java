@@ -4,10 +4,12 @@ import java.util.Map;
 
 import com.box.boxjavalibv2.interfaces.IBoxParcelWrapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * Box item, this is a base class for the box items({@link BoxFileV2}/{@link BoxFolder}/...)
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 public class BoxItem extends BoxTypedObject {
 
     public static final String FIELD_ETAG = "etag";
