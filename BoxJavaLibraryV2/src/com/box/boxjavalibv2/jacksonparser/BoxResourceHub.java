@@ -20,6 +20,7 @@ import com.box.boxjavalibv2.dao.BoxWebLink;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.NamedType;
 
 public class BoxResourceHub implements IBoxResourceHub {
 
@@ -29,13 +30,18 @@ public class BoxResourceHub implements IBoxResourceHub {
         mObjectMapper = new ObjectMapper();
         mObjectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
         mObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mObjectMapper.addMixInAnnotations(BoxItem.class, BoxItemMixIn.class);
-        mObjectMapper.addMixInAnnotations(BoxTypedObject.class, BoxTypedObjectMixIn.class);
+        registerBoxObjectsSubtypes();
     }
 
     @Override
     public ObjectMapper getObjectMapper() {
         return mObjectMapper;
+    }
+
+    protected void registerBoxObjectsSubtypes() {
+        for (BoxResourceType type : BoxResourceType.values()) {
+            mObjectMapper.registerSubtypes(new NamedType(getClass(type), type.toString()));
+        }
     }
 
     @Override

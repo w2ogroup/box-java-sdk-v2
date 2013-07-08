@@ -6,10 +6,10 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.box.boxjavalibv2.dao.BoxObject;
+import com.box.boxjavalibv2.jacksonparser.BoxResourceHub;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestUtils {
@@ -22,9 +22,7 @@ public class TestUtils {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static BoxObject getFromJSON(String json, Class cls) throws BoxRestException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ObjectMapper objectMapper = (new BoxResourceHub()).getObjectMapper();
 
         JsonFactory jsonFactory = new JsonFactory();
         try {
