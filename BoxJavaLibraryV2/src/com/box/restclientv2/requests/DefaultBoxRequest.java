@@ -82,6 +82,7 @@ public class DefaultBoxRequest implements IBoxRequest {
         this.mConfig = config;
         this.mRestMethod = restMethod;
         this.uriPath = uriPath;
+        getHeaders().put("User-Agent", getConfig().getUserAgent());
         if (requestObject != null) {
             requestObject.setObjectMapper(objectMapper);
             setEntity(requestObject.getEntity());
@@ -261,13 +262,11 @@ public class DefaultBoxRequest implements IBoxRequest {
             ((HttpEntityEnclosingRequestBase) rawRequest).setEntity(getRequestEntity());
         }
 
-        rawRequest.setHeader("Connection", "close");
         for (Map.Entry<String, String> entry : getHeaders().entrySet()) {
             rawRequest.addHeader(entry.getKey(), entry.getValue());
         }
 
-        rawRequest.setParams(httpParams);
-        rawRequest.setHeader("User-Agent", mConfig.getUserAgent());
+        rawRequest.setParams(getHttpParams());
 
         return rawRequest;
     }
