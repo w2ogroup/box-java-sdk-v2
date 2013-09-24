@@ -101,6 +101,10 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
         getOAuthDataController().setAutoRefreshOAuth(autoRefresh);
     }
 
+    public void setConnectionOpen(final boolean connectionOpen) {
+        ((BoxRESTClient) getRestClient()).setConnectionOpen(connectionOpen);
+    }
+
     /**
      * Set connection time out.
      * 

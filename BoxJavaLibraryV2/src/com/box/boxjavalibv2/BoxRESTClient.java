@@ -120,7 +120,7 @@ public class BoxRESTClient extends BoxBasicRestClient {
             HttpParams params = client.getParams();
             HttpConnectionParams.setConnectionTimeout(params, clientTimeOut);
         }
-        request.addHeader("Connection", keepConnectionOpen ? "keep-Alive" : "close");
+        request.addHeader("Connection", keepConnectionOpen ? "Keep-Alive" : "close");
         return client.execute(request);
     }
 
