@@ -4,6 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.box.boxjavalibv2.BoxConfig;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -17,7 +18,7 @@ public class RevokeOAuthRequestTest {
 
     @Test
     public void testRestMethod() throws BoxRestException, AuthFatalFailureException {
-        RevokeOAuthRequest request = new RevokeOAuthRequest(null, null, null);
+        RevokeOAuthRequest request = new RevokeOAuthRequest(BoxConfig.getInstance(), null, null);
         Assert.assertEquals(RestMethod.POST, request.getRestMethod());
 
     }
