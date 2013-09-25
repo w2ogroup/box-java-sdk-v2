@@ -35,6 +35,7 @@ public class BoxRESTClient extends BoxBasicRestClient {
     public final static String WWW_AUTHENTICATE = "WWW-Authenticate";
     private final List<IBoxRestVisitor> visitors = new ArrayList<IBoxRestVisitor>();
 
+    private boolean keepConnectionOpen = true;
     private int clientTimeOut = -1;
 
     /**
@@ -45,6 +46,10 @@ public class BoxRESTClient extends BoxBasicRestClient {
      */
     public void acceptRestVisitor(final IBoxRestVisitor visitor) {
         visitors.add(visitor);
+    }
+
+    public void setConnectionOpen(boolean connectionOpen) {
+        keepConnectionOpen = connectionOpen;
     }
 
     @Override
@@ -115,6 +120,7 @@ public class BoxRESTClient extends BoxBasicRestClient {
             HttpParams params = client.getParams();
             HttpConnectionParams.setConnectionTimeout(params, clientTimeOut);
         }
+        request.addHeader("Connection", keepConnectionOpen ? "Keep-Alive" : "close");
         return client.execute(request);
     }
 
