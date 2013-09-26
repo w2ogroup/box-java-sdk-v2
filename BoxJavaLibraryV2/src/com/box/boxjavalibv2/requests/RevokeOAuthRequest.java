@@ -18,4 +18,19 @@ public class RevokeOAuthRequest extends DefaultBoxRequest {
     public static String getUri() {
         return URI;
     }
+
+    @Override
+    public String getScheme() {
+        return getConfig().getOAuthUrlScheme();
+    }
+
+    @Override
+    public String getAuthority() {
+        return getConfig().getOAuthUrlAuthority();
+    }
+
+    @Override
+    public String getApiUrlPath() {
+        return getConfig().getOAuthApiUrlPath();
+    }
 }
