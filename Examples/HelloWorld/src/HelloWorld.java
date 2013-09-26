@@ -17,14 +17,14 @@ public class HelloWorld {
 
     public static void main(String[] args) throws AuthFatalFailureException, BoxServerException, BoxRestException {
 
-        if (key.equals("YOUR API KEY HERE")) {
+        if (key.startsWith("YOUR")) {
             System.out.println("Before this sample app will work, you will need to change the");
             System.out.println("'key' and 'secret' values in the source code.");
             return;
         }
 
         String code = "";
-        String url = "https://www.box.com/api/oauth2/authorize?response_type=code&client_id=" + key;
+        String url = "https://www.box.com/api/oauth2/authorize?response_type=code&client_id=" + key + "&redirect_uri=http%3A//localhost%3A" + PORT;
         try {
             Desktop.getDesktop().browse(java.net.URI.create(url));
             code = getCode();
