@@ -3,10 +3,12 @@ package com.box.boxjavalibv2.httpentities;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.codec.CharEncoding;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
@@ -45,7 +47,7 @@ public class MultipartEntityWithProgressListener extends MultipartEntity {
      *            listener monitoring the writing progress of the MultipartMime
      */
     public MultipartEntityWithProgressListener(final HttpMultipartMode mode) {
-        super(mode);
+        super(mode, null, Charset.forName(CharEncoding.UTF_8));
     }
 
     @Override
