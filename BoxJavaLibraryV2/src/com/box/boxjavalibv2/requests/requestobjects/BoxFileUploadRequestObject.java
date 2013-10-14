@@ -29,7 +29,7 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
     private static final String KEY_PARENT = "parent";
     private static final String KEY_NAME = "name";
     private static final String KEY_FILE_NAME = "filename";
-    private static final String KEY_CONTENT_CREATED_AT = "content_modified_at";
+    private static final String KEY_CONTENT_CREATED_AT = "content_created_at";
     private static final String KEY_CONTENT_MODIFIED_AT = "content_modified_at";
 
     private BoxFileUploadRequestObject() {
