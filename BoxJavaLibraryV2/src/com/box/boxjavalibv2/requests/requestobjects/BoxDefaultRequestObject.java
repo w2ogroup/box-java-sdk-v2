@@ -9,18 +9,18 @@ import org.apache.commons.codec.CharEncoding;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxJSONStringEntity;
 import com.box.boxjavalibv2.interfaces.IBoxRequestObject;
 import com.box.boxjavalibv2.jsonentities.MapJSONStringEntity;
 import com.box.restclientv2.exceptions.BoxRestException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A request object with entity and fields.
  */
 public class BoxDefaultRequestObject implements IBoxRequestObject {
 
-    private ObjectMapper objectMapper;
+    private IBoxJSONParser mParser;
     private final MapJSONStringEntity jsonEntity = new MapJSONStringEntity();
     private final List<String> fields = new ArrayList<String>();
     private final Map<String, String> queryParams = new HashMap<String, String>();
@@ -32,19 +32,14 @@ public class BoxDefaultRequestObject implements IBoxRequestObject {
     public BoxDefaultRequestObject() {
     }
 
-    /**
-     * Set object mapper.
-     * 
-     * @param objectMapper
-     */
-    public void setObjectMapper(final ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public IBoxJSONParser getJSONParser() {
+        return mParser;
     }
 
     @Override
     public HttpEntity getEntity() throws BoxRestException {
         try {
-            return new StringEntity(getJSONEntity().toJSONString(objectMapper), CharEncoding.UTF_8);
+            return new StringEntity(getJSONEntity().toJSONString(getJSONParser()), CharEncoding.UTF_8);
         }
         catch (Exception e) {
             throw new BoxRestException(e);

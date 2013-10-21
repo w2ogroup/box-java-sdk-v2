@@ -5,12 +5,11 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 
+import com.box.boxjavalibv2.jacksonparser.BoxResourceHub;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxResponse;
 import com.box.restclientv2.interfaces.IBoxResponseParser;
 import com.box.restclientv2.responses.DefaultBoxResponse;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -88,10 +87,12 @@ public class DefaultBoxJSONResponseParser implements IBoxResponseParser {
     @SuppressWarnings("unchecked")
     private Object parseInputStream(InputStream in) throws BoxRestException {
 
-        JsonFactory jsonFactory = new JsonFactory();
+        // JsonFactory jsonFactory = new JsonFactory();
         try {
-            JsonParser jp = jsonFactory.createJsonParser(in);
-            return mObjectMapper.readValue(jp, objectClass);
+            // JsonParser jp = jsonFactory.createJsonParser(in);
+            // TODO: inject BoxResourceHub
+            return (new BoxResourceHub()).getJSONParser().parseJSONStringIntoObject(in, objectClass);
+            // return mObjectMapper.readValue(jp, objectClass);
         }
         catch (Exception e) {
             throw new BoxRestException(e, e.getMessage());

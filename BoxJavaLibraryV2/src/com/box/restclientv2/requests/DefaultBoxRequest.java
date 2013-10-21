@@ -84,7 +84,7 @@ public class DefaultBoxRequest implements IBoxRequest {
         this.uriPath = uriPath;
         getHeaders().put("User-Agent", getConfig().getUserAgent());
         if (requestObject != null) {
-            requestObject.setObjectMapper(objectMapper);
+            requestObject.setJSONParser(objectMapper);
             setEntity(requestObject.getEntity());
             setRequestFields(requestObject.getFields());
             getQueryParams().putAll(requestObject.getQueryParams());

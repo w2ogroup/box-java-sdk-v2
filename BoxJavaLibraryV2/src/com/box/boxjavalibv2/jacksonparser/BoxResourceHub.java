@@ -19,29 +19,20 @@ import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.dao.BoxUser;
 import com.box.boxjavalibv2.dao.BoxWebLink;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
 
 public class BoxResourceHub implements IBoxResourceHub {
 
-    private final ObjectMapper mObjectMapper;
+    private final BoxJacksonJSONParser mJSONParser;
 
     public BoxResourceHub() {
-        mObjectMapper = new ObjectMapper();
-        mObjectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
-        mObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mJSONParser = new BoxJacksonJSONParser();
         registerBoxObjectsSubtypes();
-    }
-
-    @Override
-    public ObjectMapper getObjectMapper() {
-        return mObjectMapper;
     }
 
     protected void registerBoxObjectsSubtypes() {
         for (BoxResourceType type : BoxResourceType.values()) {
-            mObjectMapper.registerSubtypes(new NamedType(getClass(type), type.toString()));
+            mJSONParser.registerSubtype(getClass(type), type.toString());
         }
     }
 
@@ -90,5 +81,15 @@ public class BoxResourceHub implements IBoxResourceHub {
             default:
                 return BoxTypedObject.class;
         }
+    }
+
+    @Override
+    public BoxJacksonJSONParser getJSONParser() {
+        return mJSONParser;
+    }
+
+    @Override
+    public ObjectMapper getObjectMapper() {
+        return null;
     }
 }

@@ -2,8 +2,9 @@ package com.box.boxjavalibv2.utils;
 
 import com.box.boxjavalibv2.BoxClient;
 import com.box.boxjavalibv2.dao.BoxResourceType;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
+import com.box.boxjavalibv2.jacksonparser.BoxJacksonJSONParser;
 import com.box.restclientv2.exceptions.BoxRestException;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -41,15 +42,15 @@ public final class Utils {
      * 
      * @param object
      *            object
-     * @param objectMapper
+     * @param boxJacksonJSONParser
      *            object mapper
      * @return String
      * @throws BoxRestException
      *             exception
      */
-    public static String convertIJSONStringEntitytoString(final Object object, ObjectMapper objectMapper) throws BoxRestException {
+    public static String convertIJSONStringEntitytoString(final Object object, IBoxJSONParser boxJacksonJSONParser) throws BoxRestException {
         try {
-            return objectMapper.writeValueAsString(object);
+            return boxJacksonJSONParser.convertIJSONStringEntitytoString(object);
         }
         catch (Exception e) {
             throw new BoxRestException(e);
@@ -67,7 +68,7 @@ public final class Utils {
      * @throws BoxRestException
      */
     public static String convertIJSONStringEntitytoString(final Object object, BoxClient client) throws BoxRestException {
-        return convertIJSONStringEntitytoString(object, client.getResourceHub().getObjectMapper());
+        return convertIJSONStringEntitytoString(object, client.getResourceHub().getJSONParser());
     }
 
     /**
@@ -81,9 +82,7 @@ public final class Utils {
      * @throws BoxRestException
      */
     public static String convertIJSONStringEntitytoString(final Object object) throws BoxRestException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setSerializationInclusion(Include.NON_NULL);
-        return convertIJSONStringEntitytoString(object, objectMapper);
+        return convertIJSONStringEntitytoString(object, new BoxJacksonJSONParser());
     }
 
     /**

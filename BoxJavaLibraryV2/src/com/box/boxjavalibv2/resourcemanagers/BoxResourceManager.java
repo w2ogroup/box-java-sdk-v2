@@ -7,6 +7,7 @@ import com.box.boxjavalibv2.exceptions.BoxServerException;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedHttpStatusException;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedStatus;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
+import com.box.boxjavalibv2.jacksonparser.BoxJacksonJSONParser;
 import com.box.boxjavalibv2.responseparsers.BoxObjectResponseParser;
 import com.box.boxjavalibv2.responseparsers.ErrorResponseParser;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -85,7 +86,11 @@ public abstract class BoxResourceManager {
 
     /** Get the ObjectMapper the Jackson JSON parser uses. */
     public ObjectMapper getObjectMapper() {
-        return mResourceHub.getObjectMapper();
+        return null;
+    }
+
+    public BoxJacksonJSONParser getJSONParser() {
+        return mResourceHub.getJSONParser();
     }
 
     /** Get config. */
