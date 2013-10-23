@@ -19,8 +19,10 @@ import com.box.boxjavalibv2.interfaces.IAuthFlowListener;
 import com.box.boxjavalibv2.interfaces.IAuthFlowMessage;
 import com.box.boxjavalibv2.interfaces.IAuthFlowUI;
 import com.box.boxjavalibv2.interfaces.IAuthSecureStorage;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
-import com.box.boxjavalibv2.jacksonparser.BoxResourceHub;
+import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.resourcemanagers.BoxCollaborationsManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxCommentsManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxEventsManager;
@@ -49,33 +51,41 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
     private final IAuthDataController authController;
     private final IBoxRequestAuth auth;
 
-    private final IBoxResourceHub resourceHub;
+    private IBoxResourceHub resourceHub;
+    private IBoxJSONParser jsonParser;
     private final IBoxRESTClient restClient;
 
-    private final BoxFilesManager filesManager;
-    private final BoxFoldersManager foldersManager;
-    private final BoxSearchManager searchManager;
-    private final BoxEventsManager eventsManager;
-    private final BoxCollaborationsManager collaborationsManager;
-    private final BoxCommentsManager commentsManager;
-    private final BoxUsersManager usersManager;
-    private final BoxOAuthManager oauthManager;
+    private BoxFilesManager filesManager;
+    private BoxFoldersManager foldersManager;
+    private BoxSearchManager searchManager;
+    private BoxEventsManager eventsManager;
+    private BoxCollaborationsManager collaborationsManager;
+    private BoxCommentsManager commentsManager;
+    private BoxUsersManager usersManager;
+    private BoxOAuthManager oauthManager;
     private IAuthFlowListener mAuthListener;
 
-    public BoxClient(final String clientId, final String clientSecret) {
-        resourceHub = createResourceHub();
+    /**
+     * @param clientId
+     *            client id
+     * @param clientSecret
+     *            client secret
+     * @param resourcehub
+     *            resource hub, use null for default resource hub.
+     * @param parser
+     *            json parser, use null for default parser.
+     */
+    public BoxClient(final String clientId, final String clientSecret, final IBoxResourceHub resourcehub, final IBoxJSONParser parser) {
+        this.resourceHub = resourcehub == null ? createResourceHub() : resourcehub;
+        this.jsonParser = parser == null ? createJSONParser(resourceHub) : parser;
         restClient = createRestClient();
         authController = createAuthDataController(clientId, clientSecret);
         auth = createAuthorization(authController);
+    }
 
-        filesManager = new BoxFilesManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
-        foldersManager = new BoxFoldersManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
-        searchManager = new BoxSearchManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
-        eventsManager = new BoxEventsManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
-        collaborationsManager = new BoxCollaborationsManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
-        commentsManager = new BoxCommentsManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
-        usersManager = new BoxUsersManager(getConfig(), getResourceHub(), getAuth(), getRestClient());
-        oauthManager = new BoxOAuthManager(getConfig(), getResourceHub(), getRestClient());
+    @Deprecated
+    public BoxClient(final String clientId, final String clientSecret) {
+        this(clientId, clientSecret, null, null);
     }
 
     /**
@@ -161,6 +171,9 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return the filesManager
      */
     public BoxFilesManager getFilesManager() {
+        if (filesManager == null) {
+            filesManager = new BoxFilesManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        }
         return filesManager;
     }
 
@@ -170,6 +183,9 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return
      */
     public BoxOAuthManager getOAuthManager() {
+        if (oauthManager == null) {
+            oauthManager = new BoxOAuthManager(getConfig(), getResourceHub(), getJSONParser(), getRestClient());
+        }
         return oauthManager;
     }
 
@@ -183,7 +199,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return BoxSharedItemsManager
      */
     public BoxSharedItemsManager getSharedItemsManager(String sharedLink, String password) {
-        return new BoxSharedItemsManager(getConfig(), getResourceHub(), getSharedItemAuth(sharedLink, password), getRestClient());
+        return new BoxSharedItemsManager(getConfig(), getResourceHub(), getJSONParser(), getSharedItemAuth(sharedLink, password), getRestClient());
     }
 
     /**
@@ -196,7 +212,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return BoxFilesManager
      */
     public BoxFilesManager getSharedFilesManager(String sharedLink, String password) {
-        return new BoxFilesManager(getConfig(), getResourceHub(), getSharedItemAuth(sharedLink, password), getRestClient());
+        return new BoxFilesManager(getConfig(), getResourceHub(), getJSONParser(), getSharedItemAuth(sharedLink, password), getRestClient());
     }
 
     /**
@@ -209,7 +225,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return BoxFoldersManager
      */
     public BoxFoldersManager getSharedFoldersManager(String sharedLink, String password) {
-        return new BoxFoldersManager(getConfig(), getResourceHub(), getSharedItemAuth(sharedLink, password), getRestClient());
+        return new BoxFoldersManager(getConfig(), getResourceHub(), getJSONParser(), getSharedItemAuth(sharedLink, password), getRestClient());
     }
 
     /**
@@ -222,7 +238,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return BoxFoldersManager
      */
     public BoxCommentsManager getSharedCommentsManager(String sharedLink, String password) {
-        return new BoxCommentsManager(getConfig(), getResourceHub(), getSharedItemAuth(sharedLink, password), getRestClient());
+        return new BoxCommentsManager(getConfig(), getResourceHub(), getJSONParser(), getSharedItemAuth(sharedLink, password), getRestClient());
     }
 
     /**
@@ -251,6 +267,9 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      *         you are trying to make api calls on a shared folder (folder shared to you via shared link), please use getSharedFoldersManager().
      */
     public BoxFoldersManager getFoldersManager() {
+        if (foldersManager == null) {
+            foldersManager = new BoxFoldersManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        }
         return foldersManager;
     }
 
@@ -258,6 +277,9 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return BoxSearchManager through which searches can be performed.
      */
     public BoxSearchManager getSearchManager() {
+        if (searchManager == null) {
+            searchManager = new BoxSearchManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        }
         return searchManager;
     }
 
@@ -266,6 +288,9 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return BoxEventsManager through which the Box Events API can be queried.
      */
     public BoxEventsManager getEventsManager() {
+        if (eventsManager == null) {
+            eventsManager = new BoxEventsManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        }
         return eventsManager;
     }
 
@@ -273,6 +298,9 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return the collaborationsManager
      */
     public BoxCollaborationsManager getCollaborationsManager() {
+        if (collaborationsManager == null) {
+            collaborationsManager = new BoxCollaborationsManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        }
         return collaborationsManager;
     }
 
@@ -280,6 +308,9 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return the commentsManager
      */
     public BoxCommentsManager getCommentsManager() {
+        if (commentsManager == null) {
+            commentsManager = new BoxCommentsManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        }
         return commentsManager;
     }
 
@@ -287,6 +318,9 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return the usersManager
      */
     public BoxUsersManager getUsersManager() {
+        if (usersManager == null) {
+            usersManager = new BoxUsersManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        }
         return usersManager;
     }
 
@@ -345,13 +379,27 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
         return BoxConfig.getInstance();
     }
 
+    public void setResourceHub(IBoxResourceHub hub) {
+        this.resourceHub = hub;
+    }
+
     /**
-     * Create a resource hub, which directs the Jackson JSON processor to parse api responses into different objects.
+     * Create a resource hub
      * 
      * @return IBoxResourceHub
      */
     protected IBoxResourceHub createResourceHub() {
         return new BoxResourceHub();
+    }
+
+    /**
+     * Create a json parser.
+     * 
+     * @param resourceHub
+     * @return
+     */
+    protected IBoxJSONParser createJSONParser(IBoxResourceHub resourceHub) {
+        return new BoxJacksonJSONParser(resourceHub);
     }
 
     /**
@@ -361,6 +409,14 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      */
     public IBoxResourceHub getResourceHub() {
         return this.resourceHub;
+    }
+
+    public IBoxJSONParser getJSONParser() {
+        return this.jsonParser;
+    }
+
+    public void setJSONParser(IBoxJSONParser parser) {
+        this.jsonParser = parser;
     }
 
     /**

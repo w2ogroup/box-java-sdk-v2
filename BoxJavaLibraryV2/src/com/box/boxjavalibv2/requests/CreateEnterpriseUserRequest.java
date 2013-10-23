@@ -2,12 +2,12 @@ package com.box.boxjavalibv2.requests;
 
 import org.apache.http.HttpStatus;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxUserRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request used to provision a new user in an enterprise. This method only works for enterprise admins.
@@ -21,15 +21,15 @@ public class CreateEnterpriseUserRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param requestObject
      *            request object
      * @throws BoxRestException
      *             exception
      */
-    public CreateEnterpriseUserRequest(final IBoxConfig config, final ObjectMapper objectMapper, BoxUserRequestObject requestObject) throws BoxRestException {
-        super(config, objectMapper, getUri(), RestMethod.POST, requestObject);
+    public CreateEnterpriseUserRequest(final IBoxConfig config, final IBoxJSONParser parser, BoxUserRequestObject requestObject) throws BoxRestException {
+        super(config, parser, getUri(), RestMethod.POST, requestObject);
         setExpectedResponseCode(HttpStatus.SC_CREATED);
     }
 

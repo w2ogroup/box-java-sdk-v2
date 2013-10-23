@@ -36,6 +36,10 @@ public class BoxDefaultRequestObject implements IBoxRequestObject {
         return mParser;
     }
 
+    public void setJSONParser(IBoxJSONParser parser) {
+        this.mParser = parser;
+    }
+
     @Override
     public HttpEntity getEntity() throws BoxRestException {
         try {

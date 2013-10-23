@@ -1,11 +1,11 @@
 package com.box.boxjavalibv2.requests;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request to get a collaboration. Can also request for collaborations of a certain status. Currently only
@@ -20,8 +20,8 @@ public class GetCollaborationRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param collabId
      *            id of the collaboration
      * @param requestObject
@@ -29,9 +29,9 @@ public class GetCollaborationRequest extends DefaultBoxRequest {
      * @throws BoxRestException
      *             exception
      */
-    public GetCollaborationRequest(final IBoxConfig config, final ObjectMapper objectMapper, String collabId, final BoxDefaultRequestObject requestObject)
+    public GetCollaborationRequest(final IBoxConfig config, final IBoxJSONParser parser, String collabId, final BoxDefaultRequestObject requestObject)
         throws BoxRestException {
-        super(config, objectMapper, getUri(collabId), RestMethod.GET, requestObject);
+        super(config, parser, getUri(collabId), RestMethod.GET, requestObject);
     }
 
     /**

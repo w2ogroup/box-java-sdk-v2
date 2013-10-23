@@ -27,7 +27,7 @@ public class MoveFolderToAnotherUserRequestTest extends RequestTestBase {
         String userId = "testuserid";
         String folderId = "testfolderid";
         boolean notify = true;
-        MoveFolderToAnotherUserRequest request = new MoveFolderToAnotherUserRequest(CONFIG, OBJECT_MAPPER, userId, folderId,
+        MoveFolderToAnotherUserRequest request = new MoveFolderToAnotherUserRequest(CONFIG, JSON_PARSER, userId, folderId,
             BoxUserRequestObject.moveFolderToAnotherUserRequestObject(folderId, notify));
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(MoveFolderToAnotherUserRequest.getUri(userId, folderId)), HttpStatus.SC_OK, RestMethod.PUT);

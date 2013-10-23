@@ -11,6 +11,7 @@ import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.requests.CreateNewFolderRequest;
 import com.box.boxjavalibv2.requests.DeleteFolderRequest;
@@ -35,13 +36,16 @@ public class BoxFoldersManager extends BoxItemsManager {
      *            Config
      * @param resourceHub
      *            IResourceHub
+     * @param parser
+     *            json parser
      * @param auth
      *            auth for api calls
      * @param restClient
      *            REST client to make api calls.
      */
-    public BoxFoldersManager(IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxRequestAuth auth, final IBoxRESTClient restClient) {
-        super(config, resourceHub, auth, restClient);
+    public BoxFoldersManager(IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxJSONParser parser, final IBoxRequestAuth auth,
+        final IBoxRESTClient restClient) {
+        super(config, resourceHub, parser, auth, restClient);
     }
 
     /**
@@ -98,8 +102,8 @@ public class BoxFoldersManager extends BoxItemsManager {
      *             exception indicating authentication totally failed
      */
     public BoxFolder createFolder(BoxFolderRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
-        CreateNewFolderRequest request = new CreateNewFolderRequest(getConfig(), getObjectMapper(), requestObject);
-        return (BoxFolder) getResponseAndParseAndTryCast(request, BoxResourceType.FOLDER, getObjectMapper());
+        CreateNewFolderRequest request = new CreateNewFolderRequest(getConfig(), getJSONParser(), requestObject);
+        return (BoxFolder) getResponseAndParseAndTryCast(request, BoxResourceType.FOLDER, getJSONParser());
     }
 
     /**
@@ -118,7 +122,7 @@ public class BoxFoldersManager extends BoxItemsManager {
      */
     public void deleteFolder(final String folderId, BoxFolderRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        DeleteFolderRequest request = new DeleteFolderRequest(getConfig(), getObjectMapper(), folderId, requestObject);
+        DeleteFolderRequest request = new DeleteFolderRequest(getConfig(), getJSONParser(), folderId, requestObject);
         executeRequestWithNoResponseBody(request);
     }
 
@@ -192,8 +196,8 @@ public class BoxFoldersManager extends BoxItemsManager {
      */
     public BoxCollection getFolderItems(final String folderId, BoxFolderRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        GetFolderItemsRequest request = new GetFolderItemsRequest(getConfig(), getObjectMapper(), folderId, requestObject);
-        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getObjectMapper());
+        GetFolderItemsRequest request = new GetFolderItemsRequest(getConfig(), getJSONParser(), folderId, requestObject);
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getJSONParser());
     }
 
     /**
@@ -214,8 +218,8 @@ public class BoxFoldersManager extends BoxItemsManager {
      */
     public BoxCollection getFolderTrashItems(final String folderId, BoxFolderRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        GetFolderTrashItemsRequest request = new GetFolderTrashItemsRequest(getConfig(), getObjectMapper(), folderId, requestObject);
-        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getObjectMapper());
+        GetFolderTrashItemsRequest request = new GetFolderTrashItemsRequest(getConfig(), getJSONParser(), folderId, requestObject);
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getJSONParser());
     }
 
     /**
@@ -281,9 +285,9 @@ public class BoxFoldersManager extends BoxItemsManager {
      */
     public List<BoxCollaboration> getFolderCollaborations(final String folderId, BoxDefaultRequestObject requestObject) throws BoxRestException,
         BoxServerException, AuthFatalFailureException {
-        GetFolderCollaborationsRequest request = new GetFolderCollaborationsRequest(getConfig(), getObjectMapper(), folderId, requestObject);
+        GetFolderCollaborationsRequest request = new GetFolderCollaborationsRequest(getConfig(), getJSONParser(), folderId, requestObject);
 
-        BoxCollection collection = (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.COLLABORATIONS, getObjectMapper());
+        BoxCollection collection = (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.COLLABORATIONS, getJSONParser());
         return BoxCollaborationsManager.getCollaborations(collection);
     }
 

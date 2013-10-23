@@ -38,7 +38,7 @@ public class UpdateItemInfoRequestTest extends RequestTestBase {
         String id = "testid123";
         String parentId = "testparentid456";
 
-        UpdateItemInfoRequest request = new UpdateItemInfoRequest(CONFIG, OBJECT_MAPPER, id,
+        UpdateItemInfoRequest request = new UpdateItemInfoRequest(CONFIG, JSON_PARSER, id,
             BoxFileRequestObject.updateFileRequestObject().setParent(parentId), type);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(UpdateItemInfoRequest.getUri(id, type)), HttpStatus.SC_OK, RestMethod.PUT);

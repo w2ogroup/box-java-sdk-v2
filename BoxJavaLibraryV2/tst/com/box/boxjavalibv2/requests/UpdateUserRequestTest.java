@@ -54,7 +54,7 @@ public class UpdateUserRequestTest extends RequestTestBase {
         if (removeEnterprise) {
             obj.setEnterprise(null);
         }
-        UpdateUserRequest request = new UpdateUserRequest(CONFIG, OBJECT_MAPPER, userId, obj);
+        UpdateUserRequest request = new UpdateUserRequest(CONFIG, JSON_PARSER, userId, obj);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(UpdateUserRequest.getUri(userId)), HttpStatus.SC_OK, RestMethod.PUT);
 

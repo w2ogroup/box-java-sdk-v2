@@ -15,11 +15,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.box.boxjavalibv2.dao.BoxFile;
-import com.box.boxjavalibv2.jacksonparser.BoxResourceHub;
+import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.responseparsers.DefaultBoxJSONResponseParser;
 import com.box.restclientv2.responses.DefaultBoxResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BoxObjectResponseParserTest {
 
@@ -39,16 +39,17 @@ public class BoxObjectResponseParserTest {
 
     @Test
     public void testCanParseBoxObject() throws IllegalStateException, IOException, BoxRestException {
+        BoxResourceHub hub = new BoxResourceHub();
         EasyMock.reset(boxResponse, response, entity);
-        inputStream = new ByteArrayInputStream(file.toJSONString((new BoxResourceHub()).getObjectMapper()).getBytes());
+        inputStream = new ByteArrayInputStream(file.toJSONString(new BoxJacksonJSONParser(hub)).getBytes());
         EasyMock.expect(boxResponse.getHttpResponse()).andReturn(response);
         EasyMock.expect(response.getEntity()).andReturn(entity);
         EasyMock.expect(entity.getContent()).andReturn(inputStream);
         EasyMock.replay(boxResponse, response, entity);
-        DefaultBoxJSONResponseParser parser = new DefaultBoxJSONResponseParser(BoxFile.class, (new BoxResourceHub()).getObjectMapper());
+        DefaultBoxJSONResponseParser parser = new DefaultBoxJSONResponseParser(BoxFile.class, new BoxJacksonJSONParser(hub));
         Object object = parser.parse(boxResponse);
         Assert.assertEquals(BoxFile.class, object.getClass());
-        Assert.assertEquals(file.toJSONString(new ObjectMapper()), ((BoxFile) object).toJSONString(new ObjectMapper()));
+        Assert.assertEquals(file.toJSONString(new BoxJacksonJSONParser(hub)), ((BoxFile) object).toJSONString(new BoxJacksonJSONParser(hub)));
         EasyMock.verify(boxResponse, response, entity);
 
     }

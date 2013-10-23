@@ -23,7 +23,7 @@ public class DeleteEmailAliasRequestTest extends RequestTestBase {
     public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
         String userId = "testuserid";
         String emailId = "testemailid";
-        DeleteEmailAliasRequest request = new DeleteEmailAliasRequest(CONFIG, OBJECT_MAPPER, userId, emailId, null);
+        DeleteEmailAliasRequest request = new DeleteEmailAliasRequest(CONFIG, JSON_PARSER, userId, emailId, null);
 
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(DeleteEmailAliasRequest.getUri(userId, emailId)), HttpStatus.SC_OK, RestMethod.DELETE);

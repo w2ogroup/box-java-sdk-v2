@@ -1,11 +1,11 @@
 package com.box.boxjavalibv2.requests;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxUserRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Used to edit the settings and information about a user. This method only works for enterprise admins.
@@ -19,8 +19,8 @@ public class UpdateUserRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param userId
      *            id of the user.
      * @param
@@ -28,9 +28,9 @@ public class UpdateUserRequest extends DefaultBoxRequest {
      *            request object
      * @throws BoxRestException
      */
-    public UpdateUserRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String userId, BoxUserRequestObject requestObject)
+    public UpdateUserRequest(final IBoxConfig config, final IBoxJSONParser parser, final String userId, BoxUserRequestObject requestObject)
         throws BoxRestException {
-        super(config, objectMapper, getUri(userId), RestMethod.PUT, requestObject);
+        super(config, parser, getUri(userId), RestMethod.PUT, requestObject);
     }
 
     /**

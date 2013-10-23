@@ -1,8 +1,10 @@
-package com.box.boxjavalibv2.jacksonparser;
+package com.box.boxjavalibv2.jsonparsing;
 
 import java.io.InputStream;
 
+import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
+import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -15,23 +17,22 @@ public class BoxJacksonJSONParser implements IBoxJSONParser {
 
     private final ObjectMapper mObjectMapper;
 
-    public BoxJacksonJSONParser() {
+    public BoxJacksonJSONParser(final IBoxResourceHub hub) {
         mObjectMapper = new ObjectMapper();
         mObjectMapper.setSerializationInclusion(Include.NON_NULL);
         mObjectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
         mObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        for (BoxResourceType type : BoxResourceType.values()) {
+            mObjectMapper.registerSubtypes(new NamedType(hub.getClass(type), type.toString()));
+        }
     }
 
-    public void registerSubtype(final Class<?> cls, final String typeString) {
-        mObjectMapper.registerSubtypes(new NamedType(cls, typeString));
-    }
-
-    private ObjectMapper getObjectMapper() {
+    protected ObjectMapper getObjectMapper() {
         return mObjectMapper;
     }
 
     @Override
-    public String convertIJSONStringEntitytoString(final Object object) throws BoxRestException {
+    public String convertToString(final Object object) throws BoxRestException {
         try {
             return getObjectMapper().writeValueAsString(object);
         }
@@ -41,14 +42,11 @@ public class BoxJacksonJSONParser implements IBoxJSONParser {
     }
 
     @Override
-    public <T> T parseJSONStringIntoObject(final InputStream inputStream, final Class<T> theClass) {
-        ObjectMapper objectMapper = getObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    public <T> T parseIntoObject(final InputStream inputStream, final Class<T> theClass) {
         try {
             JsonFactory jsonFactory = new JsonFactory();
             JsonParser jp = jsonFactory.createJsonParser(inputStream);
-            return objectMapper.readValue(jp, theClass);
+            return getObjectMapper().readValue(jp, theClass);
         }
         catch (Exception e) {
             return null;
@@ -56,14 +54,11 @@ public class BoxJacksonJSONParser implements IBoxJSONParser {
     }
 
     @Override
-    public <T> T parseJSONStringIntoObject(final String jsonString, final Class<T> theClass) {
-        ObjectMapper objectMapper = getObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    public <T> T parseIntoObject(final String jsonString, final Class<T> theClass) {
         try {
             JsonFactory jsonFactory = new JsonFactory();
             JsonParser jp = jsonFactory.createJsonParser(jsonString);
-            return objectMapper.readValue(jp, theClass);
+            return getObjectMapper().readValue(jp, theClass);
         }
         catch (Exception e) {
             return null;

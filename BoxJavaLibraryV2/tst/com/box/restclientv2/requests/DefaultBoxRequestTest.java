@@ -17,10 +17,11 @@ import org.junit.Test;
 
 import com.box.boxjavalibv2.BoxConfig;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
+import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DefaultBoxRequestTest {
 
@@ -49,7 +50,7 @@ public class DefaultBoxRequestTest {
     @Test
     public void prepareRequestTest() throws AuthFatalFailureException {
         try {
-            DefaultBoxRequest request = new DefaultBoxRequest(config, new ObjectMapper(), uri, restMethod, null);
+            DefaultBoxRequest request = new DefaultBoxRequest(config, new BoxJacksonJSONParser(new BoxResourceHub()), uri, restMethod, null);
             request.addQueryParam("a", "b");
             request.setEntity(requestEntity);
             request.prepareRequest();
@@ -69,15 +70,12 @@ public class DefaultBoxRequestTest {
 
     @Test
     public void ConstructHttpUriRequestTest() {
+        BoxJacksonJSONParser parser = new BoxJacksonJSONParser(new BoxResourceHub());
         try {
-            Assert.assertEquals(HttpGet.class, (new DefaultBoxRequest(config, new ObjectMapper(), uri, RestMethod.GET, null)).constructHttpUriRequest()
-                .getClass());
-            Assert.assertEquals(HttpPut.class, (new DefaultBoxRequest(config, new ObjectMapper(), uri, RestMethod.PUT, null)).constructHttpUriRequest()
-                .getClass());
-            Assert.assertEquals(HttpPost.class, (new DefaultBoxRequest(config, new ObjectMapper(), uri, RestMethod.POST, null)).constructHttpUriRequest()
-                .getClass());
-            Assert.assertEquals(HttpDelete.class, (new DefaultBoxRequest(config, new ObjectMapper(), uri, RestMethod.DELETE, null)).constructHttpUriRequest()
-                .getClass());
+            Assert.assertEquals(HttpGet.class, (new DefaultBoxRequest(config, parser, uri, RestMethod.GET, null)).constructHttpUriRequest().getClass());
+            Assert.assertEquals(HttpPut.class, (new DefaultBoxRequest(config, parser, uri, RestMethod.PUT, null)).constructHttpUriRequest().getClass());
+            Assert.assertEquals(HttpPost.class, (new DefaultBoxRequest(config, parser, uri, RestMethod.POST, null)).constructHttpUriRequest().getClass());
+            Assert.assertEquals(HttpDelete.class, (new DefaultBoxRequest(config, parser, uri, RestMethod.DELETE, null)).constructHttpUriRequest().getClass());
         }
         catch (BoxRestException e) {
             Assert.fail(e.getMessage());

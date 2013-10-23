@@ -9,6 +9,7 @@ import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.requests.CreateCommentRequest;
 import com.box.boxjavalibv2.requests.DeleteCommentRequest;
@@ -36,13 +37,16 @@ public final class BoxCommentsManager extends BoxResourceManager {
      *            Config
      * @param resourceHub
      *            IResourceHub
+     * @param parser
+     *            json parser
      * @param auth
      *            auth for api calls
      * @param restClient
      *            REST client to make api calls.
      */
-    public BoxCommentsManager(IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxRequestAuth auth, final IBoxRESTClient restClient) {
-        super(config, resourceHub, auth, restClient);
+    public BoxCommentsManager(IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxJSONParser parser, final IBoxRequestAuth auth,
+        final IBoxRESTClient restClient) {
+        super(config, resourceHub, parser, auth, restClient);
     }
 
     /**
@@ -58,8 +62,8 @@ public final class BoxCommentsManager extends BoxResourceManager {
      *             exception indicating authentication totally failed
      */
     public BoxComment addComment(final BoxCommentRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
-        CreateCommentRequest request = new CreateCommentRequest(getConfig(), getObjectMapper(), requestObject);
-        return (BoxComment) getResponseAndParseAndTryCast(request, BoxResourceType.COMMENT, getObjectMapper());
+        CreateCommentRequest request = new CreateCommentRequest(getConfig(), getJSONParser(), requestObject);
+        return (BoxComment) getResponseAndParseAndTryCast(request, BoxResourceType.COMMENT, getJSONParser());
     }
 
     /**
@@ -79,8 +83,8 @@ public final class BoxCommentsManager extends BoxResourceManager {
      */
     public BoxComment getComment(final String commentId, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        GetCommentRequest request = new GetCommentRequest(getConfig(), getObjectMapper(), commentId, requestObject);
-        return (BoxComment) getResponseAndParseAndTryCast(request, BoxResourceType.COMMENT, getObjectMapper());
+        GetCommentRequest request = new GetCommentRequest(getConfig(), getJSONParser(), commentId, requestObject);
+        return (BoxComment) getResponseAndParseAndTryCast(request, BoxResourceType.COMMENT, getJSONParser());
     }
 
     /**
@@ -100,8 +104,8 @@ public final class BoxCommentsManager extends BoxResourceManager {
      */
     public BoxComment updateComment(final String commentId, final BoxCommentRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        UpdateCommentRequest request = new UpdateCommentRequest(getConfig(), getObjectMapper(), commentId, requestObject);
-        return (BoxComment) getResponseAndParseAndTryCast(request, BoxResourceType.COMMENT, getObjectMapper());
+        UpdateCommentRequest request = new UpdateCommentRequest(getConfig(), getJSONParser(), commentId, requestObject);
+        return (BoxComment) getResponseAndParseAndTryCast(request, BoxResourceType.COMMENT, getJSONParser());
     }
 
     /**
@@ -120,7 +124,7 @@ public final class BoxCommentsManager extends BoxResourceManager {
      */
     public void deleteComment(final String commentId, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        DeleteCommentRequest request = new DeleteCommentRequest(getConfig(), getObjectMapper(), commentId, requestObject);
+        DeleteCommentRequest request = new DeleteCommentRequest(getConfig(), getJSONParser(), commentId, requestObject);
         executeRequestWithNoResponseBody(request);
     }
 

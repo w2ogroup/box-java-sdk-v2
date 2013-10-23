@@ -21,7 +21,7 @@ public class DownloadFileRequestTest extends RequestTestBase {
     public void testRequestIsWellFormed() throws BoxRestException, AuthFatalFailureException {
         String id = "testid123";
 
-        DownloadFileRequest request = new DownloadFileRequest(CONFIG, OBJECT_MAPPER, id, null);
+        DownloadFileRequest request = new DownloadFileRequest(CONFIG, JSON_PARSER, id, null);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(DownloadFileRequest.getUri(id)), HttpStatus.SC_OK, RestMethod.GET);
 

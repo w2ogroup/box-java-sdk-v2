@@ -12,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 import com.box.boxjavalibv2.dao.BoxServerError;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IFileTransferListener;
 import com.box.boxjavalibv2.requests.DownloadFileRequest;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
@@ -22,7 +23,6 @@ import com.box.restclientv2.interfaces.IBoxRESTClient;
 import com.box.restclientv2.interfaces.IBoxRequestAuth;
 import com.box.restclientv2.responseparsers.DefaultFileResponseParser;
 import com.box.restclientv2.responses.DefaultBoxResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Contains logic for downloading a user's file from Box API and supports using {@link IFileTransferListener} to monitor downloading progress.
@@ -94,8 +94,8 @@ public class BoxFileDownload {
      *            auth
      * @param outputStreams
      *            OutputStream's the file is going to be downloaded into.
-     * @param objectMapper
-     *            ObjectMapper
+     * @param parser
+     *            json parser
      * @param requestObject
      *            request object
      * @throws BoxRestException
@@ -109,9 +109,9 @@ public class BoxFileDownload {
      * @throws AuthFatalFailureException
      *             exception indicating authentication totally failed
      */
-    public void execute(final IBoxRequestAuth auth, final OutputStream[] outputStreams, ObjectMapper objectMapper, BoxDefaultRequestObject requestObject)
+    public void execute(final IBoxRequestAuth auth, final OutputStream[] outputStreams, IBoxJSONParser parser, BoxDefaultRequestObject requestObject)
         throws BoxRestException, IOException, BoxServerException, InterruptedException, AuthFatalFailureException {
-        InputStream result = execute(auth, objectMapper, requestObject);
+        InputStream result = execute(auth, parser, requestObject);
         copyOut(result, outputStreams);
     }
 
@@ -122,8 +122,8 @@ public class BoxFileDownload {
      *            auth
      * @param destination
      *            destination file
-     * @param objectMapper
-     *            ObjectMapper
+     * @param parser
+     *            json parser
      * @param
      * @param requestObject
      *            request object
@@ -138,11 +138,11 @@ public class BoxFileDownload {
      * @throws AuthFatalFailureException
      *             exception indicating authentication totally failed
      */
-    public void execute(final IBoxRequestAuth auth, final File destination, ObjectMapper objectMapper, BoxDefaultRequestObject requestObject)
+    public void execute(final IBoxRequestAuth auth, final File destination, IBoxJSONParser parser, BoxDefaultRequestObject requestObject)
         throws BoxRestException, IOException, BoxServerException, InterruptedException, AuthFatalFailureException {
         OutputStream[] streams = new OutputStream[1];
         streams[0] = new FileOutputStream(destination);
-        execute(auth, streams, objectMapper, requestObject);
+        execute(auth, streams, parser, requestObject);
     }
 
     /**
@@ -151,8 +151,8 @@ public class BoxFileDownload {
      * 
      * @param auth
      *            auth
-     * @param objectMapper
-     *            ObjectMapper
+     * @param parser
+     *            json parser
      * @param requestObject
      *            request object
      * @return InputStream
@@ -163,14 +163,14 @@ public class BoxFileDownload {
      * @throws AuthFatalFailureException
      *             exception indicating authentication totally failed
      */
-    public InputStream execute(final IBoxRequestAuth auth, ObjectMapper objectMapper, BoxDefaultRequestObject requestObject) throws BoxRestException,
+    public InputStream execute(final IBoxRequestAuth auth, IBoxJSONParser parser, BoxDefaultRequestObject requestObject) throws BoxRestException,
         BoxServerException, AuthFatalFailureException {
-        DownloadFileRequest request = new DownloadFileRequest(mConfig, objectMapper, mFileId, requestObject);
+        DownloadFileRequest request = new DownloadFileRequest(mConfig, parser, mFileId, requestObject);
         request.setAuth(auth);
         DefaultBoxResponse response = (DefaultBoxResponse) mRestClient.execute(request);
-        DefaultFileResponseParser parser = new DefaultFileResponseParser();
-        ErrorResponseParser errorParser = new ErrorResponseParser(objectMapper);
-        Object result = response.parseResponse(parser, errorParser);
+        DefaultFileResponseParser responseParser = new DefaultFileResponseParser();
+        ErrorResponseParser errorParser = new ErrorResponseParser(parser);
+        Object result = response.parseResponse(responseParser, errorParser);
         if (result instanceof BoxServerError) {
             throw new BoxServerException((BoxServerError) result);
         }

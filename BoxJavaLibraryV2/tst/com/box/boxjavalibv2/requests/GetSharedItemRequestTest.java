@@ -20,7 +20,7 @@ public class GetSharedItemRequestTest extends RequestTestBase {
     @Test
     public void testRequestIsWellFormed() throws BoxRestException, AuthFatalFailureException {
 
-        GetSharedItemRequest request = new GetSharedItemRequest(CONFIG, OBJECT_MAPPER, null);
+        GetSharedItemRequest request = new GetSharedItemRequest(CONFIG, JSON_PARSER, null);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(GetSharedItemRequest.getUri()), HttpStatus.SC_OK, RestMethod.GET);
 

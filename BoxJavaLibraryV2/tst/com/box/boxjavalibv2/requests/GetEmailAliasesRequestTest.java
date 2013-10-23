@@ -22,7 +22,7 @@ public class GetEmailAliasesRequestTest extends RequestTestBase {
     @Test
     public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
         String userId = "testuserid";
-        GetEmailAliasesRequest request = new GetEmailAliasesRequest(CONFIG, OBJECT_MAPPER, userId, null);
+        GetEmailAliasesRequest request = new GetEmailAliasesRequest(CONFIG, JSON_PARSER, userId, null);
 
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(GetEmailAliasesRequest.getUri(userId)), HttpStatus.SC_OK, RestMethod.GET);

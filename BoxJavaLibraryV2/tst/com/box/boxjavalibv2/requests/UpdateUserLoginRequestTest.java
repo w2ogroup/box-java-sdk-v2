@@ -27,7 +27,7 @@ public class UpdateUserLoginRequestTest extends RequestTestBase {
     public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
         String userId = "testuserid";
         String newLogin = "testnewlogin";
-        UpdateUserLoginRequest request = new UpdateUserLoginRequest(CONFIG, OBJECT_MAPPER, userId,
+        UpdateUserLoginRequest request = new UpdateUserLoginRequest(CONFIG, JSON_PARSER, userId,
             BoxUserRequestObject.updateUserPrimaryLoginRequestObject(newLogin));
 
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),

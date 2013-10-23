@@ -38,7 +38,7 @@ public class CopyItemRequestTest extends RequestTestBase {
         String parentId = "testparentid456";
         String newName = "testnewname789";
 
-        CopyItemRequest request = new CopyItemRequest(CONFIG, OBJECT_MAPPER, id, BoxFileRequestObject.copyFileRequestObject(parentId).setName(newName), type);
+        CopyItemRequest request = new CopyItemRequest(CONFIG, JSON_PARSER, id, BoxFileRequestObject.copyFileRequestObject(parentId).setName(newName), type);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(CopyItemRequest.getUri(id, type)), HttpStatus.SC_CREATED, RestMethod.POST);
 

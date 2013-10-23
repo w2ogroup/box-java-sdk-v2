@@ -17,10 +17,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.box.boxjavalibv2.dao.BoxServerError;
-import com.box.boxjavalibv2.jacksonparser.BoxResourceHub;
+import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.responses.DefaultBoxResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ErrorResponseParserTest {
 
@@ -44,9 +44,9 @@ public class ErrorResponseParserTest {
 
     @Test
     public void testCanParseBoxServerError() throws BoxRestException, IllegalStateException, IOException {
-        ObjectMapper mapper = (new BoxResourceHub()).getObjectMapper();
+        BoxJacksonJSONParser jsonParser = new BoxJacksonJSONParser(new BoxResourceHub());
         EasyMock.reset(boxResponse, response, entity);
-        inputStream = new ByteArrayInputStream(error.toJSONString(mapper).getBytes());
+        inputStream = new ByteArrayInputStream(error.toJSONString(jsonParser).getBytes());
         EasyMock.expect(boxResponse.getHttpResponse()).andReturn(response);
         EasyMock.expect(response.getEntity()).andReturn(entity);
         EasyMock.expect(entity.getContent()).andReturn(inputStream);
@@ -56,11 +56,11 @@ public class ErrorResponseParserTest {
         EasyMock.expect(statusLine.getStatusCode()).andReturn(statusCode);
 
         EasyMock.replay(boxResponse, response, entity, statusLine);
-        ErrorResponseParser parser = new ErrorResponseParser(mapper);
+        ErrorResponseParser parser = new ErrorResponseParser(jsonParser);
         Object object = parser.parse(boxResponse);
         Assert.assertEquals(BoxServerError.class, object.getClass());
 
-        Assert.assertEquals(error.toJSONString(mapper), ((BoxServerError) object).toJSONString(mapper));
+        Assert.assertEquals(error.toJSONString(jsonParser), ((BoxServerError) object).toJSONString(jsonParser));
         EasyMock.verify(boxResponse, response, entity, statusLine);
     }
 }

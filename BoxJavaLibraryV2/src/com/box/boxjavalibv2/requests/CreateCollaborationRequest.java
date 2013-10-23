@@ -2,12 +2,12 @@ package com.box.boxjavalibv2.requests;
 
 import org.apache.http.HttpStatus;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxCollabRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request to add a collaboration for a single user to a folder.
@@ -21,17 +21,17 @@ public class CreateCollaborationRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param folderId
      *            id of the folder
      * @param collabObject
      *            object that goes into request body.
      * @throws BoxRestException
      */
-    public CreateCollaborationRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String folderId, final BoxCollabRequestObject collabObject)
+    public CreateCollaborationRequest(final IBoxConfig config, final IBoxJSONParser parser, final String folderId, final BoxCollabRequestObject collabObject)
         throws BoxRestException {
-        super(config, objectMapper, getUri(folderId), RestMethod.POST, collabObject);
+        super(config, parser, getUri(folderId), RestMethod.POST, collabObject);
         this.setExpectedResponseCode(HttpStatus.SC_CREATED);
     }
 

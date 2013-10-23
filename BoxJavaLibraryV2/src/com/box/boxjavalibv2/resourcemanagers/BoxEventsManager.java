@@ -9,6 +9,7 @@ import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.requests.EventOptionsRequest;
 import com.box.boxjavalibv2.requests.GetEventsRequest;
@@ -34,13 +35,16 @@ public class BoxEventsManager extends BoxResourceManager {
      *            BoxConfig
      * @param resourceHub
      *            IResourceHub
+     * @param parser
+     *            json parser
      * @param auth
      *            auth for api calls
      * @param restClient
      *            REST client to make api calls.
      */
-    public BoxEventsManager(IBoxConfig config, IBoxResourceHub resourceHub, final IBoxRequestAuth auth, final IBoxRESTClient restClient) {
-        super(config, resourceHub, auth, restClient);
+    public BoxEventsManager(IBoxConfig config, IBoxResourceHub resourceHub, final IBoxJSONParser parser, final IBoxRequestAuth auth,
+        final IBoxRESTClient restClient) {
+        super(config, resourceHub, parser, auth, restClient);
     }
 
     /**
@@ -56,8 +60,8 @@ public class BoxEventsManager extends BoxResourceManager {
      * @throws AuthFatalFailureException
      */
     public BoxCollection getEvents(BoxEventRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
-        GetEventsRequest request = new GetEventsRequest(getConfig(), getObjectMapper(), requestObject);
-        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getObjectMapper());
+        GetEventsRequest request = new GetEventsRequest(getConfig(), getJSONParser(), requestObject);
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getJSONParser());
     }
 
     /**
@@ -70,8 +74,8 @@ public class BoxEventsManager extends BoxResourceManager {
      * @throws AuthFatalFailureException
      */
     public BoxCollection getEventOptions(BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
-        EventOptionsRequest request = new EventOptionsRequest(getConfig(), getObjectMapper(), requestObject);
-        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getObjectMapper());
+        EventOptionsRequest request = new EventOptionsRequest(getConfig(), getJSONParser(), requestObject);
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getJSONParser());
     }
 
     /**

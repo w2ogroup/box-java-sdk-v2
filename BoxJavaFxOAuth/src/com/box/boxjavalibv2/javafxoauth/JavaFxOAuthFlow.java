@@ -109,7 +109,7 @@ public class JavaFxOAuthFlow implements IAuthFlowUI {
             @Override
             public void run() {
                 try {
-                    oauthListener.onAuthFlowEvent(OAuthEvent.OAUTH_CREATED, new OAuthDataMessage(token));
+                    oauthListener.onAuthFlowEvent(OAuthEvent.OAUTH_CREATED, new OAuthDataMessage(token, client.getJSONParser()));
                 }
                 catch (BoxRestException e) {
                     oauthListener.onAuthFlowException(e);

@@ -21,7 +21,7 @@ public class GetFileCommentsRequestTest extends RequestTestBase {
     public void testRequestIsWellFormed() throws BoxRestException, AuthFatalFailureException {
         String id = "testid123";
 
-        GetFileCommentsRequest request = new GetFileCommentsRequest(CONFIG, OBJECT_MAPPER, id, null);
+        GetFileCommentsRequest request = new GetFileCommentsRequest(CONFIG, JSON_PARSER, id, null);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(GetFileCommentsRequest.getUri(id)), HttpStatus.SC_OK, RestMethod.GET);
 

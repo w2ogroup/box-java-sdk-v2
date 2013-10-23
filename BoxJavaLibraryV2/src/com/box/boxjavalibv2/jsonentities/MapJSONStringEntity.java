@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxJSONStringEntity;
-import com.box.boxjavalibv2.utils.Utils;
 import com.box.restclientv2.exceptions.BoxRestException;
 
 /**
@@ -16,7 +15,7 @@ public class MapJSONStringEntity extends LinkedHashMap<String, Object> implement
 
     @Override
     public String toJSONString(IBoxJSONParser parser) throws BoxRestException {
-        return Utils.convertIJSONStringEntitytoString(this, parser);
+        return parser.convertToString(this);
     }
 
 }

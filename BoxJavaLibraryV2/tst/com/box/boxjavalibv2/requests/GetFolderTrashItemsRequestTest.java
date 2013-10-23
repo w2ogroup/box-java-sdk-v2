@@ -33,7 +33,7 @@ public class GetFolderTrashItemsRequestTest extends RequestTestBase {
         fields.add(fieldA);
         fields.add(fieldB);
 
-        GetFolderTrashItemsRequest request = new GetFolderTrashItemsRequest(CONFIG, OBJECT_MAPPER, id, (BoxFolderRequestObject) BoxFolderRequestObject
+        GetFolderTrashItemsRequest request = new GetFolderTrashItemsRequest(CONFIG, JSON_PARSER, id, (BoxFolderRequestObject) BoxFolderRequestObject
             .getTrashItemsRequestObject(limit, offset).addFields(fields));
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(GetFolderTrashItemsRequest.getUri(id)), HttpStatus.SC_OK, RestMethod.GET);

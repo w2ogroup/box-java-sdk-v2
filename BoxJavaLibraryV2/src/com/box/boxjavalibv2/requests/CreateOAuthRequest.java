@@ -1,11 +1,11 @@
 package com.box.boxjavalibv2.requests;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxOAuthRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request used to create OAuth.
@@ -19,15 +19,15 @@ public class CreateOAuthRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param requestObject
      *            request object
      * @throws BoxRestException
      *             except
      */
-    public CreateOAuthRequest(final IBoxConfig config, final ObjectMapper objectMapper, BoxOAuthRequestObject requestObject) throws BoxRestException {
-        super(config, objectMapper, getUri(), RestMethod.POST, requestObject);
+    public CreateOAuthRequest(final IBoxConfig config, final IBoxJSONParser parser, BoxOAuthRequestObject requestObject) throws BoxRestException {
+        super(config, parser, getUri(), RestMethod.POST, requestObject);
     }
 
     /**

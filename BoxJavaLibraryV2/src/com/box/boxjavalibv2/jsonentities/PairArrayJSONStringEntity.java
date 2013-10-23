@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
-import com.box.boxjavalibv2.utils.Utils;
 import com.box.restclientv2.exceptions.BoxRestException;
 
 /**
@@ -22,6 +21,6 @@ public class PairArrayJSONStringEntity extends MapJSONStringEntity {
             entity.put(entry.getKey(), entry.getValue());
             list.add(entity);
         }
-        return Utils.convertIJSONStringEntitytoString(list, parser);
+        return parser.convertToString(list);
     }
 }

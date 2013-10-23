@@ -1,11 +1,11 @@
 package com.box.boxjavalibv2.requests;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxImageRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request to get preview.
@@ -19,8 +19,8 @@ public class PreviewRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param fileId
      *            id of the file
      * @param fileExtension
@@ -29,9 +29,9 @@ public class PreviewRequest extends DefaultBoxRequest {
      *            request object
      * @throws BoxRestException
      */
-    public PreviewRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String fileId, final String fileExtension,
+    public PreviewRequest(final IBoxConfig config, final IBoxJSONParser parser, final String fileId, final String fileExtension,
         final BoxImageRequestObject requestObject) throws BoxRestException {
-        super(config, objectMapper, getUri(fileId, fileExtension), RestMethod.GET, requestObject);
+        super(config, parser, getUri(fileId, fileExtension), RestMethod.GET, requestObject);
     }
 
     /**

@@ -18,6 +18,7 @@ import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
 import com.box.boxjavalibv2.filetransfer.BoxFileDownload;
 import com.box.boxjavalibv2.filetransfer.BoxFileUpload;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.interfaces.IFileTransferListener;
 import com.box.boxjavalibv2.requests.DeleteFileRequest;
@@ -48,13 +49,16 @@ public class BoxFilesManager extends BoxItemsManager {
      *            BoxConfig
      * @param resourceHub
      *            resource hub
+     * @param parser
+     *            json parser
      * @param auth
      *            auth for api calls
      * @param restClient
      *            REST client to make api calls.
      */
-    public BoxFilesManager(IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxRequestAuth auth, final IBoxRESTClient restClient) {
-        super(config, resourceHub, auth, restClient);
+    public BoxFilesManager(IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxJSONParser parser, final IBoxRequestAuth auth,
+        final IBoxRESTClient restClient) {
+        super(config, resourceHub, parser, auth, restClient);
     }
 
     /**
@@ -113,7 +117,7 @@ public class BoxFilesManager extends BoxItemsManager {
      */
     public void deleteFile(final String fileId, final BoxFileRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        DeleteFileRequest request = new DeleteFileRequest(getConfig(), getObjectMapper(), fileId, requestObject);
+        DeleteFileRequest request = new DeleteFileRequest(getConfig(), getJSONParser(), fileId, requestObject);
         executeRequestWithNoResponseBody(request);
     }
 
@@ -168,11 +172,11 @@ public class BoxFilesManager extends BoxItemsManager {
      */
     public BoxPreview getPreview(final String fileId, final String extension, final BoxImageRequestObject requestObject) throws BoxRestException,
         BoxServerException, AuthFatalFailureException {
-        PreviewRequest request = new PreviewRequest(getConfig(), getObjectMapper(), fileId, extension, requestObject);
+        PreviewRequest request = new PreviewRequest(getConfig(), getJSONParser(), fileId, extension, requestObject);
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
         PreviewResponseParser parser = new PreviewResponseParser();
-        ErrorResponseParser errorParser = new ErrorResponseParser(getObjectMapper());
+        ErrorResponseParser errorParser = new ErrorResponseParser(getJSONParser());
         Object result = response.parseResponse(parser, errorParser);
 
         return (BoxPreview) tryCastObject(BoxResourceType.PREVIEW, result);
@@ -197,7 +201,7 @@ public class BoxFilesManager extends BoxItemsManager {
      */
     public InputStream downloadThumbnail(final String fileId, final String extension, final BoxImageRequestObject requestObject) throws BoxRestException,
         BoxServerException, AuthFatalFailureException {
-        ThumbnailRequest request = new ThumbnailRequest(getConfig(), getObjectMapper(), fileId, extension, requestObject);
+        ThumbnailRequest request = new ThumbnailRequest(getConfig(), getJSONParser(), fileId, extension, requestObject);
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
         return (InputStream) (new DefaultFileResponseParser()).parse(response);
@@ -272,7 +276,7 @@ public class BoxFilesManager extends BoxItemsManager {
         throws BoxRestException, BoxServerException, IllegalStateException, IOException, InterruptedException, AuthFatalFailureException {
         BoxFileDownload download = new BoxFileDownload(getConfig(), getRestClient(), fileId);
         download.setProgressListener(listener);
-        download.execute(getAuth(), destination, getObjectMapper(), requestObject);
+        download.execute(getAuth(), destination, getJSONParser(), requestObject);
     }
 
     /**
@@ -294,7 +298,7 @@ public class BoxFilesManager extends BoxItemsManager {
     public InputStream downloadFile(final String fileId, final BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
         BoxFileDownload download = new BoxFileDownload(getConfig(), getRestClient(), fileId);
-        return download.execute(getAuth(), getObjectMapper(), requestObject);
+        return download.execute(getAuth(), getJSONParser(), requestObject);
     }
 
     /**
@@ -323,7 +327,7 @@ public class BoxFilesManager extends BoxItemsManager {
         final BoxDefaultRequestObject requestObject) throws BoxRestException, IOException, BoxServerException, InterruptedException, AuthFatalFailureException {
         BoxFileDownload download = new BoxFileDownload(getConfig(), getRestClient(), fileId);
         download.setProgressListener(listener);
-        download.execute(getAuth(), outputStreams, getObjectMapper(), requestObject);
+        download.execute(getAuth(), outputStreams, getJSONParser(), requestObject);
     }
 
     /**
@@ -365,8 +369,8 @@ public class BoxFilesManager extends BoxItemsManager {
      */
     public List<BoxFileVersion> getFileVersions(final String fileId, final BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        GetFileVersionsRequest request = new GetFileVersionsRequest(getConfig(), getObjectMapper(), fileId, requestObject);
-        BoxCollection collection = (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.FILE_VERSIONS, getObjectMapper());
+        GetFileVersionsRequest request = new GetFileVersionsRequest(getConfig(), getJSONParser(), fileId, requestObject);
+        BoxCollection collection = (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.FILE_VERSIONS, getJSONParser());
         return getFileVersions(collection);
     }
 
@@ -429,8 +433,8 @@ public class BoxFilesManager extends BoxItemsManager {
      */
     public BoxCollection getFileComments(final String fileId, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        GetFileCommentsRequest request = new GetFileCommentsRequest(getConfig(), getObjectMapper(), fileId, requestObject);
-        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.COMMENTS, getObjectMapper());
+        GetFileCommentsRequest request = new GetFileCommentsRequest(getConfig(), getJSONParser(), fileId, requestObject);
+        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.COMMENTS, getJSONParser());
     }
 
     /**

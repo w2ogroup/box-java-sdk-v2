@@ -5,12 +5,11 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 
-import com.box.boxjavalibv2.jacksonparser.BoxResourceHub;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxResponse;
 import com.box.restclientv2.interfaces.IBoxResponseParser;
 import com.box.restclientv2.responses.DefaultBoxResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This class is a wrapper class in order for <a href="http://jackson.codehaus.org/">Jackson JSON processor</a> to parse response JSON into the wrapped objects.
@@ -20,7 +19,7 @@ public class DefaultBoxJSONResponseParser implements IBoxResponseParser {
 
     private final Class objectClass;
 
-    private final ObjectMapper mObjectMapper;
+    private final IBoxJSONParser mParser;
 
     /**
      * Constructor.
@@ -32,9 +31,9 @@ public class DefaultBoxJSONResponseParser implements IBoxResponseParser {
      * @param objectMapper
      *            ObjectMapper to be used when parsing.
      */
-    public DefaultBoxJSONResponseParser(Class objectClass, ObjectMapper objectMapper) {
+    public DefaultBoxJSONResponseParser(Class objectClass, IBoxJSONParser parser) {
         this.objectClass = objectClass;
-        this.mObjectMapper = objectMapper;
+        this.mParser = parser;
     }
 
     /**
@@ -86,16 +85,6 @@ public class DefaultBoxJSONResponseParser implements IBoxResponseParser {
      */
     @SuppressWarnings("unchecked")
     private Object parseInputStream(InputStream in) throws BoxRestException {
-
-        // JsonFactory jsonFactory = new JsonFactory();
-        try {
-            // JsonParser jp = jsonFactory.createJsonParser(in);
-            // TODO: inject BoxResourceHub
-            return (new BoxResourceHub()).getJSONParser().parseJSONStringIntoObject(in, objectClass);
-            // return mObjectMapper.readValue(jp, objectClass);
-        }
-        catch (Exception e) {
-            throw new BoxRestException(e, e.getMessage());
-        }
+        return mParser.parseIntoObject(in, objectClass);
     }
 }

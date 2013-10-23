@@ -46,7 +46,7 @@ public class CreateSharedLinkRequestTest extends RequestTestBase {
         String access = BoxSharedLinkAccess.COLLABORATORS;
         Date unsharedAt = new Date();
 
-        CreateSharedLinkRequest request = new CreateSharedLinkRequest(CONFIG, OBJECT_MAPPER, id, BoxSharedLinkRequestObject
+        CreateSharedLinkRequest request = new CreateSharedLinkRequest(CONFIG, JSON_PARSER, id, BoxSharedLinkRequestObject
             .createSharedLinkRequestObject(access).setPermissions(permissions).setUnshared_at(unsharedAt), type);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(CreateSharedLinkRequest.getUri(id, type)), HttpStatus.SC_OK, RestMethod.PUT);

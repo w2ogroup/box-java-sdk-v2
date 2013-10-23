@@ -1,11 +1,11 @@
 package com.box.boxjavalibv2.requests;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request to get the items inside a folder. These items can be files, sub-folders, weblinks, and etc.
@@ -19,8 +19,8 @@ public class SearchRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param searchQuery
      *            search query
      * @param requestObject
@@ -28,9 +28,9 @@ public class SearchRequest extends DefaultBoxRequest {
      * @throws BoxRestException
      *             exception
      */
-    public SearchRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String searchQuery, BoxDefaultRequestObject requestObject)
+    public SearchRequest(final IBoxConfig config, final IBoxJSONParser parser, final String searchQuery, BoxDefaultRequestObject requestObject)
         throws BoxRestException {
-        super(config, objectMapper, URI, RestMethod.GET, requestObject);
+        super(config, parser, URI, RestMethod.GET, requestObject);
         addQueryParam("query", searchQuery);
     }
 }

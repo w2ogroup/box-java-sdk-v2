@@ -4,8 +4,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.restclientv2.exceptions.BoxRestException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MapJSONStringEntityTest {
 
@@ -18,7 +19,7 @@ public class MapJSONStringEntityTest {
 
         entity.put(name, value);
         try {
-            Assert.assertEquals(String.format(json, name, value), entity.toJSONString(new ObjectMapper()));
+            Assert.assertEquals(String.format(json, name, value), entity.toJSONString(new BoxJacksonJSONParser(new BoxResourceHub())));
         }
         catch (BoxRestException e) {
             Assert.fail();

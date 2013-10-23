@@ -7,9 +7,9 @@ import com.box.restclientv2.exceptions.BoxRestException;
 public interface IBoxJSONParser {
 
     // TODO: throw different exception.
-    String convertIJSONStringEntitytoString(final Object object) throws BoxRestException;
+    String convertToString(final Object object) throws BoxRestException;
 
-    <T> T parseJSONStringIntoObject(final InputStream inputStream, final Class<T> theClass);
+    <T> T parseIntoObject(final InputStream inputStream, final Class<T> theClass);
 
-    <T> T parseJSONStringIntoObject(final String jsonString, final Class<T> theClass);
+    <T> T parseIntoObject(final String jsonString, final Class<T> theClass);
 }

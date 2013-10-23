@@ -4,9 +4,10 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.requests.requestobjects.BoxCollabRequestObject;
 import com.box.restclientv2.exceptions.BoxRestException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BoxCollaborationRequestObjectTest {
 
@@ -22,7 +23,7 @@ public class BoxCollaborationRequestObjectTest {
         String role = "testrole789";
 
         BoxCollabRequestObject entity = BoxCollabRequestObject.createCollaborationObject(folderId, userId, login, role);
-        String jsonStr = entity.getJSONEntity().toJSONString(new ObjectMapper());
+        String jsonStr = entity.getJSONEntity().toJSONString(new BoxJacksonJSONParser(new BoxResourceHub()));
         Assert.assertTrue(jsonStr.contains(ITEM_STR));
         Assert.assertTrue(jsonStr.contains(ACCESSIBLE_STR));
         Assert.assertTrue(jsonStr.contains(String.format(ROLE_STR, role)));

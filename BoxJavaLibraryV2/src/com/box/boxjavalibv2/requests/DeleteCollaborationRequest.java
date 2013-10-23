@@ -2,12 +2,12 @@ package com.box.boxjavalibv2.requests;
 
 import org.apache.http.HttpStatus;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DeleteCollaborationRequest extends DefaultBoxRequest {
 
@@ -18,8 +18,8 @@ public class DeleteCollaborationRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param collabId
      *            id of the collaboration
      * @param requestObject
@@ -27,9 +27,9 @@ public class DeleteCollaborationRequest extends DefaultBoxRequest {
      * @throws BoxRestException
      *             exception
      */
-    public DeleteCollaborationRequest(final IBoxConfig config, final ObjectMapper objectMapper, String collabId, BoxDefaultRequestObject requestObject)
+    public DeleteCollaborationRequest(final IBoxConfig config, final IBoxJSONParser parser, String collabId, BoxDefaultRequestObject requestObject)
         throws BoxRestException {
-        super(config, objectMapper, getUri(collabId), RestMethod.DELETE, requestObject);
+        super(config, parser, getUri(collabId), RestMethod.DELETE, requestObject);
         setExpectedResponseCode(HttpStatus.SC_NO_CONTENT);
     }
 

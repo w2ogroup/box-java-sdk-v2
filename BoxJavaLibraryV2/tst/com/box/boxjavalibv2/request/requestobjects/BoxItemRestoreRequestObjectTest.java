@@ -4,9 +4,10 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.requests.requestobjects.BoxItemRestoreRequestObject;
 import com.box.restclientv2.exceptions.BoxRestException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BoxItemRestoreRequestObjectTest {
 
@@ -23,14 +24,14 @@ public class BoxItemRestoreRequestObjectTest {
     public void testNameInObject() throws BoxRestException {
         String name = "testname";
         BoxItemRestoreRequestObject obj = BoxItemRestoreRequestObject.restoreItemRequestObject().setNewName(name);
-        Assert.assertEquals("{" + String.format(NAME, name) + "}", obj.getJSONEntity().toJSONString(new ObjectMapper()));
+        Assert.assertEquals("{" + String.format(NAME, name) + "}", obj.getJSONEntity().toJSONString(new BoxJacksonJSONParser(new BoxResourceHub())));
     }
 
     @Test
     public void testParentInObject() throws BoxRestException {
         String parentid = "testid";
         BoxItemRestoreRequestObject obj = BoxItemRestoreRequestObject.restoreItemRequestObject().setNewParent(parentid);
-        Assert.assertEquals("{" + String.format(PARENT, parentid) + "}", obj.getJSONEntity().toJSONString(new ObjectMapper()));
+        Assert.assertEquals("{" + String.format(PARENT, parentid) + "}", obj.getJSONEntity().toJSONString(new BoxJacksonJSONParser(new BoxResourceHub())));
     }
 
     @Test
@@ -38,7 +39,7 @@ public class BoxItemRestoreRequestObjectTest {
         String name = "testname";
         String parentid = "testid";
         BoxItemRestoreRequestObject obj = BoxItemRestoreRequestObject.restoreItemRequestObject().setNewName(name).setNewParent(parentid);
-        String json = obj.getJSONEntity().toJSONString(new ObjectMapper());
+        String json = obj.getJSONEntity().toJSONString(new BoxJacksonJSONParser(new BoxResourceHub()));
         Assert.assertTrue(json.contains(String.format(NAME, name)));
         Assert.assertTrue(json.contains(String.format(PARENT, parentid)));
     }

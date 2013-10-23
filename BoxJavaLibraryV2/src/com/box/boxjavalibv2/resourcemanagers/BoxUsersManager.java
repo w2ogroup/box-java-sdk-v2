@@ -11,6 +11,7 @@ import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.dao.BoxUser;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.requests.CreateEmailAliasRequest;
 import com.box.boxjavalibv2.requests.CreateEnterpriseUserRequest;
@@ -43,13 +44,16 @@ public final class BoxUsersManager extends BoxResourceManager {
      *            Config
      * @param resourceHub
      *            IResourceHub
+     * @param parser
+     *            json parser
      * @param auth
      *            auth for api calls
      * @param restClient
      *            REST client to make api calls.
      */
-    public BoxUsersManager(IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxRequestAuth auth, final IBoxRESTClient restClient) {
-        super(config, resourceHub, auth, restClient);
+    public BoxUsersManager(IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxJSONParser parser, final IBoxRequestAuth auth,
+        final IBoxRESTClient restClient) {
+        super(config, resourceHub, parser, auth, restClient);
     }
 
     /**
@@ -66,8 +70,8 @@ public final class BoxUsersManager extends BoxResourceManager {
      *             exception
      */
     public BoxUser getCurrentUser(BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
-        GetCurrentUserRequest request = new GetCurrentUserRequest(getConfig(), getObjectMapper(), requestObject);
-        return (BoxUser) getResponseAndParseAndTryCast(request, BoxResourceType.USER, getObjectMapper());
+        GetCurrentUserRequest request = new GetCurrentUserRequest(getConfig(), getJSONParser(), requestObject);
+        return (BoxUser) getResponseAndParseAndTryCast(request, BoxResourceType.USER, getJSONParser());
     }
 
     /**
@@ -89,8 +93,8 @@ public final class BoxUsersManager extends BoxResourceManager {
      */
     public List<BoxUser> getAllEnterpriseUser(final BoxDefaultRequestObject requestObject, final String filterTerm) throws BoxRestException,
         BoxServerException, AuthFatalFailureException {
-        GetAllUsersInEnterpriseRequest request = new GetAllUsersInEnterpriseRequest(getConfig(), getObjectMapper(), requestObject, filterTerm);
-        BoxCollection collection = (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.USERS, getObjectMapper());
+        GetAllUsersInEnterpriseRequest request = new GetAllUsersInEnterpriseRequest(getConfig(), getJSONParser(), requestObject, filterTerm);
+        BoxCollection collection = (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.USERS, getJSONParser());
         return getUsers(collection);
     }
 
@@ -114,8 +118,8 @@ public final class BoxUsersManager extends BoxResourceManager {
      */
     public BoxFolder moveFolderToAnotherUser(final String userId, final String folderId, final BoxUserRequestObject requestObject) throws BoxRestException,
         BoxServerException, AuthFatalFailureException {
-        MoveFolderToAnotherUserRequest request = new MoveFolderToAnotherUserRequest(getConfig(), getObjectMapper(), userId, folderId, requestObject);
-        return (BoxFolder) getResponseAndParseAndTryCast(request, BoxResourceType.FOLDER, getObjectMapper());
+        MoveFolderToAnotherUserRequest request = new MoveFolderToAnotherUserRequest(getConfig(), getJSONParser(), userId, folderId, requestObject);
+        return (BoxFolder) getResponseAndParseAndTryCast(request, BoxResourceType.FOLDER, getJSONParser());
     }
 
     /**
@@ -133,8 +137,8 @@ public final class BoxUsersManager extends BoxResourceManager {
      *             exception
      */
     public BoxUser createEnterpriseUser(BoxUserRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
-        CreateEnterpriseUserRequest request = new CreateEnterpriseUserRequest(getConfig(), getObjectMapper(), requestObject);
-        return (BoxUser) getResponseAndParseAndTryCast(request, BoxResourceType.USER, getObjectMapper());
+        CreateEnterpriseUserRequest request = new CreateEnterpriseUserRequest(getConfig(), getJSONParser(), requestObject);
+        return (BoxUser) getResponseAndParseAndTryCast(request, BoxResourceType.USER, getJSONParser());
     }
 
     /**
@@ -154,8 +158,8 @@ public final class BoxUsersManager extends BoxResourceManager {
      */
     public BoxUser updateUserInformaiton(final String userId, BoxUserRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        UpdateUserRequest request = new UpdateUserRequest(getConfig(), getObjectMapper(), userId, requestObject);
-        return (BoxUser) getResponseAndParseAndTryCast(request, BoxResourceType.USER, getObjectMapper());
+        UpdateUserRequest request = new UpdateUserRequest(getConfig(), getJSONParser(), userId, requestObject);
+        return (BoxUser) getResponseAndParseAndTryCast(request, BoxResourceType.USER, getJSONParser());
     }
 
     /**
@@ -175,8 +179,8 @@ public final class BoxUsersManager extends BoxResourceManager {
      */
     public List<BoxEmailAlias> getEmailAliases(final String userId, final BoxDefaultRequestObject requestObject) throws BoxServerException, BoxRestException,
         AuthFatalFailureException {
-        GetEmailAliasesRequest request = new GetEmailAliasesRequest(getConfig(), getObjectMapper(), userId, requestObject);
-        BoxCollection collection = (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.EMAIL_ALIASES, getObjectMapper());
+        GetEmailAliasesRequest request = new GetEmailAliasesRequest(getConfig(), getJSONParser(), userId, requestObject);
+        BoxCollection collection = (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.EMAIL_ALIASES, getJSONParser());
         return getEmailAliases(collection);
     }
 
@@ -198,8 +202,8 @@ public final class BoxUsersManager extends BoxResourceManager {
      */
     public BoxEmailAlias addEmailAlias(final String userId, BoxUserRequestObject requestObject) throws BoxServerException, BoxRestException,
         AuthFatalFailureException {
-        CreateEmailAliasRequest request = new CreateEmailAliasRequest(getConfig(), getObjectMapper(), userId, requestObject);
-        return (BoxEmailAlias) getResponseAndParseAndTryCast(request, BoxResourceType.EMAIL_ALIAS, getObjectMapper());
+        CreateEmailAliasRequest request = new CreateEmailAliasRequest(getConfig(), getJSONParser(), userId, requestObject);
+        return (BoxEmailAlias) getResponseAndParseAndTryCast(request, BoxResourceType.EMAIL_ALIAS, getJSONParser());
     }
 
     /**
@@ -220,7 +224,7 @@ public final class BoxUsersManager extends BoxResourceManager {
      */
     public void deleteEmailAlias(final String userId, final String emailId, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        DeleteEmailAliasRequest request = new DeleteEmailAliasRequest(getConfig(), getObjectMapper(), userId, emailId, requestObject);
+        DeleteEmailAliasRequest request = new DeleteEmailAliasRequest(getConfig(), getJSONParser(), userId, emailId, requestObject);
         executeRequestWithNoResponseBody(request);
     }
 
@@ -241,8 +245,8 @@ public final class BoxUsersManager extends BoxResourceManager {
      */
     public BoxUser updateUserPrimaryLogin(final String userId, final BoxUserRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        UpdateUserLoginRequest request = new UpdateUserLoginRequest(getConfig(), getObjectMapper(), userId, requestObject);
-        return (BoxUser) getResponseAndParseAndTryCast(request, BoxResourceType.USER, getObjectMapper());
+        UpdateUserLoginRequest request = new UpdateUserLoginRequest(getConfig(), getJSONParser(), userId, requestObject);
+        return (BoxUser) getResponseAndParseAndTryCast(request, BoxResourceType.USER, getJSONParser());
     }
 
     /**

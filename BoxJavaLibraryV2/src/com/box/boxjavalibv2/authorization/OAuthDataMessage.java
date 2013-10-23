@@ -1,9 +1,8 @@
 package com.box.boxjavalibv2.authorization;
 
 import com.box.boxjavalibv2.dao.BoxOAuthToken;
-import com.box.boxjavalibv2.utils.Utils;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.restclientv2.exceptions.BoxRestException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A message for OAuthData.
@@ -11,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class OAuthDataMessage extends StringMessage {
 
     public static final String OAUTH_DATA_MESSAGE_KEY = "oauth_data";
+
+    private IBoxJSONParser mParser;
 
     /**
      * Constructor.
@@ -20,8 +21,8 @@ public class OAuthDataMessage extends StringMessage {
      * @throws BoxRestException
      *             excetption
      */
-    public OAuthDataMessage(final BoxOAuthToken oauthData) throws BoxRestException {
-        super(OAUTH_DATA_MESSAGE_KEY, oauthData.toJSONString(new ObjectMapper()));
+    public OAuthDataMessage(final BoxOAuthToken oauthData, IBoxJSONParser parser) throws BoxRestException {
+        super(OAUTH_DATA_MESSAGE_KEY, oauthData.toJSONString(parser));
     }
 
     /**
@@ -31,6 +32,6 @@ public class OAuthDataMessage extends StringMessage {
      */
     @Override
     public BoxOAuthToken getData() {
-        return (BoxOAuthToken) Utils.parseJSONStringIntoObject((String) super.getData(), BoxOAuthToken.class);
+        return mParser.parseIntoObject((String) super.getData(), BoxOAuthToken.class);
     }
 }

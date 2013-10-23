@@ -11,17 +11,18 @@ import org.apache.http.HttpEntity;
 import com.box.boxjavalibv2.BoxConfig;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.interfaces.IBoxJSONStringEntity;
+import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class RequestTestBase {
 
     protected static final IBoxConfig CONFIG = BoxConfig.getInstance();
     protected static final String SCHEME = CONFIG.getApiUrlScheme();
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    protected static final BoxJacksonJSONParser JSON_PARSER = new BoxJacksonJSONParser(new BoxResourceHub());
 
     protected void testRequestIsWellFormed(DefaultBoxRequest request, String expectedHost, String expectedUriPath, int expectedReturnCode,
         RestMethod expectedMethod) throws BoxRestException, AuthFatalFailureException {
@@ -38,7 +39,7 @@ public class RequestTestBase {
 
     protected void assertEqualStringEntity(IBoxJSONStringEntity expected, HttpEntity current) throws IllegalStateException, BoxRestException, IOException {
 
-        Assert.assertEquals(expected.toJSONString(OBJECT_MAPPER), IOUtils.toString(current.getContent()));
+        Assert.assertEquals(expected.toJSONString(JSON_PARSER), IOUtils.toString(current.getContent()));
 
     }
 }

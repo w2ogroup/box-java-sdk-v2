@@ -28,7 +28,7 @@ public class AddEmailAliasRequestTest extends RequestTestBase {
         String userId = "testuserid";
         String email = "testeamail@box.com";
 
-        CreateEmailAliasRequest request = new CreateEmailAliasRequest(CONFIG, OBJECT_MAPPER, userId, BoxUserRequestObject.addEmailAliasRequestObject(email));
+        CreateEmailAliasRequest request = new CreateEmailAliasRequest(CONFIG, JSON_PARSER, userId, BoxUserRequestObject.addEmailAliasRequestObject(email));
 
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(CreateEmailAliasRequest.getUri(userId)), HttpStatus.SC_CREATED, RestMethod.POST);

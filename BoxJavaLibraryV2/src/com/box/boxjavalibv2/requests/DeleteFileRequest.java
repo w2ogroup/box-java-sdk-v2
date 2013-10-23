@@ -2,12 +2,12 @@ package com.box.boxjavalibv2.requests;
 
 import org.apache.http.HttpStatus;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxFileRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request to delete a file.
@@ -21,8 +21,8 @@ public class DeleteFileRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param fileId
      *            id of the file
      * @param requestObject
@@ -30,9 +30,9 @@ public class DeleteFileRequest extends DefaultBoxRequest {
      * @throws BoxRestException
      *             exception
      */
-    public DeleteFileRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String fileId, BoxFileRequestObject requestObject)
+    public DeleteFileRequest(final IBoxConfig config, final IBoxJSONParser parser, final String fileId, BoxFileRequestObject requestObject)
         throws BoxRestException {
-        super(config, objectMapper, getUri(fileId), RestMethod.DELETE, requestObject);
+        super(config, parser, getUri(fileId), RestMethod.DELETE, requestObject);
         setExpectedResponseCode(HttpStatus.SC_NO_CONTENT);
     }
 

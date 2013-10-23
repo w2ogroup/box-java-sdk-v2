@@ -8,9 +8,10 @@ import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
+import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.testutils.TestUtils;
 import com.box.restclientv2.exceptions.BoxRestException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BoxFolderTest {
 
@@ -25,7 +26,7 @@ public class BoxFolderTest {
         TestParcel parcel = new TestParcel();
         folder.writeToParcel(parcel, 0);
         BoxFolder fromParcel = new BoxFolder(parcel);
-        String uploadEmailString = fromParcel.getFolderUploadEmail().toJSONString(new ObjectMapper());
+        String uploadEmailString = fromParcel.getFolderUploadEmail().toJSONString(new BoxJacksonJSONParser(new BoxResourceHub()));
         String[] parts = uploadEmailString.split(",");
         Assert.assertEquals(2, parts.length);
         Assert.assertTrue(emailJson.contains(parts[0].replace("{", "").replace("}", "")));

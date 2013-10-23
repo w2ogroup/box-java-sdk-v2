@@ -46,7 +46,7 @@ public class CreateEnterpriseUserRequestTest extends RequestTestBase {
         codes.put(key1, value1);
         codes.put(key2, value2);
 
-        CreateEnterpriseUserRequest request = new CreateEnterpriseUserRequest(CONFIG, OBJECT_MAPPER, BoxUserRequestObject
+        CreateEnterpriseUserRequest request = new CreateEnterpriseUserRequest(CONFIG, JSON_PARSER, BoxUserRequestObject
             .createEnterpriseUserRequestObject(login, name).setRole(role).setLanguage(language).setSyncEnabled(sync).setJobTitle(title).setPhone(phone)
             .setAddress(address).setSpaceAmount(space).setTrackingCodes(codes).setCanSeeManagedUsers(seeManaged).setStatus(status)
             .setExemptFromDeviceLimits(exemptLimit).setExemptFromLoginVerification(exemptLogin));

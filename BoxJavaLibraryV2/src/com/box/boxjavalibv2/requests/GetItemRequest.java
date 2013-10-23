@@ -1,12 +1,12 @@
 package com.box.boxjavalibv2.requests;
 
 import com.box.boxjavalibv2.dao.BoxResourceType;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request to get info of a file or folder.
@@ -20,8 +20,8 @@ public class GetItemRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param id
      *            id of the item
      * @param type
@@ -31,9 +31,9 @@ public class GetItemRequest extends DefaultBoxRequest {
      * @throws BoxRestException
      *             excepition
      */
-    public GetItemRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String id, final BoxResourceType type,
+    public GetItemRequest(final IBoxConfig config, final IBoxJSONParser parser, final String id, final BoxResourceType type,
         BoxDefaultRequestObject requestObject) throws BoxRestException {
-        super(config, objectMapper, getUri(id, type), RestMethod.GET, requestObject);
+        super(config, parser, getUri(id, type), RestMethod.GET, requestObject);
     }
 
     /**

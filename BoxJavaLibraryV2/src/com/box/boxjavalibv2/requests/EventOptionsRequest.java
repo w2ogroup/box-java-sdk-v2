@@ -1,11 +1,11 @@
 package com.box.boxjavalibv2.requests;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request to get the options for the Events api. Among other things, you can use this to get the RealTime server for long polling.
@@ -19,12 +19,12 @@ public class EventOptionsRequest extends DefaultBoxRequest {
      * Constructor.
      * 
      * @param config
-     * @param objectMapper
+     * @param parser
      * @param requestObject
      * @throws BoxRestException
      */
-    public EventOptionsRequest(final IBoxConfig config, final ObjectMapper objectMapper, BoxDefaultRequestObject requestObject) throws BoxRestException {
-        super(config, objectMapper, URI, RestMethod.OPTIONS, requestObject);
+    public EventOptionsRequest(final IBoxConfig config, final IBoxJSONParser parser, BoxDefaultRequestObject requestObject) throws BoxRestException {
+        super(config, parser, URI, RestMethod.OPTIONS, requestObject);
     }
 
 }

@@ -47,10 +47,11 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
      * @return BoxFileUploadRequestObject
      * @throws BoxRestException
      */
-    public static BoxFileUploadRequestObject uploadFileRequestObject(final String parentId, final String fileName, final File file) throws BoxRestException {
+    public static BoxFileUploadRequestObject uploadFileRequestObject(final String parentId, final String fileName, final File file, final IBoxJSONParser parser)
+        throws BoxRestException {
         try {
-            BoxFileUploadRequestObject request = new BoxFileUploadRequestObject();
-            return request.setMultipartMIME(getNewFileMultipartEntity(parentId, fileName, file, request.getJSONParser()));
+            BoxFileUploadRequestObject requestObject = new BoxFileUploadRequestObject();
+            return requestObject.setMultipartMIME(getNewFileMultipartEntity(parentId, fileName, file, parser));
         }
         catch (UnsupportedEncodingException e) {
             throw new BoxRestException(e);
