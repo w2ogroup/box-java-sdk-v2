@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.box.boxjavalibv2.dao.BoxCollection;
 import com.box.boxjavalibv2.dao.BoxEvent;
+import com.box.boxjavalibv2.dao.BoxEventCollection;
 import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
@@ -55,9 +56,9 @@ public class BoxEventsManager extends BoxResourceManager {
      * @throws BoxServerException
      * @throws AuthFatalFailureException
      */
-    public BoxCollection getEvents(BoxEventRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
+    public BoxEventCollection getEvents(BoxEventRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
         GetEventsRequest request = new GetEventsRequest(getConfig(), getObjectMapper(), requestObject);
-        return (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.ITEMS, getObjectMapper());
+        return (BoxEventCollection) getResponseAndParseAndTryCast(request, BoxResourceType.EVENTS, getObjectMapper());
     }
 
     /**

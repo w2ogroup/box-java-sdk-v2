@@ -50,6 +50,10 @@ public enum BoxResourceType {
     ERROR,
     /** Event. */
     EVENT,
+    /** A plural format of {@link #EVENT}. */
+    EVENTS,
+    /** Updates */
+    UPDATES,
     /** Realtime server. */
     REALTIME_SERVER,
     /** File lock (shows up in event stream). */

@@ -87,7 +87,6 @@ public class DefaultBoxJSONResponseParser implements IBoxResponseParser {
      */
     @SuppressWarnings("unchecked")
     private Object parseInputStream(InputStream in) throws BoxRestException {
-
         JsonFactory jsonFactory = new JsonFactory();
         try {
             JsonParser jp = jsonFactory.createJsonParser(in);
