@@ -51,8 +51,8 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
     private final IAuthDataController authController;
     private final IBoxRequestAuth auth;
 
-    private IBoxResourceHub resourceHub;
-    private IBoxJSONParser jsonParser;
+    private final IBoxResourceHub resourceHub;
+    private final IBoxJSONParser jsonParser;
     private final IBoxRESTClient restClient;
 
     private final BoxFilesManager filesManager;
@@ -364,10 +364,6 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
         return BoxConfig.getInstance();
     }
 
-    public void setResourceHub(IBoxResourceHub hub) {
-        this.resourceHub = hub;
-    }
-
     /**
      * Create a resource hub
      * 
@@ -398,10 +394,6 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
 
     public IBoxJSONParser getJSONParser() {
         return this.jsonParser;
-    }
-
-    public void setJSONParser(IBoxJSONParser parser) {
-        this.jsonParser = parser;
     }
 
     /**
