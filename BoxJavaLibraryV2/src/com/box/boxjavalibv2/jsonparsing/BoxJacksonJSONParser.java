@@ -13,6 +13,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 
+/**
+ * The json parser class wrapping Jackson JSON parser. For now, if user wants to remove jackson dependency, deleting jackson libraries would cause compile error
+ * in this class, user can safely delete this class. An alternative approach is to change the implementation of this class, make all the jackson library related
+ * calls in this class reflection calls. However this is error prone if we need to update jackson. Since jackson is still the recommended way. We are not doing
+ * the reflection way yet.
+ */
 public class BoxJacksonJSONParser implements IBoxJSONParser {
 
     private final ObjectMapper mObjectMapper;
