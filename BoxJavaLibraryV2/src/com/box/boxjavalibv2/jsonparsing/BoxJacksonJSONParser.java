@@ -3,9 +3,9 @@ package com.box.boxjavalibv2.jsonparsing;
 import java.io.InputStream;
 
 import com.box.boxjavalibv2.dao.BoxResourceType;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
-import com.box.restclientv2.exceptions.BoxRestException;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -14,10 +14,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 
 /**
- * The json parser class wrapping Jackson JSON parser. For now, if user wants to remove jackson dependency, deleting jackson libraries would cause compile error
- * in this class, user can safely delete this class. An alternative approach is to change the implementation of this class, make all the jackson library related
- * calls in this class reflection calls. However this is error prone if we need to update jackson. Since jackson is still the recommended way. We are not doing
- * the reflection way yet.
+ * The json parser class wrapping Jackson JSON parser. For now, if user wants to remove jackson dependency(jackson jars), deleting jackson libraries would
+ * actually cause compile error in this class. To fix it, user can just delete this class. An alternative approach (I'm not taking yet) is to change the
+ * implementation of this class, make all the jackson library related calls in this class reflection calls. However this is error prone if we need to update
+ * jackson. Since jackson is still the recommended way. We are not doing the reflection way yet.
  */
 public class BoxJacksonJSONParser implements IBoxJSONParser {
 
@@ -38,12 +38,12 @@ public class BoxJacksonJSONParser implements IBoxJSONParser {
     }
 
     @Override
-    public String convertToString(final Object object) throws BoxRestException {
+    public String convertToString(final Object object) throws BoxJSONException {
         try {
             return getObjectMapper().writeValueAsString(object);
         }
         catch (Exception e) {
-            throw new BoxRestException(e);
+            throw new BoxJSONException();
         }
     }
 

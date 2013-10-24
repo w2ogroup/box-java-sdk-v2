@@ -4,6 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.requests.requestobjects.BoxCollabRequestObject;
@@ -16,7 +17,7 @@ public class BoxCollaborationRequestObjectTest {
     private static final String ROLE_STR = "\"role\":\"%s\"";
 
     @Test
-    public void testJSONHasAllFields() throws BoxRestException {
+    public void testJSONHasAllFields() throws BoxRestException, BoxJSONException {
         String folderId = "testfolderid123";
         String userId = "testuserid456";
         String login = "abc@box.com";

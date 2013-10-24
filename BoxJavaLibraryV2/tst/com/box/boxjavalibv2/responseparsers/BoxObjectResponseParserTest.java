@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.box.boxjavalibv2.dao.BoxFile;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -38,7 +39,7 @@ public class BoxObjectResponseParserTest {
     }
 
     @Test
-    public void testCanParseBoxObject() throws IllegalStateException, IOException, BoxRestException {
+    public void testCanParseBoxObject() throws IllegalStateException, IOException, BoxRestException, BoxJSONException {
         BoxResourceHub hub = new BoxResourceHub();
         EasyMock.reset(boxResponse, response, entity);
         inputStream = new ByteArrayInputStream(file.toJSONString(new BoxJacksonJSONParser(hub)).getBytes());

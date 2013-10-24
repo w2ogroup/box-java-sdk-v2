@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.box.boxjavalibv2.BoxConfig;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.requests.requestobjects.BoxFileUploadRequestObject;
 import com.box.boxjavalibv2.testutils.TestUtils;
 import com.box.restclientv2.RestMethod;
@@ -36,9 +37,10 @@ public class UploadFileRequestTest extends RequestTestBase {
      * @throws BoxRestException
      *             exception
      * @throws AuthFatalFailureException
+     * @throws BoxJSONException
      */
     @Test
-    public void testRequstIsWellFormed() throws IOException, BoxRestException, AuthFatalFailureException {
+    public void testRequstIsWellFormed() throws IOException, BoxRestException, AuthFatalFailureException, BoxJSONException {
         String parentId = "testid123";
         String content = "testcontent456";
         File f = null;

@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.box.boxjavalibv2.BoxConfig;
 import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.requests.requestobjects.BoxFileRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -24,16 +25,17 @@ public class CopyItemRequestTest extends RequestTestBase {
     }
 
     @Test
-    public void testFolderRequestWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
+    public void testFolderRequestWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException, BoxJSONException {
         testRequestIsWellFormed(BoxResourceType.FOLDER);
     }
 
     @Test
-    public void testFileRequestWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
+    public void testFileRequestWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException, BoxJSONException {
         testRequestIsWellFormed(BoxResourceType.FILE);
     }
 
-    private void testRequestIsWellFormed(BoxResourceType type) throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
+    private void testRequestIsWellFormed(BoxResourceType type) throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException,
+        BoxJSONException {
         String id = "testid123";
         String parentId = "testparentid456";
         String newName = "testnewname789";

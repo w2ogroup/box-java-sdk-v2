@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.box.boxjavalibv2.BoxConfig;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.jsonentities.MapJSONStringEntity;
 import com.box.boxjavalibv2.requests.requestobjects.BoxUserRequestObject;
 import com.box.restclientv2.RestMethod;
@@ -24,7 +25,7 @@ public class AddEmailAliasRequestTest extends RequestTestBase {
     }
 
     @Test
-    public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
+    public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException, BoxJSONException {
         String userId = "testuserid";
         String email = "testeamail@box.com";
 

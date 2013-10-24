@@ -4,6 +4,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.requests.requestobjects.BoxItemRestoreRequestObject;
@@ -21,21 +22,21 @@ public class BoxItemRestoreRequestObjectTest {
     }
 
     @Test
-    public void testNameInObject() throws BoxRestException {
+    public void testNameInObject() throws BoxRestException, BoxJSONException {
         String name = "testname";
         BoxItemRestoreRequestObject obj = BoxItemRestoreRequestObject.restoreItemRequestObject().setNewName(name);
         Assert.assertEquals("{" + String.format(NAME, name) + "}", obj.getJSONEntity().toJSONString(new BoxJacksonJSONParser(new BoxResourceHub())));
     }
 
     @Test
-    public void testParentInObject() throws BoxRestException {
+    public void testParentInObject() throws BoxRestException, BoxJSONException {
         String parentid = "testid";
         BoxItemRestoreRequestObject obj = BoxItemRestoreRequestObject.restoreItemRequestObject().setNewParent(parentid);
         Assert.assertEquals("{" + String.format(PARENT, parentid) + "}", obj.getJSONEntity().toJSONString(new BoxJacksonJSONParser(new BoxResourceHub())));
     }
 
     @Test
-    public void testBothParentAndNameInObject() throws BoxRestException {
+    public void testBothParentAndNameInObject() throws BoxRestException, BoxJSONException {
         String name = "testname";
         String parentid = "testid";
         BoxItemRestoreRequestObject obj = BoxItemRestoreRequestObject.restoreItemRequestObject().setNewName(name).setNewParent(parentid);

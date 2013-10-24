@@ -10,6 +10,7 @@ import org.apache.http.HttpEntity;
 
 import com.box.boxjavalibv2.BoxConfig;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.interfaces.IBoxJSONStringEntity;
 import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
@@ -37,7 +38,8 @@ public class RequestTestBase {
         Assert.assertEquals(expectedUriPath, uri.getPath());
     }
 
-    protected void assertEqualStringEntity(IBoxJSONStringEntity expected, HttpEntity current) throws IllegalStateException, BoxRestException, IOException {
+    protected void assertEqualStringEntity(IBoxJSONStringEntity expected, HttpEntity current) throws IllegalStateException, BoxRestException, IOException,
+        BoxJSONException {
 
         Assert.assertEquals(expected.toJSONString(JSON_PARSER), IOUtils.toString(current.getContent()));
 

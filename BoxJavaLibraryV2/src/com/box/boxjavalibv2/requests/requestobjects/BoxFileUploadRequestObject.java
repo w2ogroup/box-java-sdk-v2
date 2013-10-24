@@ -13,6 +13,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.httpentities.MultipartEntityWithProgressListener;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IFileTransferListener;
@@ -46,9 +47,10 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
      *            file to be uploaded
      * @return BoxFileUploadRequestObject
      * @throws BoxRestException
+     * @throws BoxJSONException
      */
     public static BoxFileUploadRequestObject uploadFileRequestObject(final String parentId, final String fileName, final File file, final IBoxJSONParser parser)
-        throws BoxRestException {
+        throws BoxRestException, BoxJSONException {
         try {
             BoxFileUploadRequestObject requestObject = new BoxFileUploadRequestObject();
             return requestObject.setMultipartMIME(getNewFileMultipartEntity(parentId, fileName, file, parser));
@@ -209,7 +211,7 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
     }
 
     private static MultipartEntityWithProgressListener getNewFileMultipartEntity(final String parentId, final String name, final File file,
-        IBoxJSONParser parser) throws BoxRestException, UnsupportedEncodingException {
+        IBoxJSONParser parser) throws BoxRestException, UnsupportedEncodingException, BoxJSONException {
         MultipartEntityWithProgressListener me = new MultipartEntityWithProgressListener(HttpMultipartMode.BROWSER_COMPATIBLE);
         me.addPart(Constants.FOLDER_ID, new StringBody(parentId));
         me.addPart(KEY_FILE_NAME, new FileBody(file, KEY_FILE_NAME, "", CharEncoding.UTF_8));
@@ -225,7 +227,8 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
         return me;
     }
 
-    private static StringBody getMetadataBody(String parentId, String name, IBoxJSONParser parser) throws UnsupportedEncodingException, BoxRestException {
+    private static StringBody getMetadataBody(String parentId, String name, IBoxJSONParser parser) throws UnsupportedEncodingException, BoxRestException,
+        BoxJSONException {
         MapJSONStringEntity parentEntity = new MapJSONStringEntity();
         parentEntity.put(Constants.ID, parentId);
 

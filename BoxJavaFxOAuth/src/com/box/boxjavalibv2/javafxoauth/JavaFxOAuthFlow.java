@@ -24,7 +24,6 @@ import com.box.boxjavalibv2.events.OAuthEvent;
 import com.box.boxjavalibv2.interfaces.IAuthFlowListener;
 import com.box.boxjavalibv2.interfaces.IAuthFlowUI;
 import com.box.boxjavalibv2.requests.requestobjects.BoxOAuthRequestObject;
-import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.httpclientsupport.HttpClientURIBuilder;
 
 /**
@@ -111,7 +110,7 @@ public class JavaFxOAuthFlow implements IAuthFlowUI {
                 try {
                     oauthListener.onAuthFlowEvent(OAuthEvent.OAUTH_CREATED, new OAuthDataMessage(token, client.getJSONParser()));
                 }
-                catch (BoxRestException e) {
+                catch (Exception e) {
                     oauthListener.onAuthFlowException(e);
                 }
                 Platform.exit();

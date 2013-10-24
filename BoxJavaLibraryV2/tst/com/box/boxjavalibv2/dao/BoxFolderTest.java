@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.testutils.TestUtils;
@@ -16,7 +17,7 @@ import com.box.restclientv2.exceptions.BoxRestException;
 public class BoxFolderTest {
 
     @Test
-    public void testParcelRoundTrip() throws BoxRestException, IOException {
+    public void testParcelRoundTrip() throws BoxRestException, IOException, BoxJSONException {
         String emailJson = FileUtils.readFileToString(new File("testdata/email.json"));
 
         String folderJson = FileUtils.readFileToString(new File("testdata/folder.json"));

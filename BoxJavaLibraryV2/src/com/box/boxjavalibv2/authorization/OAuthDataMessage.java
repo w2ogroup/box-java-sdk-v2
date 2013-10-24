@@ -1,6 +1,7 @@
 package com.box.boxjavalibv2.authorization;
 
 import com.box.boxjavalibv2.dao.BoxOAuthToken;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.restclientv2.exceptions.BoxRestException;
 
@@ -20,8 +21,9 @@ public class OAuthDataMessage extends StringMessage {
      *            OAuthData
      * @throws BoxRestException
      *             excetption
+     * @throws BoxJSONException
      */
-    public OAuthDataMessage(final BoxOAuthToken oauthData, IBoxJSONParser parser) throws BoxRestException {
+    public OAuthDataMessage(final BoxOAuthToken oauthData, IBoxJSONParser parser) throws BoxRestException, BoxJSONException {
         super(OAUTH_DATA_MESSAGE_KEY, oauthData.toJSONString(parser));
     }
 

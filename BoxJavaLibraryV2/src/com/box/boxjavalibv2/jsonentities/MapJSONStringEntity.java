@@ -2,9 +2,9 @@ package com.box.boxjavalibv2.jsonentities;
 
 import java.util.LinkedHashMap;
 
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxJSONStringEntity;
-import com.box.restclientv2.exceptions.BoxRestException;
 
 /**
  * Implemenation of {@link IBoxJSONStringEntity} based on LinkedHashMap.
@@ -14,7 +14,7 @@ public class MapJSONStringEntity extends LinkedHashMap<String, Object> implement
     private static final long serialVersionUID = 1L;
 
     @Override
-    public String toJSONString(IBoxJSONParser parser) throws BoxRestException {
+    public String toJSONString(IBoxJSONParser parser) throws BoxJSONException {
         return parser.convertToString(this);
     }
 

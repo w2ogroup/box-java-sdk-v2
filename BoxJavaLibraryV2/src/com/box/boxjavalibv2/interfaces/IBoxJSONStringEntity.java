@@ -1,6 +1,6 @@
 package com.box.boxjavalibv2.interfaces;
 
-import com.box.restclientv2.exceptions.BoxRestException;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 
 /**
  * Interface for classes that can be converted to JSON Strings.
@@ -13,8 +13,7 @@ public interface IBoxJSONStringEntity {
      * @param parser
      *            json parser
      * @return JSON String
-     * @throws BoxRestException
-     *             exception
+     * @throws BoxJSONException
      */
-    String toJSONString(IBoxJSONParser parser) throws BoxRestException;
+    String toJSONString(IBoxJSONParser parser) throws BoxJSONException;
 }

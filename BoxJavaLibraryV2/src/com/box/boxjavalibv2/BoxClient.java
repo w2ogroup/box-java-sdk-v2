@@ -55,14 +55,14 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
     private IBoxJSONParser jsonParser;
     private final IBoxRESTClient restClient;
 
-    private BoxFilesManager filesManager;
-    private BoxFoldersManager foldersManager;
-    private BoxSearchManager searchManager;
-    private BoxEventsManager eventsManager;
-    private BoxCollaborationsManager collaborationsManager;
-    private BoxCommentsManager commentsManager;
-    private BoxUsersManager usersManager;
-    private BoxOAuthManager oauthManager;
+    private final BoxFilesManager filesManager;
+    private final BoxFoldersManager foldersManager;
+    private final BoxSearchManager searchManager;
+    private final BoxEventsManager eventsManager;
+    private final BoxCollaborationsManager collaborationsManager;
+    private final BoxCommentsManager commentsManager;
+    private final BoxUsersManager usersManager;
+    private final BoxOAuthManager oauthManager;
     private IAuthFlowListener mAuthListener;
 
     /**
@@ -81,6 +81,15 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
         restClient = createRestClient();
         authController = createAuthDataController(clientId, clientSecret);
         auth = createAuthorization(authController);
+
+        filesManager = new BoxFilesManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        foldersManager = new BoxFoldersManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        searchManager = new BoxSearchManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        eventsManager = new BoxEventsManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        collaborationsManager = new BoxCollaborationsManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        commentsManager = new BoxCommentsManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        usersManager = new BoxUsersManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        oauthManager = new BoxOAuthManager(getConfig(), getResourceHub(), getJSONParser(), getRestClient());
     }
 
     @Deprecated
@@ -171,9 +180,6 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return the filesManager
      */
     public BoxFilesManager getFilesManager() {
-        if (filesManager == null) {
-            filesManager = new BoxFilesManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
-        }
         return filesManager;
     }
 
@@ -183,9 +189,6 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return
      */
     public BoxOAuthManager getOAuthManager() {
-        if (oauthManager == null) {
-            oauthManager = new BoxOAuthManager(getConfig(), getResourceHub(), getJSONParser(), getRestClient());
-        }
         return oauthManager;
     }
 
@@ -267,9 +270,6 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      *         you are trying to make api calls on a shared folder (folder shared to you via shared link), please use getSharedFoldersManager().
      */
     public BoxFoldersManager getFoldersManager() {
-        if (foldersManager == null) {
-            foldersManager = new BoxFoldersManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
-        }
         return foldersManager;
     }
 
@@ -277,9 +277,6 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return BoxSearchManager through which searches can be performed.
      */
     public BoxSearchManager getSearchManager() {
-        if (searchManager == null) {
-            searchManager = new BoxSearchManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
-        }
         return searchManager;
     }
 
@@ -288,9 +285,6 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return BoxEventsManager through which the Box Events API can be queried.
      */
     public BoxEventsManager getEventsManager() {
-        if (eventsManager == null) {
-            eventsManager = new BoxEventsManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
-        }
         return eventsManager;
     }
 
@@ -298,9 +292,6 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return the collaborationsManager
      */
     public BoxCollaborationsManager getCollaborationsManager() {
-        if (collaborationsManager == null) {
-            collaborationsManager = new BoxCollaborationsManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
-        }
         return collaborationsManager;
     }
 
@@ -308,9 +299,6 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return the commentsManager
      */
     public BoxCommentsManager getCommentsManager() {
-        if (commentsManager == null) {
-            commentsManager = new BoxCommentsManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
-        }
         return commentsManager;
     }
 
@@ -318,9 +306,6 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return the usersManager
      */
     public BoxUsersManager getUsersManager() {
-        if (usersManager == null) {
-            usersManager = new BoxUsersManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
-        }
         return usersManager;
     }
 
