@@ -23,7 +23,7 @@ public class DeleteCollaborationRequestTest extends RequestTestBase {
     public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
         String collabId = "testcollabid123";
 
-        DeleteCollaborationRequest request = new DeleteCollaborationRequest(CONFIG, OBJECT_MAPPER, collabId, null);
+        DeleteCollaborationRequest request = new DeleteCollaborationRequest(CONFIG, JSON_PARSER, collabId, null);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(DeleteCollaborationRequest.getUri(collabId)), HttpStatus.SC_NO_CONTENT, RestMethod.DELETE);
     }

@@ -21,7 +21,7 @@ public class DeleteCommentRequestTest extends RequestTestBase {
     public void testRequestIsWellFormed() throws BoxRestException, AuthFatalFailureException {
         String id = "testid123";
 
-        DeleteCommentRequest request = new DeleteCommentRequest(CONFIG, OBJECT_MAPPER, id, null);
+        DeleteCommentRequest request = new DeleteCommentRequest(CONFIG, JSON_PARSER, id, null);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(DeleteCommentRequest.getUri(id)), HttpStatus.SC_NO_CONTENT, RestMethod.DELETE);
 

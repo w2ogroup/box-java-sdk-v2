@@ -2,7 +2,6 @@ package com.box.restclientv2.responseparsers;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.HashMap;
 
 import junit.framework.Assert;
 
@@ -14,11 +13,13 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.box.boxjavalibv2.jacksonparser.BoxResourceHub;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.restclientv2.responses.DefaultBoxResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DefaultBoxJSONResponseParserTest {
+
     private TestObject testObject;
     private final String fieldA = "fa";
     private final String fieldB = "fb";
@@ -36,7 +37,6 @@ public class DefaultBoxJSONResponseParserTest {
         entity = EasyMock.createMock(StringEntity.class);
     }
 
-    
     @Test
     public void testParse() {
         try {
@@ -46,7 +46,7 @@ public class DefaultBoxJSONResponseParserTest {
             EasyMock.expect(response.getEntity()).andReturn(entity);
             EasyMock.expect(entity.getContent()).andReturn(inputStream);
             EasyMock.replay(boxResponse, response, entity);
-            DefaultBoxJSONResponseParser parser = new DefaultBoxJSONResponseParser(TestObject.class, (new BoxResourceHub()).getObjectMapper());
+            DefaultBoxJSONResponseParser parser = new DefaultBoxJSONResponseParser(TestObject.class, new BoxJSONParser(new BoxResourceHub()));
             Object object = parser.parse(boxResponse);
             Assert.assertEquals(TestObject.class, object.getClass());
             TestObject tObject = (TestObject) object;
@@ -62,6 +62,7 @@ public class DefaultBoxJSONResponseParserTest {
 
         private String fieldA;
         private String fieldB;
+
         TestObject() {
         }
 
@@ -72,7 +73,7 @@ public class DefaultBoxJSONResponseParserTest {
 
         @JsonProperty("fieldA")
         String getFieldAWithAnnotation() {
-           return fieldA;
+            return fieldA;
         }
 
         @JsonProperty("fieldA")

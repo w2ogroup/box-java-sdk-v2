@@ -1,7 +1,7 @@
 package com.box.boxjavalibv2.responseparsers;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.restclientv2.responseparsers.DefaultBoxJSONResponseParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Parser to parse {@link com.box.restclientv2.responses.DefaultBoxResponse} into Box DAO objects. It analyse the response JSON String and uses <a
@@ -19,7 +19,7 @@ public class BoxObjectResponseParser extends DefaultBoxJSONResponseParser {
      * @param cls
      *            Object class.
      */
-    public BoxObjectResponseParser(Class cls, ObjectMapper objectMapper) {
-        super(cls, objectMapper);
+    public BoxObjectResponseParser(Class cls, IBoxJSONParser parser) {
+        super(cls, parser);
     }
 }

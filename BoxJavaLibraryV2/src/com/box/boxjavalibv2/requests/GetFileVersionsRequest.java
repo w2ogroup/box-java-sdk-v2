@@ -1,11 +1,11 @@
 package com.box.boxjavalibv2.requests;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request to get a file version.
@@ -19,8 +19,8 @@ public class GetFileVersionsRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param fileId
      *            id of the file
      * @param requestObject
@@ -28,9 +28,9 @@ public class GetFileVersionsRequest extends DefaultBoxRequest {
      * @throws BoxRestException
      *             exception
      */
-    public GetFileVersionsRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String fileId, BoxDefaultRequestObject requestObject)
+    public GetFileVersionsRequest(final IBoxConfig config, final IBoxJSONParser parser, final String fileId, BoxDefaultRequestObject requestObject)
         throws BoxRestException {
-        super(config, objectMapper, getUri(fileId), RestMethod.GET, requestObject);
+        super(config, parser, getUri(fileId), RestMethod.GET, requestObject);
     }
 
     /**

@@ -3,13 +3,12 @@ package com.box.boxjavalibv2.requests;
 import java.io.UnsupportedEncodingException;
 
 import com.box.boxjavalibv2.dao.BoxResourceType;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
-import com.box.boxjavalibv2.utils.Utils;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request to update info of a file or folder.
@@ -23,8 +22,8 @@ public class UpdateItemInfoRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param id
      *            id of the item
      * @param requestObject
@@ -34,9 +33,9 @@ public class UpdateItemInfoRequest extends DefaultBoxRequest {
      * @throws BoxRestException
      * @throws UnsupportedEncodingException
      */
-    public UpdateItemInfoRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String fileFolderId,
-        final BoxDefaultRequestObject requestObject, final BoxResourceType type) throws BoxRestException, UnsupportedEncodingException {
-        super(config, objectMapper, getUri(fileFolderId, type), RestMethod.PUT, requestObject);
+    public UpdateItemInfoRequest(final IBoxConfig config, final IBoxJSONParser parser, final String fileFolderId, final BoxDefaultRequestObject requestObject,
+        final BoxResourceType type) throws BoxRestException, UnsupportedEncodingException {
+        super(config, parser, getUri(fileFolderId, type), RestMethod.PUT, requestObject);
     }
 
     /**

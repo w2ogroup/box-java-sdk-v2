@@ -6,6 +6,7 @@ import com.box.boxjavalibv2.dao.BoxItem;
 import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.requests.CopyItemRequest;
 import com.box.boxjavalibv2.requests.CreateSharedLinkRequest;
@@ -38,13 +39,16 @@ public class BoxItemsManager extends BoxResourceManager {
      *            BoxConfig
      * @param resourceHub
      *            IResourceHub
+     * @param parser
+     *            json parser
      * @param auth
      *            auth for api calls
      * @param restClient
      *            REST client to make api calls.
      */
-    public BoxItemsManager(IBoxConfig config, IBoxResourceHub resourceHub, final IBoxRequestAuth auth, final IBoxRESTClient restClient) {
-        super(config, resourceHub, auth, restClient);
+    public BoxItemsManager(IBoxConfig config, IBoxResourceHub resourceHub, final IBoxJSONParser parser, final IBoxRequestAuth auth,
+        final IBoxRESTClient restClient) {
+        super(config, resourceHub, parser, auth, restClient);
     }
 
     /**
@@ -66,8 +70,8 @@ public class BoxItemsManager extends BoxResourceManager {
      */
     public BoxItem getItem(final String id, BoxDefaultRequestObject requestObject, final BoxResourceType type) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        GetItemRequest request = new GetItemRequest(getConfig(), getObjectMapper(), id, type, requestObject);
-        Object result = getResponseAndParse(request, type, getObjectMapper());
+        GetItemRequest request = new GetItemRequest(getConfig(), getJSONParser(), id, type, requestObject);
+        Object result = getResponseAndParse(request, type, getJSONParser());
         return (BoxItem) tryCastBoxItem(type, result);
     }
 
@@ -90,8 +94,8 @@ public class BoxItemsManager extends BoxResourceManager {
      */
     public BoxItem getTrashItem(final String itemId, final BoxResourceType type, final BoxDefaultRequestObject requestObject) throws BoxRestException,
         AuthFatalFailureException, BoxServerException {
-        GetTrashItemRequest request = new GetTrashItemRequest(getConfig(), getObjectMapper(), itemId, type, requestObject);
-        Object result = getResponseAndParse(request, type, getObjectMapper());
+        GetTrashItemRequest request = new GetTrashItemRequest(getConfig(), getJSONParser(), itemId, type, requestObject);
+        Object result = getResponseAndParse(request, type, getJSONParser());
         return (BoxItem) tryCastBoxItem(type, result);
     }
 
@@ -114,8 +118,8 @@ public class BoxItemsManager extends BoxResourceManager {
      */
     public BoxItem copyItem(final String id, BoxItemRequestObject requestObject, final BoxResourceType type) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        CopyItemRequest request = new CopyItemRequest(getConfig(), getObjectMapper(), id, requestObject, type);
-        return (BoxItem) getResponseAndParseAndTryCast(request, type, getObjectMapper());
+        CopyItemRequest request = new CopyItemRequest(getConfig(), getJSONParser(), id, requestObject, type);
+        return (BoxItem) getResponseAndParseAndTryCast(request, type, getJSONParser());
     }
 
     /**
@@ -139,8 +143,8 @@ public class BoxItemsManager extends BoxResourceManager {
      */
     public BoxItem updateItemInfo(final String id, BoxItemRequestObject requestObject, final BoxResourceType type) throws UnsupportedEncodingException,
         BoxRestException, BoxServerException, AuthFatalFailureException {
-        UpdateItemInfoRequest request = new UpdateItemInfoRequest(getConfig(), getObjectMapper(), id, requestObject, type);
-        return (BoxItem) getResponseAndParseAndTryCast(request, type, getObjectMapper());
+        UpdateItemInfoRequest request = new UpdateItemInfoRequest(getConfig(), getJSONParser(), id, requestObject, type);
+        return (BoxItem) getResponseAndParseAndTryCast(request, type, getJSONParser());
     }
 
     /**
@@ -164,9 +168,9 @@ public class BoxItemsManager extends BoxResourceManager {
      */
     public BoxItem createSharedLink(final String id, BoxItemRequestObject requestObject, final BoxResourceType type) throws BoxRestException,
         BoxServerException, AuthFatalFailureException {
-        CreateSharedLinkRequest request = new CreateSharedLinkRequest(getConfig(), getObjectMapper(), id, requestObject, type);
+        CreateSharedLinkRequest request = new CreateSharedLinkRequest(getConfig(), getJSONParser(), id, requestObject, type);
 
-        return (BoxItem) getResponseAndParseAndTryCast(request, type, getObjectMapper());
+        return (BoxItem) getResponseAndParseAndTryCast(request, type, getJSONParser());
     }
 
     /**
@@ -184,7 +188,7 @@ public class BoxItemsManager extends BoxResourceManager {
      */
     public void deleteTrashItem(final String id, final BoxResourceType type, final BoxFileRequestObject requestObject) throws BoxRestException,
         BoxServerException, AuthFatalFailureException {
-        DeleteTrashItemRequest request = new DeleteTrashItemRequest(getConfig(), getObjectMapper(), id, type, requestObject);
+        DeleteTrashItemRequest request = new DeleteTrashItemRequest(getConfig(), getJSONParser(), id, type, requestObject);
         executeRequestWithNoResponseBody(request);
     }
 
@@ -203,7 +207,7 @@ public class BoxItemsManager extends BoxResourceManager {
      */
     public BoxItem restoreTrashItem(final String id, final BoxResourceType type, final BoxItemRestoreRequestObject requestObject) throws BoxRestException,
         AuthFatalFailureException, BoxServerException {
-        RestoreTrashItemRequest request = new RestoreTrashItemRequest(getConfig(), getObjectMapper(), id, type, requestObject);
-        return (BoxItem) getResponseAndParseAndTryCast(request, type, getObjectMapper());
+        RestoreTrashItemRequest request = new RestoreTrashItemRequest(getConfig(), getJSONParser(), id, type, requestObject);
+        return (BoxItem) getResponseAndParseAndTryCast(request, type, getJSONParser());
     }
 }

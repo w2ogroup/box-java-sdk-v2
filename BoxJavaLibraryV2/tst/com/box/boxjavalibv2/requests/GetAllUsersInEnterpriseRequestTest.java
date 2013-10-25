@@ -25,7 +25,7 @@ public class GetAllUsersInEnterpriseRequestTest extends RequestTestBase {
         int limit = 100;
         int offset = 200;
         String filterTerm = "testfilterterm";
-        GetAllUsersInEnterpriseRequest request = new GetAllUsersInEnterpriseRequest(CONFIG, OBJECT_MAPPER, (new BoxDefaultRequestObject()).setPage(limit,
+        GetAllUsersInEnterpriseRequest request = new GetAllUsersInEnterpriseRequest(CONFIG, JSON_PARSER, (new BoxDefaultRequestObject()).setPage(limit,
             offset), filterTerm);
 
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
@@ -37,7 +37,7 @@ public class GetAllUsersInEnterpriseRequestTest extends RequestTestBase {
 
     @Test
     public void testRequestDoesNotHaveFilterTermIfNotSupplied() throws BoxRestException {
-        GetAllUsersInEnterpriseRequest request = new GetAllUsersInEnterpriseRequest(CONFIG, OBJECT_MAPPER, (new BoxDefaultRequestObject()).setPage(1, 2), null);
+        GetAllUsersInEnterpriseRequest request = new GetAllUsersInEnterpriseRequest(CONFIG, JSON_PARSER, (new BoxDefaultRequestObject()).setPage(1, 2), null);
         Assert.assertFalse(request.getQueryParams().containsKey("filter_term"));
 
     }

@@ -31,7 +31,7 @@ public class GetPreviewRequestTest extends RequestTestBase {
         int maxHeight = 5;
 
         BoxImageRequestObject requestObject = BoxImageRequestObject.pagePreviewRequestObject(page, minWidth, maxWidth, minHeight, maxHeight);
-        PreviewRequest request = new PreviewRequest(CONFIG, OBJECT_MAPPER, id, extension, requestObject);
+        PreviewRequest request = new PreviewRequest(CONFIG, JSON_PARSER, id, extension, requestObject);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(PreviewRequest.getUri(id, extension)), HttpStatus.SC_OK, RestMethod.GET);
 

@@ -2,12 +2,12 @@ package com.box.boxjavalibv2.requests;
 
 import org.apache.http.HttpStatus;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxFileUploadRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request to upload a new version of a file.
@@ -21,8 +21,8 @@ public class UploadNewVersionFileRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param fileId
      *            id of the file to be updated
      * @param BoxFileUploadRequestObject
@@ -30,9 +30,9 @@ public class UploadNewVersionFileRequest extends DefaultBoxRequest {
      * @throws BoxRestException
      *             exception
      */
-    public UploadNewVersionFileRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String fileId, BoxFileUploadRequestObject requestObject)
+    public UploadNewVersionFileRequest(final IBoxConfig config, final IBoxJSONParser parser, final String fileId, BoxFileUploadRequestObject requestObject)
         throws BoxRestException {
-        super(config, objectMapper, getUri(fileId), RestMethod.POST, requestObject);
+        super(config, parser, getUri(fileId), RestMethod.POST, requestObject);
         this.setExpectedResponseCode(HttpStatus.SC_CREATED);
     }
 

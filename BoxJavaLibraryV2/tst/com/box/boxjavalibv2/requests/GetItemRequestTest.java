@@ -31,7 +31,7 @@ public class GetItemRequestTest extends RequestTestBase {
     public void testRequestIsWellFormed(BoxResourceType type) throws BoxRestException, AuthFatalFailureException {
         String id = "testid123";
 
-        GetItemRequest request = new GetItemRequest(CONFIG, OBJECT_MAPPER, id, type, null);
+        GetItemRequest request = new GetItemRequest(CONFIG, JSON_PARSER, id, type, null);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(GetItemRequest.getUri(id, type)), HttpStatus.SC_OK, RestMethod.GET);
 

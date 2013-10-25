@@ -4,24 +4,20 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.box.restclientv2.exceptions.BoxRestException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 
 public class MapJSONStringEntityTest {
 
     @Test
-    public void testJson() {
+    public void testJson() throws BoxJSONException {
         String json = "{\"%s\":\"%s\"}";
         String name = "testname";
         String value = "testvalue";
         MapJSONStringEntity entity = new MapJSONStringEntity();
 
         entity.put(name, value);
-        try {
-            Assert.assertEquals(String.format(json, name, value), entity.toJSONString(new ObjectMapper()));
-        }
-        catch (BoxRestException e) {
-            Assert.fail();
-        }
+        Assert.assertEquals(String.format(json, name, value), entity.toJSONString(new BoxJSONParser(new BoxResourceHub())));
     }
 }

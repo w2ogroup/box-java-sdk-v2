@@ -25,7 +25,7 @@ public class DeleteFileRequestTest extends RequestTestBase {
         String id = "testid123";
         String sha1 = "testsha1456";
 
-        DeleteFileRequest request = new DeleteFileRequest(CONFIG, OBJECT_MAPPER, id, (BoxFileRequestObject) BoxFileRequestObject.deleteFileRequestObject()
+        DeleteFileRequest request = new DeleteFileRequest(CONFIG, JSON_PARSER, id, (BoxFileRequestObject) BoxFileRequestObject.deleteFileRequestObject()
             .setIfMatch(sha1));
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(DeleteFileRequest.getUri(id)), HttpStatus.SC_NO_CONTENT, RestMethod.DELETE);

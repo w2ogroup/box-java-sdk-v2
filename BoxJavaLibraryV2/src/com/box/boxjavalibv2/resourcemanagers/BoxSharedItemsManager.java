@@ -4,6 +4,7 @@ import com.box.boxjavalibv2.dao.BoxItem;
 import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.requests.GetSharedItemRequest;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
@@ -21,13 +22,16 @@ public class BoxSharedItemsManager extends BoxResourceManager {
      *            config
      * @param resourceHub
      *            IResourceHub
+     * @param parser
+     *            json parser
      * @param auth
      *            auth for api calls
      * @param restClient
      *            REST client to make api calls.
      */
-    public BoxSharedItemsManager(IBoxConfig config, IBoxResourceHub resourceHub, final IBoxRequestAuth auth, final IBoxRESTClient restClient) {
-        super(config, resourceHub, auth, restClient);
+    public BoxSharedItemsManager(IBoxConfig config, IBoxResourceHub resourceHub, final IBoxJSONParser parser, final IBoxRequestAuth auth,
+        final IBoxRESTClient restClient) {
+        super(config, resourceHub, parser, auth, restClient);
     }
 
     /**
@@ -46,7 +50,7 @@ public class BoxSharedItemsManager extends BoxResourceManager {
      *             exception indicating authentication totally failed
      */
     public BoxItem getSharedItem(final BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException, AuthFatalFailureException {
-        GetSharedItemRequest request = new GetSharedItemRequest(getConfig(), getObjectMapper(), requestObject);
-        return (BoxItem) getResponseAndParseAndTryCast(request, BoxResourceType.ITEM, getObjectMapper());
+        GetSharedItemRequest request = new GetSharedItemRequest(getConfig(), getJSONParser(), requestObject);
+        return (BoxItem) getResponseAndParseAndTryCast(request, BoxResourceType.ITEM, getJSONParser());
     }
 }

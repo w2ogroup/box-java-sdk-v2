@@ -3,12 +3,12 @@ package com.box.boxjavalibv2.requests;
 import org.apache.http.HttpStatus;
 
 import com.box.boxjavalibv2.dao.BoxResourceType;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxItemRestoreRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class RestoreTrashItemRequest extends DefaultBoxRequest {
 
@@ -19,8 +19,8 @@ public class RestoreTrashItemRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param id
      *            id of the item
      * @param type
@@ -29,9 +29,9 @@ public class RestoreTrashItemRequest extends DefaultBoxRequest {
      *            request object
      * @throws BoxRestException
      */
-    public RestoreTrashItemRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String id, final BoxResourceType type,
+    public RestoreTrashItemRequest(final IBoxConfig config, final IBoxJSONParser parser, final String id, final BoxResourceType type,
         final BoxItemRestoreRequestObject requestObject) throws BoxRestException {
-        super(config, objectMapper, getUri(id, type), RestMethod.POST, requestObject);
+        super(config, parser, getUri(id, type), RestMethod.POST, requestObject);
         this.setExpectedResponseCode(HttpStatus.SC_CREATED);
     }
 

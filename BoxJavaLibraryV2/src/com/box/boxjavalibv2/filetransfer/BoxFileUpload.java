@@ -52,9 +52,9 @@ public class BoxFileUpload {
      */
     public BoxFile execute(BoxFilesManager manager, BoxFileUploadRequestObject requestObject) throws BoxServerException, BoxRestException,
         AuthFatalFailureException, InterruptedException {
-        UploadFileRequest request = new UploadFileRequest(mConfig, manager.getObjectMapper(), requestObject);
+        UploadFileRequest request = new UploadFileRequest(mConfig, manager.getJSONParser(), requestObject);
         try {
-            Object result = manager.getResponseAndParse(request, BoxResourceType.FILES, manager.getObjectMapper());
+            Object result = manager.getResponseAndParse(request, BoxResourceType.FILES, manager.getJSONParser());
             BoxCollection collection = (BoxCollection) manager.tryCastObject(BoxResourceType.FILES, result);
             return BoxFilesManager.getFiles(collection).get(0);
         }
@@ -87,9 +87,9 @@ public class BoxFileUpload {
      */
     public BoxFile execute(final String fileId, BoxFilesManager manager, BoxFileUploadRequestObject requestObject) throws BoxServerException, BoxRestException,
         AuthFatalFailureException, InterruptedException {
-        UploadNewVersionFileRequest request = new UploadNewVersionFileRequest(mConfig, manager.getObjectMapper(), fileId, requestObject);
+        UploadNewVersionFileRequest request = new UploadNewVersionFileRequest(mConfig, manager.getJSONParser(), fileId, requestObject);
         try {
-            Object result = manager.getResponseAndParse(request, BoxResourceType.FILE_VERSIONS, manager.getObjectMapper());
+            Object result = manager.getResponseAndParse(request, BoxResourceType.FILE_VERSIONS, manager.getJSONParser());
             BoxCollection versions = (BoxCollection) manager.tryCastObject(BoxResourceType.FILE_VERSIONS, result);
             if (versions.getTotalCount() != 1) {
                 throw new BoxMalformedResponseException(request.getExpectedResponseCode());

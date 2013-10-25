@@ -4,9 +4,11 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.requests.requestobjects.BoxItemRestoreRequestObject;
 import com.box.restclientv2.exceptions.BoxRestException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BoxItemRestoreRequestObjectTest {
 
@@ -20,25 +22,25 @@ public class BoxItemRestoreRequestObjectTest {
     }
 
     @Test
-    public void testNameInObject() throws BoxRestException {
+    public void testNameInObject() throws BoxRestException, BoxJSONException {
         String name = "testname";
         BoxItemRestoreRequestObject obj = BoxItemRestoreRequestObject.restoreItemRequestObject().setNewName(name);
-        Assert.assertEquals("{" + String.format(NAME, name) + "}", obj.getJSONEntity().toJSONString(new ObjectMapper()));
+        Assert.assertEquals("{" + String.format(NAME, name) + "}", obj.getJSONEntity().toJSONString(new BoxJSONParser(new BoxResourceHub())));
     }
 
     @Test
-    public void testParentInObject() throws BoxRestException {
+    public void testParentInObject() throws BoxRestException, BoxJSONException {
         String parentid = "testid";
         BoxItemRestoreRequestObject obj = BoxItemRestoreRequestObject.restoreItemRequestObject().setNewParent(parentid);
-        Assert.assertEquals("{" + String.format(PARENT, parentid) + "}", obj.getJSONEntity().toJSONString(new ObjectMapper()));
+        Assert.assertEquals("{" + String.format(PARENT, parentid) + "}", obj.getJSONEntity().toJSONString(new BoxJSONParser(new BoxResourceHub())));
     }
 
     @Test
-    public void testBothParentAndNameInObject() throws BoxRestException {
+    public void testBothParentAndNameInObject() throws BoxRestException, BoxJSONException {
         String name = "testname";
         String parentid = "testid";
         BoxItemRestoreRequestObject obj = BoxItemRestoreRequestObject.restoreItemRequestObject().setNewName(name).setNewParent(parentid);
-        String json = obj.getJSONEntity().toJSONString(new ObjectMapper());
+        String json = obj.getJSONEntity().toJSONString(new BoxJSONParser(new BoxResourceHub()));
         Assert.assertTrue(json.contains(String.format(NAME, name)));
         Assert.assertTrue(json.contains(String.format(PARENT, parentid)));
     }

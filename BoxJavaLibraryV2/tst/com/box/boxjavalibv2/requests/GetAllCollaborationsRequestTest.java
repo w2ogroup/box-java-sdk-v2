@@ -25,7 +25,7 @@ public class GetAllCollaborationsRequestTest extends RequestTestBase {
     public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
         String status = "teststatus789";
 
-        GetAllCollaborationsRequest request = new GetAllCollaborationsRequest(CONFIG, OBJECT_MAPPER,
+        GetAllCollaborationsRequest request = new GetAllCollaborationsRequest(CONFIG, JSON_PARSER,
             BoxCollabRequestObject.getAllCollaborationsRequestObject(status));
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(GetAllCollaborationsRequest.getUri()), HttpStatus.SC_OK, RestMethod.GET);

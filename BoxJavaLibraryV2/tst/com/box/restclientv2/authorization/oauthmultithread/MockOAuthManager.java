@@ -15,7 +15,7 @@ public class MockOAuthManager extends BoxOAuthManager {
     public static volatile boolean refreshShouldFail;
 
     public MockOAuthManager() {
-        super(null, null, null);
+        super(null, null, null, null);
     }
 
     @Override

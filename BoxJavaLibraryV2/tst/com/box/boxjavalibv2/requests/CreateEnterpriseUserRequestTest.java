@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.box.boxjavalibv2.BoxConfig;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.requests.requestobjects.BoxUserRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -24,7 +25,7 @@ public class CreateEnterpriseUserRequestTest extends RequestTestBase {
     }
 
     @Test
-    public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
+    public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException, BoxJSONException {
         String name = "testname";
         String login = "testlogin";
         String role = "testrole";
@@ -46,7 +47,7 @@ public class CreateEnterpriseUserRequestTest extends RequestTestBase {
         codes.put(key1, value1);
         codes.put(key2, value2);
 
-        CreateEnterpriseUserRequest request = new CreateEnterpriseUserRequest(CONFIG, OBJECT_MAPPER, BoxUserRequestObject
+        CreateEnterpriseUserRequest request = new CreateEnterpriseUserRequest(CONFIG, JSON_PARSER, BoxUserRequestObject
             .createEnterpriseUserRequestObject(login, name).setRole(role).setLanguage(language).setSyncEnabled(sync).setJobTitle(title).setPhone(phone)
             .setAddress(address).setSpaceAmount(space).setTrackingCodes(codes).setCanSeeManagedUsers(seeManaged).setStatus(status)
             .setExemptFromDeviceLimits(exemptLimit).setExemptFromLoginVerification(exemptLogin));

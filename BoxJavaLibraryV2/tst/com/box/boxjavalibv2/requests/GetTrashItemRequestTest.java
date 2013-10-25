@@ -32,7 +32,7 @@ public class GetTrashItemRequestTest extends RequestTestBase {
     public void testRequestIsWellFormed(BoxResourceType type) throws BoxRestException, AuthFatalFailureException {
         String id = "testid123";
 
-        GetTrashItemRequest request = new GetTrashItemRequest(CONFIG, OBJECT_MAPPER, id, type, null);
+        GetTrashItemRequest request = new GetTrashItemRequest(CONFIG, JSON_PARSER, id, type, null);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(GetTrashItemRequest.getUri(id, type)), HttpStatus.SC_OK, RestMethod.GET);
     }

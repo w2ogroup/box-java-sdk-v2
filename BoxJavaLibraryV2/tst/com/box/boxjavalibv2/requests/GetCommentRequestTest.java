@@ -21,7 +21,7 @@ public class GetCommentRequestTest extends RequestTestBase {
     public void testRequestIsWellFormed() throws BoxRestException, AuthFatalFailureException {
         String id = "testid123";
 
-        GetCommentRequest request = new GetCommentRequest(CONFIG, OBJECT_MAPPER, id, null);
+        GetCommentRequest request = new GetCommentRequest(CONFIG, JSON_PARSER, id, null);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(GetCommentRequest.getUri(id)), HttpStatus.SC_OK, RestMethod.GET);
     }

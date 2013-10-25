@@ -8,10 +8,11 @@ import org.junit.Test;
 
 import com.box.boxjavalibv2.dao.BoxSharedLinkAccess;
 import com.box.boxjavalibv2.dao.BoxSharedLinkPermissions;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.requests.requestobjects.BoxSharedLinkRequestObject;
 import com.box.boxjavalibv2.utils.ISO8601DateParser;
-import com.box.restclientv2.exceptions.BoxRestException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SharedLinkRequestObjectTest {
 
@@ -20,7 +21,7 @@ public class SharedLinkRequestObjectTest {
     private final static String UNSHARED_STR = "\"unshared_at\":\"%s\"";
 
     @Test
-    public void testFull() {
+    public void testFull() throws BoxJSONException {
         Date date = new Date();
         String access = BoxSharedLinkAccess.OPEN;
         BoxSharedLinkRequestObject entity = BoxSharedLinkRequestObject.createSharedLinkRequestObject(access).setPermissions(new BoxSharedLinkPermissions(true))
@@ -29,34 +30,23 @@ public class SharedLinkRequestObjectTest {
         String accessStr = String.format(ACCESS_STR, access);
         String dateStr = String.format(UNSHARED_STR, ISO8601DateParser.toString(date));
 
-        String entityStr;
-        try {
-            entityStr = entity.getJSONEntity().toJSONString(new ObjectMapper());
-            Assert.assertFalse(entityStr.contains(PERMISSIONS_STR));
-            Assert.assertTrue(entityStr.contains(accessStr));
-            Assert.assertTrue(entityStr.contains(dateStr));
-        }
-        catch (BoxRestException e) {
-            Assert.fail();
-        }
+        String entityStr = entity.getJSONEntity().toJSONString(new BoxJSONParser(new BoxResourceHub()));
+        Assert.assertFalse(entityStr.contains(PERMISSIONS_STR));
+        Assert.assertTrue(entityStr.contains(accessStr));
+        Assert.assertTrue(entityStr.contains(dateStr));
     }
 
     @Test
-    public void testNoUnsharedAt() {
+    public void testNoUnsharedAt() throws BoxJSONException {
         String access = BoxSharedLinkAccess.OPEN;
         BoxSharedLinkRequestObject entity = BoxSharedLinkRequestObject.createSharedLinkRequestObject(access).setPermissions(new BoxSharedLinkPermissions(true));
 
         String accessStr = String.format(ACCESS_STR, access);
 
-        String entityStr;
-        try {
-            entityStr = entity.getJSONEntity().toJSONString(new ObjectMapper());
-            Assert.assertFalse(entityStr.contains(PERMISSIONS_STR));
-            Assert.assertTrue(entityStr.contains(accessStr));
-            Assert.assertFalse(entityStr.contains("\"unshared_at\":"));
-        }
-        catch (BoxRestException e) {
-            Assert.fail();
-        }
+        String entityStr = entity.getJSONEntity().toJSONString(new BoxJSONParser(new BoxResourceHub()));
+        Assert.assertFalse(entityStr.contains(PERMISSIONS_STR));
+        Assert.assertTrue(entityStr.contains(accessStr));
+        Assert.assertFalse(entityStr.contains("\"unshared_at\":"));
+
     }
 }

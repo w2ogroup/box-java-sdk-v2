@@ -20,6 +20,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -28,7 +29,6 @@ import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.interfaces.IBoxRequest;
 import com.box.restclientv2.interfaces.IBoxRequestAuth;
 import com.box.restclientv2.interfaces.ICookie;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Default implementation for IBoxRequest interface. This implementaion utilizes HttpRequestBase as underlying http request.
@@ -66,8 +66,8 @@ public class DefaultBoxRequest implements IBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param uriPath
      *            e.g. /folders/93285/items
      * @param restMethod
@@ -77,14 +77,14 @@ public class DefaultBoxRequest implements IBoxRequest {
      * @throws BoxRestException
      *             exception
      */
-    public DefaultBoxRequest(final IBoxConfig config, final ObjectMapper objectMapper, final String uriPath, final RestMethod restMethod,
+    public DefaultBoxRequest(final IBoxConfig config, final IBoxJSONParser parser, final String uriPath, final RestMethod restMethod,
         final BoxDefaultRequestObject requestObject) throws BoxRestException {
         this.mConfig = config;
         this.mRestMethod = restMethod;
         this.uriPath = uriPath;
         getHeaders().put("User-Agent", getConfig().getUserAgent());
         if (requestObject != null) {
-            requestObject.setObjectMapper(objectMapper);
+            requestObject.setJSONParser(parser);
             setEntity(requestObject.getEntity());
             setRequestFields(requestObject.getFields());
             getQueryParams().putAll(requestObject.getQueryParams());

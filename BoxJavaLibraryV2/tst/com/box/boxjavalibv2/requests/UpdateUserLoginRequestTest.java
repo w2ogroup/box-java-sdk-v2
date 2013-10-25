@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.box.boxjavalibv2.BoxConfig;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.jsonentities.MapJSONStringEntity;
 import com.box.boxjavalibv2.requests.requestobjects.BoxUserRequestObject;
 import com.box.restclientv2.RestMethod;
@@ -24,10 +25,10 @@ public class UpdateUserLoginRequestTest extends RequestTestBase {
     }
 
     @Test
-    public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
+    public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException, BoxJSONException {
         String userId = "testuserid";
         String newLogin = "testnewlogin";
-        UpdateUserLoginRequest request = new UpdateUserLoginRequest(CONFIG, OBJECT_MAPPER, userId,
+        UpdateUserLoginRequest request = new UpdateUserLoginRequest(CONFIG, JSON_PARSER, userId,
             BoxUserRequestObject.updateUserPrimaryLoginRequestObject(newLogin));
 
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),

@@ -2,11 +2,11 @@ package com.box.boxjavalibv2.responseparsers;
 
 import com.box.boxjavalibv2.dao.BoxServerError;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedStatus;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxResponse;
 import com.box.restclientv2.responseparsers.DefaultBoxJSONResponseParser;
 import com.box.restclientv2.responses.DefaultBoxResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Parser to parse {@link com.box.restclientv2.responses.DefaultBoxResponse} into {@link com.box.boxjavalibv2.dao.BoxServerError} objects. It analyse the
@@ -15,8 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class ErrorResponseParser extends DefaultBoxJSONResponseParser {
 
-    public ErrorResponseParser(ObjectMapper objectMapper) {
-        super(BoxServerError.class, objectMapper);
+    public ErrorResponseParser(final IBoxJSONParser parser) {
+        super(BoxServerError.class, parser);
     }
 
     @Override

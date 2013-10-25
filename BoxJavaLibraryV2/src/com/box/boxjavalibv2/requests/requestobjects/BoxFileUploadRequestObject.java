@@ -13,13 +13,14 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.httpentities.MultipartEntityWithProgressListener;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IFileTransferListener;
 import com.box.boxjavalibv2.jsonentities.MapJSONStringEntity;
 import com.box.boxjavalibv2.utils.Constants;
 import com.box.boxjavalibv2.utils.ISO8601DateParser;
 import com.box.restclientv2.exceptions.BoxRestException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
 
@@ -46,10 +47,13 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
      *            file to be uploaded
      * @return BoxFileUploadRequestObject
      * @throws BoxRestException
+     * @throws BoxJSONException
      */
-    public static BoxFileUploadRequestObject uploadFileRequestObject(final String parentId, final String fileName, final File file) throws BoxRestException {
+    public static BoxFileUploadRequestObject uploadFileRequestObject(final String parentId, final String fileName, final File file, final IBoxJSONParser parser)
+        throws BoxRestException, BoxJSONException {
         try {
-            return (new BoxFileUploadRequestObject()).setMultipartMIME(getNewFileMultipartEntity(parentId, fileName, file));
+            BoxFileUploadRequestObject requestObject = new BoxFileUploadRequestObject();
+            return requestObject.setMultipartMIME(getNewFileMultipartEntity(parentId, fileName, file, parser));
         }
         catch (UnsupportedEncodingException e) {
             throw new BoxRestException(e);
@@ -206,12 +210,12 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
         return me;
     }
 
-    private static MultipartEntityWithProgressListener getNewFileMultipartEntity(final String parentId, final String name, final File file)
-        throws BoxRestException, UnsupportedEncodingException {
+    private static MultipartEntityWithProgressListener getNewFileMultipartEntity(final String parentId, final String name, final File file,
+        IBoxJSONParser parser) throws BoxRestException, UnsupportedEncodingException, BoxJSONException {
         MultipartEntityWithProgressListener me = new MultipartEntityWithProgressListener(HttpMultipartMode.BROWSER_COMPATIBLE);
         me.addPart(Constants.FOLDER_ID, new StringBody(parentId));
         me.addPart(KEY_FILE_NAME, new FileBody(file, KEY_FILE_NAME, "", CharEncoding.UTF_8));
-        me.addPart(METADATA, getMetadataBody(parentId, name));
+        me.addPart(METADATA, getMetadataBody(parentId, name, parser));
         String date = ISO8601DateParser.toString(new Date(file.lastModified()));
         if (me.getPart(KEY_CONTENT_CREATED_AT) == null) {
             me.addPart(KEY_CONTENT_CREATED_AT, new StringBody(date));
@@ -223,14 +227,15 @@ public class BoxFileUploadRequestObject extends BoxDefaultRequestObject {
         return me;
     }
 
-    private static StringBody getMetadataBody(String parentId, String name) throws UnsupportedEncodingException, BoxRestException {
+    private static StringBody getMetadataBody(String parentId, String name, IBoxJSONParser parser) throws UnsupportedEncodingException, BoxRestException,
+        BoxJSONException {
         MapJSONStringEntity parentEntity = new MapJSONStringEntity();
         parentEntity.put(Constants.ID, parentId);
 
         MapJSONStringEntity entity = new MapJSONStringEntity();
         entity.put(KEY_PARENT, parentEntity);
         entity.put(KEY_NAME, name);
-        return new StringBody(entity.toJSONString(new ObjectMapper()), Charset.forName(CharEncoding.UTF_8));
+        return new StringBody(entity.toJSONString(parser), Charset.forName(CharEncoding.UTF_8));
     }
 
     private static MultipartEntityWithProgressListener getNewVersionMultipartEntity(final String name, final File file) throws UnsupportedEncodingException {

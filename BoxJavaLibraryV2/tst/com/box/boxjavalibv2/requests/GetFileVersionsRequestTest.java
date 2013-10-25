@@ -20,7 +20,7 @@ public class GetFileVersionsRequestTest extends RequestTestBase {
     public void testRequestIsWellFormed(boolean isFolder) throws BoxRestException, AuthFatalFailureException {
         String id = "testid123";
 
-        GetFileVersionsRequest request = new GetFileVersionsRequest(CONFIG, OBJECT_MAPPER, id, null);
+        GetFileVersionsRequest request = new GetFileVersionsRequest(CONFIG, JSON_PARSER, id, null);
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(), GetFileVersionsRequest.getUri(id), HttpStatus.SC_OK, RestMethod.GET);
 
     }

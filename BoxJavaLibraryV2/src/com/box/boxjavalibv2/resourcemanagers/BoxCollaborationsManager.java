@@ -9,6 +9,7 @@ import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.requests.CreateCollaborationRequest;
 import com.box.boxjavalibv2.requests.DeleteCollaborationRequest;
@@ -37,13 +38,16 @@ public final class BoxCollaborationsManager extends BoxResourceManager {
      *            Config
      * @param resourceHub
      *            IResourceHub
+     * @param parser
+     *            json parser
      * @param auth
      *            auth for api calls
      * @param restClient
      *            REST client to make api calls.
      */
-    public BoxCollaborationsManager(IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxRequestAuth auth, final IBoxRESTClient restClient) {
-        super(config, resourceHub, auth, restClient);
+    public BoxCollaborationsManager(IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxJSONParser parser, final IBoxRequestAuth auth,
+        final IBoxRESTClient restClient) {
+        super(config, resourceHub, parser, auth, restClient);
     }
 
     /**
@@ -63,9 +67,9 @@ public final class BoxCollaborationsManager extends BoxResourceManager {
      */
     public BoxCollaboration getCollaboration(final String collabId, BoxDefaultRequestObject requestObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        GetCollaborationRequest request = new GetCollaborationRequest(getConfig(), getObjectMapper(), collabId, requestObject);
+        GetCollaborationRequest request = new GetCollaborationRequest(getConfig(), getJSONParser(), collabId, requestObject);
 
-        return (BoxCollaboration) getResponseAndParseAndTryCast(request, BoxResourceType.COLLABORATION, getObjectMapper());
+        return (BoxCollaboration) getResponseAndParseAndTryCast(request, BoxResourceType.COLLABORATION, getJSONParser());
     }
 
     /**
@@ -85,9 +89,9 @@ public final class BoxCollaborationsManager extends BoxResourceManager {
      */
     public BoxCollaboration createCollaboration(final String folderId, final BoxCollabRequestObject collabObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        CreateCollaborationRequest request = new CreateCollaborationRequest(getConfig(), getObjectMapper(), folderId, collabObject);
+        CreateCollaborationRequest request = new CreateCollaborationRequest(getConfig(), getJSONParser(), folderId, collabObject);
 
-        return (BoxCollaboration) getResponseAndParseAndTryCast(request, BoxResourceType.COLLABORATION, getObjectMapper());
+        return (BoxCollaboration) getResponseAndParseAndTryCast(request, BoxResourceType.COLLABORATION, getJSONParser());
     }
 
     /**
@@ -105,9 +109,9 @@ public final class BoxCollaborationsManager extends BoxResourceManager {
      */
     public List<BoxCollaboration> getAllCollaborations(final BoxCollabRequestObject collabObject) throws BoxRestException, BoxServerException,
         AuthFatalFailureException {
-        GetAllCollaborationsRequest request = new GetAllCollaborationsRequest(getConfig(), getObjectMapper(), collabObject);
+        GetAllCollaborationsRequest request = new GetAllCollaborationsRequest(getConfig(), getJSONParser(), collabObject);
 
-        BoxCollection collection = (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.COLLABORATIONS, getObjectMapper());
+        BoxCollection collection = (BoxCollection) getResponseAndParseAndTryCast(request, BoxResourceType.COLLABORATIONS, getJSONParser());
         return getCollaborations(collection);
     }
 
@@ -127,7 +131,7 @@ public final class BoxCollaborationsManager extends BoxResourceManager {
      */
     public void deleteCollaboration(final String collabId, BoxDefaultRequestObject requestObject) throws BoxServerException, BoxRestException,
         AuthFatalFailureException {
-        DeleteCollaborationRequest request = new DeleteCollaborationRequest(getConfig(), getObjectMapper(), collabId, requestObject);
+        DeleteCollaborationRequest request = new DeleteCollaborationRequest(getConfig(), getJSONParser(), collabId, requestObject);
         executeRequestWithNoResponseBody(request);
     }
 
@@ -143,8 +147,8 @@ public final class BoxCollaborationsManager extends BoxResourceManager {
      */
     public BoxCollaboration updateCollaboration(final String collabId, BoxCollabRequestObject requestObject) throws BoxRestException,
         AuthFatalFailureException, BoxServerException {
-        UpdateCollaborationRequest request = new UpdateCollaborationRequest(getConfig(), getObjectMapper(), collabId, requestObject);
-        return (BoxCollaboration) super.getResponseAndParseAndTryCast(request, BoxResourceType.COLLABORATION, getObjectMapper());
+        UpdateCollaborationRequest request = new UpdateCollaborationRequest(getConfig(), getJSONParser(), collabId, requestObject);
+        return (BoxCollaboration) super.getResponseAndParseAndTryCast(request, BoxResourceType.COLLABORATION, getJSONParser());
     }
 
     /**

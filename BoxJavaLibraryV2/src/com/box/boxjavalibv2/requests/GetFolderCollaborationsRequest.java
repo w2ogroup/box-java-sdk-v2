@@ -1,11 +1,11 @@
 package com.box.boxjavalibv2.requests;
 
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.requests.requestobjects.BoxDefaultRequestObject;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.requests.DefaultBoxRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Request to get collaborations on a given folder. Can also request for collaborations of a certain status. Currently only
@@ -20,8 +20,8 @@ public class GetFolderCollaborationsRequest extends DefaultBoxRequest {
      * 
      * @param config
      *            config
-     * @param objectMapper
-     *            object mapper
+     * @param parser
+     *            json parser
      * @param folderId
      *            id of the folder
      * @param status
@@ -30,9 +30,9 @@ public class GetFolderCollaborationsRequest extends DefaultBoxRequest {
      * @throws BoxRestException
      *             exception
      */
-    public GetFolderCollaborationsRequest(final IBoxConfig config, final ObjectMapper objectMapper, String folderId, BoxDefaultRequestObject requestObject)
+    public GetFolderCollaborationsRequest(final IBoxConfig config, final IBoxJSONParser parser, String folderId, BoxDefaultRequestObject requestObject)
         throws BoxRestException {
-        super(config, objectMapper, getUri(folderId), RestMethod.GET, requestObject);
+        super(config, parser, getUri(folderId), RestMethod.GET, requestObject);
     }
 
     /**

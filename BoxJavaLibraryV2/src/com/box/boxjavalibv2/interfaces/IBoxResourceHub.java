@@ -1,7 +1,6 @@
 package com.box.boxjavalibv2.interfaces;
 
 import com.box.boxjavalibv2.dao.BoxResourceType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public interface IBoxResourceHub {
 
@@ -14,7 +13,5 @@ public interface IBoxResourceHub {
      */
     @SuppressWarnings("rawtypes")
     Class getClass(BoxResourceType type);
-
-    ObjectMapper getObjectMapper();
 
 }

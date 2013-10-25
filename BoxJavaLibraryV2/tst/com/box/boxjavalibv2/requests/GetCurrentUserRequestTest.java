@@ -21,7 +21,7 @@ public class GetCurrentUserRequestTest extends RequestTestBase {
 
     @Test
     public void testRequestIsWellFormed() throws BoxRestException, IllegalStateException, IOException, AuthFatalFailureException {
-        GetCurrentUserRequest request = new GetCurrentUserRequest(CONFIG, OBJECT_MAPPER, null);
+        GetCurrentUserRequest request = new GetCurrentUserRequest(CONFIG, JSON_PARSER, null);
 
         testRequestIsWellFormed(request, BoxConfig.getInstance().getApiUrlAuthority(),
             BoxConfig.getInstance().getApiUrlPath().concat(GetCurrentUserRequest.getUri()), HttpStatus.SC_OK, RestMethod.GET);

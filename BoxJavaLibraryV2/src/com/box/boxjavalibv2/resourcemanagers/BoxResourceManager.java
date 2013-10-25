@@ -6,6 +6,7 @@ import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedHttpStatusException;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedStatus;
+import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
 import com.box.boxjavalibv2.responseparsers.BoxObjectResponseParser;
 import com.box.boxjavalibv2.responseparsers.ErrorResponseParser;
@@ -15,7 +16,6 @@ import com.box.restclientv2.interfaces.IBoxRESTClient;
 import com.box.restclientv2.interfaces.IBoxRequestAuth;
 import com.box.restclientv2.requests.DefaultBoxRequest;
 import com.box.restclientv2.responses.DefaultBoxResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Base class for BoxAPI classes.
@@ -24,12 +24,12 @@ public abstract class BoxResourceManager {
 
     /** BoxConfig. */
     private final IBoxConfig mConfig;
-    /** ObjectMapper to be used by Jackson Parser. */
     private final IBoxResourceHub mResourceHub;
+    private final IBoxJSONParser mParser;
 
-    private IBoxRequestAuth mAuth;
+    private final IBoxRequestAuth mAuth;
 
-    private IBoxRESTClient mRestClient;
+    private final IBoxRESTClient mRestClient;
 
     /**
      * private constructor.
@@ -38,29 +38,20 @@ public abstract class BoxResourceManager {
      *            Config
      * @param resourceHub
      *            IResourceHub
+     * @param parser
+     *            json parser
      * @param auth
      *            auth for api calls
      * @param restClient
      *            REST client to make api calls.
      */
-    public BoxResourceManager(final IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxRequestAuth auth, final IBoxRESTClient restClient) {
+    public BoxResourceManager(final IBoxConfig config, final IBoxResourceHub resourceHub, final IBoxJSONParser parser, final IBoxRequestAuth auth,
+        final IBoxRESTClient restClient) {
         this.mConfig = config;
         this.mResourceHub = resourceHub;
+        this.mParser = parser;
         this.mAuth = auth;
         this.mRestClient = restClient;
-    }
-
-    /**
-     * private constructor.
-     * 
-     * @param config
-     *            Config
-     * @param resourceHub
-     *            IResourceHub
-     */
-    public BoxResourceManager(final IBoxConfig config, IBoxResourceHub resourceHub) {
-        this.mConfig = config;
-        this.mResourceHub = resourceHub;
     }
 
     /**
@@ -83,9 +74,8 @@ public abstract class BoxResourceManager {
         return mResourceHub;
     }
 
-    /** Get the ObjectMapper the Jackson JSON parser uses. */
-    public ObjectMapper getObjectMapper() {
-        return mResourceHub.getObjectMapper();
+    public IBoxJSONParser getJSONParser() {
+        return mParser;
     }
 
     /** Get config. */
@@ -109,7 +99,7 @@ public abstract class BoxResourceManager {
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
         if (response.getExpectedResponseCode() != response.getResponseStatusCode()) {
-            ErrorResponseParser errorParser = new ErrorResponseParser(getObjectMapper());
+            ErrorResponseParser errorParser = new ErrorResponseParser(getJSONParser());
             BoxServerError error = (BoxServerError) errorParser.parse(response);
             if (error == null) {
                 throw new BoxServerException("Unexpected response code:" + response.getResponseStatusCode() + ", expecting:"
@@ -128,8 +118,8 @@ public abstract class BoxResourceManager {
      *            request
      * @param type
      *            type
-     * @param objectMapper
-     *            ObjectMapper
+     * @param parser
+     *            json parser
      * @return parsed object
      * @throws AuthFatalFailureException
      *             exception
@@ -138,9 +128,9 @@ public abstract class BoxResourceManager {
      * @throws BoxServerException
      *             exception
      */
-    public Object getResponseAndParseAndTryCast(final DefaultBoxRequest request, final BoxResourceType type, final ObjectMapper objectMapper)
+    public Object getResponseAndParseAndTryCast(final DefaultBoxRequest request, final BoxResourceType type, final IBoxJSONParser parser)
         throws BoxRestException, AuthFatalFailureException, BoxServerException {
-        Object obj = getResponseAndParse(request, type, objectMapper);
+        Object obj = getResponseAndParse(request, type, parser);
         return tryCastObject(type, obj);
     }
 
@@ -151,7 +141,7 @@ public abstract class BoxResourceManager {
      *            request
      * @param type
      *            type
-     * @param objectMapper
+     * @param parser
      *            ObjectMapper
      * @return parsed object
      * @throws BoxRestException
@@ -159,13 +149,13 @@ public abstract class BoxResourceManager {
      * @throws AuthFatalFailureException
      *             exception indicating authenticating totally failed
      */
-    public Object getResponseAndParse(final DefaultBoxRequest request, final BoxResourceType type, final ObjectMapper objectMapper) throws BoxRestException,
+    public Object getResponseAndParse(final DefaultBoxRequest request, final BoxResourceType type, final IBoxJSONParser parser) throws BoxRestException,
         AuthFatalFailureException {
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
-        BoxObjectResponseParser parser = new BoxObjectResponseParser(getResourceHub().getClass(type), objectMapper);
-        ErrorResponseParser errorParser = new ErrorResponseParser(getObjectMapper());
-        return response.parseResponse(parser, errorParser);
+        BoxObjectResponseParser responseParser = new BoxObjectResponseParser(getResourceHub().getClass(type), parser);
+        ErrorResponseParser errorParser = new ErrorResponseParser(getJSONParser());
+        return response.parseResponse(responseParser, errorParser);
     }
 
     // TODO: support web links
