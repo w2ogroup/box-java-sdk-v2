@@ -70,13 +70,13 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      *            client id
      * @param clientSecret
      *            client secret
-     * @param resourcehub
+     * @param hub
      *            resource hub, use null for default resource hub.
      * @param parser
      *            json parser, use null for default parser.
      */
-    public BoxClient(final String clientId, final String clientSecret, final IBoxResourceHub resourcehub, final IBoxJSONParser parser) {
-        this.resourceHub = resourcehub == null ? createResourceHub() : resourcehub;
+    public BoxClient(final String clientId, final String clientSecret, final IBoxResourceHub hub, final IBoxJSONParser parser) {
+        this.resourceHub = hub == null ? createResourceHub() : hub;
         this.jsonParser = parser == null ? createJSONParser(resourceHub) : parser;
         restClient = createRestClient();
         authController = createAuthDataController(clientId, clientSecret);
