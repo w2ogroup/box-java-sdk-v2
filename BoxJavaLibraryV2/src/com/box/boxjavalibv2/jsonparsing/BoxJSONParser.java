@@ -14,16 +14,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 
 /**
- * The json parser class wrapping Jackson JSON parser. For now, if user wants to remove jackson dependency(jackson jars), deleting jackson libraries would
- * actually cause compile error in this class. To fix it, user can just delete this class. An alternative approach (I'm not taking yet) is to change the
- * implementation of this class, make all the jackson library related calls in this class reflection calls. However this is error prone if we need to update
+ * The json parser class wrapping Jackson JSON parser. For now, if user wants to remove jackson dependency(jackson jars), all the overriden methods and
+ * constructor of this class needs to be rewritten against the cusomized json parser. An alternative approach (not taken yet) requires user to implement a new
+ * IBoxJSONParser, in the meantime make all the jackson library related calls in this class reflection calls. However this is error prone if we need to update
  * jackson. Since jackson is still the recommended way. We are not doing the reflection way yet.
  */
-public class BoxJacksonJSONParser implements IBoxJSONParser {
+public class BoxJSONParser implements IBoxJSONParser {
 
     private final ObjectMapper mObjectMapper;
 
-    public BoxJacksonJSONParser(final IBoxResourceHub hub) {
+    public BoxJSONParser(final IBoxResourceHub hub) {
         mObjectMapper = new ObjectMapper();
         mObjectMapper.setSerializationInclusion(Include.NON_NULL);
         mObjectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
@@ -38,7 +38,7 @@ public class BoxJacksonJSONParser implements IBoxJSONParser {
     }
 
     @Override
-    public String convertToString(final Object object) throws BoxJSONException {
+    public String convertBoxObjectToJSONString(final Object object) throws BoxJSONException {
         try {
             return getObjectMapper().writeValueAsString(object);
         }
@@ -48,7 +48,7 @@ public class BoxJacksonJSONParser implements IBoxJSONParser {
     }
 
     @Override
-    public <T> T parseIntoObject(final InputStream inputStream, final Class<T> theClass) {
+    public <T> T parseIntoBoxObject(final InputStream inputStream, final Class<T> theClass) {
         try {
             JsonFactory jsonFactory = new JsonFactory();
             JsonParser jp = jsonFactory.createJsonParser(inputStream);
@@ -60,7 +60,7 @@ public class BoxJacksonJSONParser implements IBoxJSONParser {
     }
 
     @Override
-    public <T> T parseIntoObject(final String jsonString, final Class<T> theClass) {
+    public <T> T parseIntoBoxObject(final String jsonString, final Class<T> theClass) {
         try {
             JsonFactory jsonFactory = new JsonFactory();
             JsonParser jp = jsonFactory.createJsonParser(jsonString);

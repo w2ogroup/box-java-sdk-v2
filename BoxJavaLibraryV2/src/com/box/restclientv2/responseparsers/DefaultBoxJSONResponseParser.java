@@ -85,6 +85,6 @@ public class DefaultBoxJSONResponseParser implements IBoxResponseParser {
      */
     @SuppressWarnings("unchecked")
     private Object parseInputStream(InputStream in) throws BoxRestException {
-        return mParser.parseIntoObject(in, objectClass);
+        return mParser.parseIntoBoxObject(in, objectClass);
     }
 }

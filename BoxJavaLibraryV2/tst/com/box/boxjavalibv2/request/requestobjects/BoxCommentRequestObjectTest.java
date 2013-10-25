@@ -5,7 +5,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import com.box.boxjavalibv2.exceptions.BoxJSONException;
-import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.requests.requestobjects.BoxCommentRequestObject;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -19,7 +19,7 @@ public class BoxCommentRequestObjectTest {
         String message = "testmessage123";
         BoxCommentRequestObject entity = BoxCommentRequestObject.updateCommentRequestObject(message);
 
-        Assert.assertEquals(String.format(JSON_STR, message), entity.getJSONEntity().toJSONString(new BoxJacksonJSONParser(new BoxResourceHub())));
+        Assert.assertEquals(String.format(JSON_STR, message), entity.getJSONEntity().toJSONString(new BoxJSONParser(new BoxResourceHub())));
     }
 
 }

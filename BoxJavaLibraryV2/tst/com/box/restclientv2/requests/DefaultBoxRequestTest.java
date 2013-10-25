@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import com.box.boxjavalibv2.BoxConfig;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
-import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -50,7 +50,7 @@ public class DefaultBoxRequestTest {
     @Test
     public void prepareRequestTest() throws AuthFatalFailureException {
         try {
-            DefaultBoxRequest request = new DefaultBoxRequest(config, new BoxJacksonJSONParser(new BoxResourceHub()), uri, restMethod, null);
+            DefaultBoxRequest request = new DefaultBoxRequest(config, new BoxJSONParser(new BoxResourceHub()), uri, restMethod, null);
             request.addQueryParam("a", "b");
             request.setEntity(requestEntity);
             request.prepareRequest();
@@ -70,7 +70,7 @@ public class DefaultBoxRequestTest {
 
     @Test
     public void ConstructHttpUriRequestTest() {
-        BoxJacksonJSONParser parser = new BoxJacksonJSONParser(new BoxResourceHub());
+        BoxJSONParser parser = new BoxJSONParser(new BoxResourceHub());
         try {
             Assert.assertEquals(HttpGet.class, (new DefaultBoxRequest(config, parser, uri, RestMethod.GET, null)).constructHttpUriRequest().getClass());
             Assert.assertEquals(HttpPut.class, (new DefaultBoxRequest(config, parser, uri, RestMethod.PUT, null)).constructHttpUriRequest().getClass());

@@ -12,7 +12,7 @@ import com.box.boxjavalibv2.BoxConfig;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.interfaces.IBoxJSONStringEntity;
-import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.restclientv2.RestMethod;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -23,7 +23,7 @@ public class RequestTestBase {
 
     protected static final IBoxConfig CONFIG = BoxConfig.getInstance();
     protected static final String SCHEME = CONFIG.getApiUrlScheme();
-    protected static final BoxJacksonJSONParser JSON_PARSER = new BoxJacksonJSONParser(new BoxResourceHub());
+    protected static final BoxJSONParser JSON_PARSER = new BoxJSONParser(new BoxResourceHub());
 
     protected void testRequestIsWellFormed(DefaultBoxRequest request, String expectedHost, String expectedUriPath, int expectedReturnCode,
         RestMethod expectedMethod) throws BoxRestException, AuthFatalFailureException {

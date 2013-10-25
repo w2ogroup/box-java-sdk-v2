@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.box.boxjavalibv2.dao.BoxObject;
-import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.restclientv2.exceptions.BoxRestException;
 
@@ -20,7 +20,7 @@ public class TestUtils {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static BoxObject getFromJSON(String json, Class cls) throws BoxRestException {
-        BoxJacksonJSONParser jsonParser = new BoxJacksonJSONParser(new BoxResourceHub());
-        return jsonParser.parseIntoObject(json, cls);
+        BoxJSONParser jsonParser = new BoxJSONParser(new BoxResourceHub());
+        return jsonParser.parseIntoBoxObject(json, cls);
     }
 }

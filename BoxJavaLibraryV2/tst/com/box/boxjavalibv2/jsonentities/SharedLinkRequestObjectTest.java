@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.box.boxjavalibv2.dao.BoxSharedLinkAccess;
 import com.box.boxjavalibv2.dao.BoxSharedLinkPermissions;
 import com.box.boxjavalibv2.exceptions.BoxJSONException;
-import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.requests.requestobjects.BoxSharedLinkRequestObject;
 import com.box.boxjavalibv2.utils.ISO8601DateParser;
@@ -30,7 +30,7 @@ public class SharedLinkRequestObjectTest {
         String accessStr = String.format(ACCESS_STR, access);
         String dateStr = String.format(UNSHARED_STR, ISO8601DateParser.toString(date));
 
-        String entityStr = entity.getJSONEntity().toJSONString(new BoxJacksonJSONParser(new BoxResourceHub()));
+        String entityStr = entity.getJSONEntity().toJSONString(new BoxJSONParser(new BoxResourceHub()));
         Assert.assertFalse(entityStr.contains(PERMISSIONS_STR));
         Assert.assertTrue(entityStr.contains(accessStr));
         Assert.assertTrue(entityStr.contains(dateStr));
@@ -43,7 +43,7 @@ public class SharedLinkRequestObjectTest {
 
         String accessStr = String.format(ACCESS_STR, access);
 
-        String entityStr = entity.getJSONEntity().toJSONString(new BoxJacksonJSONParser(new BoxResourceHub()));
+        String entityStr = entity.getJSONEntity().toJSONString(new BoxJSONParser(new BoxResourceHub()));
         Assert.assertFalse(entityStr.contains(PERMISSIONS_STR));
         Assert.assertTrue(entityStr.contains(accessStr));
         Assert.assertFalse(entityStr.contains("\"unshared_at\":"));

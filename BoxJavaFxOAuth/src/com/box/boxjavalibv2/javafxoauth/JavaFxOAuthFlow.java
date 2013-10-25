@@ -68,7 +68,7 @@ public class JavaFxOAuthFlow implements IAuthFlowUI {
 
             @Override
             public void run() {
-                initializeAuthFlow(new BoxClient(clientId, clientSecret), null);
+                initializeAuthFlow(null, clientId, clientSecret);
                 Group group = new Group();
                 Scene scene = new Scene(group);
 
@@ -81,9 +81,9 @@ public class JavaFxOAuthFlow implements IAuthFlowUI {
     }
 
     @Override
-    public void initializeAuthFlow(BoxClient boxClient, Object applicationContext) {
-        client = boxClient;
-        mWebViewData = new OAuthWebViewData(boxClient.getOAuthDataController());
+    public void initializeAuthFlow(final Object applicationContext, String clientId, String clientSecret) {
+        client = new BoxClient(clientId, clientSecret, null, null);
+        mWebViewData = new OAuthWebViewData(client.getOAuthDataController());
         webView = new WebView();
         webView.setMinSize(minWidth, minHeight);
         webView.setMaxSize(maxWidth, maxHeight);
@@ -108,7 +108,7 @@ public class JavaFxOAuthFlow implements IAuthFlowUI {
             @Override
             public void run() {
                 try {
-                    oauthListener.onAuthFlowEvent(OAuthEvent.OAUTH_CREATED, new OAuthDataMessage(token, client.getJSONParser()));
+                    oauthListener.onAuthFlowEvent(OAuthEvent.OAUTH_CREATED, new OAuthDataMessage(token, client.getJSONParser(), client.getResourceHub()));
                 }
                 catch (Exception e) {
                     oauthListener.onAuthFlowException(e);

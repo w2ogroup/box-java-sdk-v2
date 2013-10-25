@@ -9,7 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import com.box.boxjavalibv2.exceptions.BoxJSONException;
-import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.testutils.TestUtils;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -27,7 +27,7 @@ public class BoxFolderTest {
         TestParcel parcel = new TestParcel();
         folder.writeToParcel(parcel, 0);
         BoxFolder fromParcel = new BoxFolder(parcel);
-        String uploadEmailString = fromParcel.getFolderUploadEmail().toJSONString(new BoxJacksonJSONParser(new BoxResourceHub()));
+        String uploadEmailString = fromParcel.getFolderUploadEmail().toJSONString(new BoxJSONParser(new BoxResourceHub()));
         String[] parts = uploadEmailString.split(",");
         Assert.assertEquals(2, parts.length);
         Assert.assertTrue(emailJson.contains(parts[0].replace("{", "").replace("}", "")));

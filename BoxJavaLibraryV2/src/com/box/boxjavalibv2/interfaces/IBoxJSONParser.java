@@ -13,7 +13,7 @@ public interface IBoxJSONParser {
      * @return
      * @throws BoxJSONException
      */
-    String convertToString(final Object object) throws BoxJSONException;
+    String convertBoxObjectToJSONString(final Object object) throws BoxJSONException;
 
     /**
      * Convert InputStream to object.
@@ -22,7 +22,7 @@ public interface IBoxJSONParser {
      * @param theClass
      * @return
      */
-    <T> T parseIntoObject(final InputStream inputStream, final Class<T> theClass);
+    <T> T parseIntoBoxObject(final InputStream inputStream, final Class<T> theClass);
 
     /**
      * Convert the json string into object.s
@@ -31,5 +31,5 @@ public interface IBoxJSONParser {
      * @param theClass
      * @return
      */
-    <T> T parseIntoObject(final String jsonString, final Class<T> theClass);
+    <T> T parseIntoBoxObject(final String jsonString, final Class<T> theClass);
 }

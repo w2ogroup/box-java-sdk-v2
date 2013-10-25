@@ -21,7 +21,7 @@ import com.box.boxjavalibv2.interfaces.IAuthFlowUI;
 import com.box.boxjavalibv2.interfaces.IAuthSecureStorage;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
-import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.boxjavalibv2.resourcemanagers.BoxCollaborationsManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxCommentsManager;
@@ -380,7 +380,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @return
      */
     protected IBoxJSONParser createJSONParser(IBoxResourceHub resourceHub) {
-        return new BoxJacksonJSONParser(resourceHub);
+        return new BoxJSONParser(resourceHub);
     }
 
     /**

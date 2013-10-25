@@ -13,7 +13,7 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.box.boxjavalibv2.jsonparsing.BoxJacksonJSONParser;
+import com.box.boxjavalibv2.jsonparsing.BoxJSONParser;
 import com.box.boxjavalibv2.jsonparsing.BoxResourceHub;
 import com.box.restclientv2.responses.DefaultBoxResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -46,7 +46,7 @@ public class DefaultBoxJSONResponseParserTest {
             EasyMock.expect(response.getEntity()).andReturn(entity);
             EasyMock.expect(entity.getContent()).andReturn(inputStream);
             EasyMock.replay(boxResponse, response, entity);
-            DefaultBoxJSONResponseParser parser = new DefaultBoxJSONResponseParser(TestObject.class, new BoxJacksonJSONParser(new BoxResourceHub()));
+            DefaultBoxJSONResponseParser parser = new DefaultBoxJSONResponseParser(TestObject.class, new BoxJSONParser(new BoxResourceHub()));
             Object object = parser.parse(boxResponse);
             Assert.assertEquals(TestObject.class, object.getClass());
             TestObject tObject = (TestObject) object;
