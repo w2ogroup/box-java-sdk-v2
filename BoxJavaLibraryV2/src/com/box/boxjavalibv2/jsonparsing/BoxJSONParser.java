@@ -38,36 +38,66 @@ public class BoxJSONParser implements IBoxJSONParser {
     }
 
     @Override
-    public String convertBoxObjectToJSONString(final Object object) throws BoxJSONException {
+    public String convertBoxObjectToJSONStringQuietly(final Object object) {
         try {
-            return getObjectMapper().writeValueAsString(object);
+            return convertBoxObjectToJSONString(object);
         }
-        catch (Exception e) {
-            throw new BoxJSONException();
+        catch (BoxJSONException e) {
+            return null;
         }
     }
 
     @Override
-    public <T> T parseIntoBoxObject(final InputStream inputStream, final Class<T> theClass) {
+    public <T> T parseIntoBoxObjectQuietly(final InputStream inputStream, final Class<T> theClass) {
+        try {
+            return parseIntoBoxObject(inputStream, theClass);
+        }
+        catch (BoxJSONException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public <T> T parseIntoBoxObjectQuietly(final String jsonString, final Class<T> theClass) {
+        try {
+            return parseIntoBoxObject(jsonString, theClass);
+        }
+        catch (BoxJSONException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public String convertBoxObjectToJSONString(Object object) throws BoxJSONException {
+        try {
+            return getObjectMapper().writeValueAsString(object);
+        }
+        catch (Exception e) {
+            throw new BoxJSONException(e);
+        }
+    }
+
+    @Override
+    public <T> T parseIntoBoxObject(InputStream inputStream, Class<T> theClass) throws BoxJSONException {
         try {
             JsonFactory jsonFactory = new JsonFactory();
             JsonParser jp = jsonFactory.createJsonParser(inputStream);
             return getObjectMapper().readValue(jp, theClass);
         }
         catch (Exception e) {
-            return null;
+            throw new BoxJSONException(e);
         }
     }
 
     @Override
-    public <T> T parseIntoBoxObject(final String jsonString, final Class<T> theClass) {
+    public <T> T parseIntoBoxObject(String jsonString, Class<T> theClass) throws BoxJSONException {
         try {
             JsonFactory jsonFactory = new JsonFactory();
             JsonParser jp = jsonFactory.createJsonParser(jsonString);
             return getObjectMapper().readValue(jp, theClass);
         }
         catch (Exception e) {
-            return null;
+            throw new BoxJSONException(e);
         }
     }
 }

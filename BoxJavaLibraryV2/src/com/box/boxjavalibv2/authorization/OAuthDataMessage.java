@@ -40,6 +40,6 @@ public class OAuthDataMessage extends StringMessage {
      */
     @Override
     public BoxOAuthToken getData() {
-        return mParser.parseIntoBoxObject((String) super.getData(), mHub.getClass(BoxResourceType.OAUTH_DATA));
+        return mParser.parseIntoBoxObjectQuietly((String) super.getData(), mHub.getClass(BoxResourceType.OAUTH_DATA));
     }
 }

@@ -21,6 +21,6 @@ public class TestUtils {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static BoxObject getFromJSON(String json, Class cls) throws BoxRestException {
         BoxJSONParser jsonParser = new BoxJSONParser(new BoxResourceHub());
-        return jsonParser.parseIntoBoxObject(json, cls);
+        return jsonParser.parseIntoBoxObjectQuietly(json, cls);
     }
 }

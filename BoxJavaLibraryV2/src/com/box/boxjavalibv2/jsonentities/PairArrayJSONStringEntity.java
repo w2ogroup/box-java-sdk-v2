@@ -21,6 +21,6 @@ public class PairArrayJSONStringEntity extends MapJSONStringEntity {
             entity.put(entry.getKey(), entry.getValue());
             list.add(entity);
         }
-        return parser.convertBoxObjectToJSONString(list);
+        return parser.convertBoxObjectToJSONStringQuietly(list);
     }
 }

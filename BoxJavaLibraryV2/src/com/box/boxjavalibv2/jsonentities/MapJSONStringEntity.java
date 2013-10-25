@@ -15,7 +15,7 @@ public class MapJSONStringEntity extends LinkedHashMap<String, Object> implement
 
     @Override
     public String toJSONString(IBoxJSONParser parser) throws BoxJSONException {
-        return parser.convertBoxObjectToJSONString(this);
+        return parser.convertBoxObjectToJSONStringQuietly(this);
     }
 
 }

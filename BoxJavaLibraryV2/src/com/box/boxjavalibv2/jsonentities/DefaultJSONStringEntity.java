@@ -13,7 +13,7 @@ public class DefaultJSONStringEntity extends BoxBase implements IBoxJSONStringEn
 
     @Override
     public String toJSONString(IBoxJSONParser parser) throws BoxJSONException {
-        return parser.convertBoxObjectToJSONString(this);
+        return parser.convertBoxObjectToJSONStringQuietly(this);
     }
 
 }
