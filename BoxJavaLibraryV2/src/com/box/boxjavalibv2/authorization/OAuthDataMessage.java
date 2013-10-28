@@ -38,8 +38,9 @@ public class OAuthDataMessage extends StringMessage {
      * 
      * @return OAuthData
      */
+    @SuppressWarnings("unchecked")
     @Override
     public BoxOAuthToken getData() {
-        return mParser.parseIntoBoxObjectQuietly((String) super.getData(), mHub.getClass(BoxResourceType.OAUTH_DATA));
+        return mParser.parseIntoBoxObjectQuietly((String) super.getData(), (Class<BoxOAuthToken>) mHub.getClass(BoxResourceType.OAUTH_DATA));
     }
 }
