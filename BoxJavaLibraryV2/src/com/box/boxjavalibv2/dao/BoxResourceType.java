@@ -59,7 +59,9 @@ public enum BoxResourceType {
     /** File lock (shows up in event stream). */
     LOCK,
     /** Service action is a subtype of file lock. */
-    SERVICE_ACTION;
+    SERVICE_ACTION,
+    /** Administrator settings */    
+    ADMIN_SETTINGS;
 
     // As a performance optimization, set up string values for all types.
     private static final Map<BoxResourceType, String> typeToLowercaseString = new HashMap<BoxResourceType, String>();
