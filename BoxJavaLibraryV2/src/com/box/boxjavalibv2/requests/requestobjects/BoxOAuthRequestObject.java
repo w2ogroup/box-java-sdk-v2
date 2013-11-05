@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.CharEncoding;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
@@ -107,7 +108,10 @@ public class BoxOAuthRequestObject extends BoxDefaultRequestObject {
         for (Map.Entry<String, Object> entry : getJSONEntity().entrySet()) {
             Object value = entry.getValue();
             if (value != null && value instanceof String) {
-                pairs.add(new BasicNameValuePair(entry.getKey(), (String) entry.getValue()));
+                String strValue = (String) value;
+                if (StringUtils.isNotEmpty(strValue)) {
+                    pairs.add(new BasicNameValuePair(entry.getKey(), strValue));
+                }
             }
         }
 
