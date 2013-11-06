@@ -266,9 +266,10 @@ public class OAuthDataController implements IAuthDataController {
     private void doRefresh() throws AuthFatalFailureException {
         setTokenState(OAuthTokenState.REFRESHING);
         try {
-            mOAuthToken = mClient.getOAuthManager().refreshOAuth(
-                (BoxOAuthRequestObject) BoxOAuthRequestObject.refreshOAuthRequestObject(mOAuthToken.getRefreshToken(), mClientId, mClientSecret)
-                    .addQueryParam("device_id", mDeviceId).addQueryParam("device_name", mDeviceName));
+            BoxOAuthRequestObject requestObj = BoxOAuthRequestObject.refreshOAuthRequestObject(mOAuthToken.getRefreshToken(), mClientId, mClientSecret);
+            requestObj.put("device_id", mDeviceId);
+            requestObj.put("device_name", mDeviceName);
+            mOAuthToken = mClient.getOAuthManager().refreshOAuth(requestObj);
             setTokenState(OAuthTokenState.AVAILABLE);
             if (refreshListener != null) {
                 refreshListener.onRefresh(mOAuthToken);
