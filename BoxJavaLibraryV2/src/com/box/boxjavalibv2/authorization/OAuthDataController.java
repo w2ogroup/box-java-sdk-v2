@@ -275,11 +275,13 @@ public class OAuthDataController implements IAuthDataController {
                 refreshListener.onRefresh(mOAuthToken);
             }
 
-            unlock();
         }
         catch (Exception e) {
             setTokenState(OAuthTokenState.FAIL);
             throw new AuthFatalFailureException(true);
+        }
+        finally {
+            unlock();
         }
     }
 
