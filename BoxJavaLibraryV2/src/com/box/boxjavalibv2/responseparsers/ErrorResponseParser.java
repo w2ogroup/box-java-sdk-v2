@@ -1,5 +1,11 @@
 package com.box.boxjavalibv2.responseparsers;
 
+import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+
+import com.box.boxjavalibv2.dao.BoxGenericServerError;
 import com.box.boxjavalibv2.dao.BoxServerError;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedStatus;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
@@ -35,6 +41,24 @@ public class ErrorResponseParser extends DefaultBoxJSONResponseParser {
         }
         error.setHttpStatusCode(statusCode);
         return error;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected Object parseInputStream(InputStream in) {
+        String errorStr = null;
+        try {
+            errorStr = IOUtils.toString(in);
+            return getParser().parseIntoBoxObjectQuietly(errorStr, getObjectClass());
+        }
+        catch (Exception e) {
+            BoxGenericServerError genericE = new BoxGenericServerError();
+            if (StringUtils.isEmpty(errorStr)) {
+                errorStr = e.getMessage();
+            }
+            genericE.setMessage(errorStr);
+            return genericE;
+        }
     }
 
     private boolean isErrorResponse(int statusCode) {
