@@ -36,6 +36,10 @@ public class DefaultBoxJSONResponseParser implements IBoxResponseParser {
         this.mParser = parser;
     }
 
+    public IBoxJSONParser getParser() {
+        return mParser;
+    }
+
     /**
      * Class of the wrapped object.
      * 
@@ -84,7 +88,7 @@ public class DefaultBoxJSONResponseParser implements IBoxResponseParser {
      * @throws BoxRestException
      */
     @SuppressWarnings("unchecked")
-    private Object parseInputStream(InputStream in) throws BoxRestException {
-        return mParser.parseIntoBoxObjectQuietly(in, objectClass);
+    protected Object parseInputStream(InputStream in) throws BoxRestException {
+        return getParser().parseIntoBoxObjectQuietly(in, getObjectClass());
     }
 }
