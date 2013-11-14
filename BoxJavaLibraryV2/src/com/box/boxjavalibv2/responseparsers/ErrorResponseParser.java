@@ -49,7 +49,7 @@ public class ErrorResponseParser extends DefaultBoxJSONResponseParser {
         String errorStr = null;
         try {
             errorStr = IOUtils.toString(in);
-            return getParser().parseIntoBoxObjectQuietly(errorStr, getObjectClass());
+            return getParser().parseIntoBoxObject(errorStr, getObjectClass());
         }
         catch (Exception e) {
             BoxGenericServerError genericE = new BoxGenericServerError();
