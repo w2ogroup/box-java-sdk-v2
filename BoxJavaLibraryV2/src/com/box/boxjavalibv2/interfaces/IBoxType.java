@@ -4,6 +4,4 @@ public interface IBoxType {
 
     String name();
 
-    @Override
-    String toString();
 }

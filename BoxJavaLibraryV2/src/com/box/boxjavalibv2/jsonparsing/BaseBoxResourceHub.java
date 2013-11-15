@@ -21,7 +21,7 @@ public abstract class BaseBoxResourceHub implements IBoxResourceHub {
     protected abstract Class getConcreteClassForIBoxType();
 
     /**
-     * Get class for a certain IBoxType, assuming the type is an object of the concrete class of IBoxType defined in this resource hub.
+     * Get class for a certain type, assuming the input type is an object of the concrete class of IBoxType defined in this resource hub.
      * 
      * @param <T>
      * 
