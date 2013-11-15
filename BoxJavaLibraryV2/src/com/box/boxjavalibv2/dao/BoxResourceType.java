@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import com.box.boxjavalibv2.interfaces.IBoxType;
+
 /**
  * Type of resources that can be requested by API's.
  */
-public enum BoxResourceType {
+public enum BoxResourceType implements IBoxType {
     /*** An item, which could be a file, a folder, a weblink... */
     ITEM,
     /** A plural format of {@link #ITEM}. */
@@ -60,7 +62,7 @@ public enum BoxResourceType {
     LOCK,
     /** Service action is a subtype of file lock. */
     SERVICE_ACTION,
-    /** Administrator settings */    
+    /** Administrator settings */
     ADMIN_SETTINGS;
 
     // As a performance optimization, set up string values for all types.
