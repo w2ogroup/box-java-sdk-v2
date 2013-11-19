@@ -18,14 +18,24 @@ import com.box.boxjavalibv2.dao.BoxServerError;
 import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.dao.BoxUser;
 import com.box.boxjavalibv2.dao.BoxWebLink;
-import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
+import com.box.boxjavalibv2.interfaces.IBoxType;
 
-public class BoxResourceHub implements IBoxResourceHub {
+public class BoxResourceHub extends BaseBoxResourceHub {
 
     @Override
     @SuppressWarnings("rawtypes")
-    public Class getClass(BoxResourceType type) {
-        switch (type) {
+    public Class getClass(IBoxType type) {
+        if (getConcreteClassForIBoxType().equals(type.getClass())) {
+            return getObjectClassGivenConcreteIBoxType(type);
+        }
+        else {
+            return super.getClass(type);
+        }
+    }
+
+    @Override
+    protected Class getObjectClassGivenConcreteIBoxType(IBoxType type) {
+        switch ((BoxResourceType) type) {
             case FILE:
                 return BoxFile.class;
             case PREVIEW:
@@ -67,5 +77,11 @@ public class BoxResourceHub implements IBoxResourceHub {
             default:
                 return BoxTypedObject.class;
         }
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    protected Class getConcreteClassForIBoxType() {
+        return BoxResourceType.class;
     }
 }

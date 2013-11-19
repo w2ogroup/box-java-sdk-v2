@@ -12,6 +12,5 @@ public interface IBoxResourceHub {
      * @return corresponding resource DAO class
      */
     @SuppressWarnings("rawtypes")
-    Class getClass(BoxResourceType type);
-
+    Class getClass(IBoxType type);
 }
