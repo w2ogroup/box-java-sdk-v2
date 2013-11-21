@@ -13,11 +13,10 @@ import com.box.restclientv2.httpclientsupport.HttpClientURLEncodedUtils;
  */
 public class OAuthWebViewData {
 
-    public static final String CODE_RESPONSE = "code";
-    private static final String REDIRECT_URL = "https://cloud.box.com/platform/";
-    private static final String RESPONSE_TYPE = "code";
+    private final String RESPONSE_TYPE = "code";
     private final OAuthDataController mOAuthDataController;
     private String mOptionalState;
+    private String redirectUrl;
 
     /**
      * Constructor.
@@ -58,7 +57,11 @@ public class OAuthWebViewData {
      * @return the redirectUrl
      */
     public String getRedirectUrl() {
-        return REDIRECT_URL;
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String url) {
+        this.redirectUrl = url;
     }
 
     /**
@@ -115,6 +118,9 @@ public class OAuthWebViewData {
         ub.addParameter("client_id", getClientId());
         if (StringUtils.isNotEmpty(getOptionalState())) {
             ub.addParameter("state", getOptionalState());
+        }
+        if (StringUtils.isNotEmpty(getRedirectUrl())) {
+            ub.addParameter("redirect_uri", getRedirectUrl());
         }
         HttpClientURLEncodedUtils.format(ub.getQueryParams(), "UTF-8");
         return ub.build();
