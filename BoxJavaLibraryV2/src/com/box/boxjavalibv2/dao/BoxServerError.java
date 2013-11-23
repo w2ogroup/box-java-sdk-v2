@@ -3,6 +3,7 @@ package com.box.boxjavalibv2.dao;
 import java.util.Map;
 
 import com.box.boxjavalibv2.interfaces.IBoxParcelWrapper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -11,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class BoxServerError extends BoxTypedObject {
 
     public static final String FIELD_STATUS = "status";
-    public static final String FIELD_HTTP_STATUS_CODE = "httpStatusCode";
     public static final String FIELD_CODE = "code";
     public static final String FIELD_HELP_URL = "help_url";
     public static final String FIELD_MESSAGE = "message";
@@ -54,7 +54,7 @@ public class BoxServerError extends BoxTypedObject {
      *            the status to set
      */
     @JsonProperty(FIELD_STATUS)
-    protected void setStatus(Integer status) {
+    public void setStatus(Integer status) {
         put(FIELD_STATUS, status);
     }
 
@@ -135,23 +135,14 @@ public class BoxServerError extends BoxTypedObject {
     }
 
     /**
-     * Set the status code returned from http response.
-     * 
-     * @param statusCode
-     */
-    @JsonProperty(FIELD_HTTP_STATUS_CODE)
-    public void setHttpStatusCode(Integer statusCode) {
-        put(FIELD_HTTP_STATUS_CODE, statusCode);
-    }
-
-    /**
-     * Get the status code returned from http response.
+     * Deprecated, use getStatus() instead
      * 
      * @return status code
      */
-    @JsonProperty(FIELD_HTTP_STATUS_CODE)
+    @JsonIgnore
+    @Deprecated
     public Integer getHttpStatusCode() {
-        return (Integer) getValue(FIELD_HTTP_STATUS_CODE);
+        return getStatus();
     }
 
     @Override

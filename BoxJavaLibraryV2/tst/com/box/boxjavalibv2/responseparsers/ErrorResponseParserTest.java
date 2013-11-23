@@ -36,7 +36,7 @@ public class ErrorResponseParserTest {
     @Before
     public void setUp() {
         error = new BoxServerError();
-        error.setHttpStatusCode(HttpStatus.SC_FORBIDDEN);
+        error.setStatus(HttpStatus.SC_FORBIDDEN);
         boxResponse = EasyMock.createMock(DefaultBoxResponse.class);
         response = EasyMock.createMock(BasicHttpResponse.class);
         entity = EasyMock.createMock(StringEntity.class);
