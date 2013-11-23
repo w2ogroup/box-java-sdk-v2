@@ -41,7 +41,10 @@ public class BoxServerException extends BoxSDKException {
      */
     public BoxServerException(BoxServerError error) {
         this.error = error;
-        this.statusCode = error.getStatus();
+        Integer status = error.getStatus();
+        if (status != null) {
+            this.statusCode = status;
+        }
     }
 
     /**

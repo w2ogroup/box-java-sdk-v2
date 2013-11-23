@@ -39,7 +39,7 @@ public class ErrorResponseParser extends DefaultBoxJSONResponseParser {
         else {
             error = new BoxUnexpectedStatus(statusCode);
         }
-        error.setHttpStatusCode(statusCode);
+        error.setStatus(statusCode);
         return error;
     }
 
