@@ -31,8 +31,8 @@ public class OAuthDataController implements IAuthDataController {
     private final String mClientSecret;
     private String mDeviceId = null;
     private String mDeviceName = null;
-    private BoxOAuthToken mOAuthToken;
-    private OAuthTokenState mTokenState = OAuthTokenState.PRE_CREATION;
+    private volatile BoxOAuthToken mOAuthToken;
+    private volatile OAuthTokenState mTokenState = OAuthTokenState.PRE_CREATION;
     private boolean mAutoRefresh;
     private int mWaitTimeOut = WAIT_TIME_OUT;
 
