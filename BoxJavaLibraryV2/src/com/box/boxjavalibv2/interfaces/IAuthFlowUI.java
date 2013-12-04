@@ -22,4 +22,14 @@ public interface IAuthFlowUI {
      */
     void initializeAuthFlow(final Object applicationContext, String clientId, String clientSecret);
 
+    /**
+     * Initialize the UI for OAuth flow. This needs to be called everytime before starting an auth flow.
+     * 
+     * @param activity
+     * @param clientId
+     * @param clientSecret
+     * @param redirectUrl
+     */
+    void initializeAuthFlow(final Object applicationContext, String clientId, String clientSecret, String redirectUrl);
+
 }
