@@ -81,9 +81,17 @@ public class JavaFxOAuthFlow implements IAuthFlowUI {
     }
 
     @Override
-    public void initializeAuthFlow(final Object applicationContext, String clientId, String clientSecret) {
+    public void initializeAuthFlow(final Object activity, String clientId, String clientSecret) {
+        initializeAuthFlow(activity, clientId, clientSecret, null);
+    }
+
+    @Override
+    public void initializeAuthFlow(Object activity, String clientId, String clientSecret, String redirectUrl) {
         client = new BoxClient(clientId, clientSecret, null, null);
         mWebViewData = new OAuthWebViewData(client.getOAuthDataController());
+        if (StringUtils.isNotEmpty(redirectUrl)) {
+            mWebViewData.setRedirectUrl(redirectUrl);
+        }
         webView = new WebView();
         webView.setMinSize(minWidth, minHeight);
         webView.setMaxSize(maxWidth, maxHeight);
