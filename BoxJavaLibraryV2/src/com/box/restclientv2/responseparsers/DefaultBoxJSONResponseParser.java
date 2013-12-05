@@ -5,6 +5,7 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 
+import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxResponse;
@@ -88,7 +89,7 @@ public class DefaultBoxJSONResponseParser implements IBoxResponseParser {
      * @throws BoxRestException
      */
     @SuppressWarnings("unchecked")
-    protected Object parseInputStream(InputStream in) throws BoxRestException {
-        return getParser().parseIntoBoxObjectQuietly(in, getObjectClass());
+    protected Object parseInputStream(InputStream in) throws BoxRestException, BoxJSONException {
+        return mParser.parseIntoBoxObject(in, objectClass);
     }
 }

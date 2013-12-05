@@ -30,6 +30,8 @@ public enum BoxResourceType implements IBoxType {
     USER,
     /** A plural format of {@link #USER}. */
     USERS,
+    /** A group of {@link #GROUPS}. */
+    GROUP,
     /** A comment. */
     COMMENT,
     /** A plural format of {@link #COMMENT}. */
