@@ -203,6 +203,9 @@ public abstract class BoxResourceManager {
                 return obj;
             }
             else {
+                if (obj == null) {
+                    throw new BoxRestException("Invalid class, expected:" + expectedClass.getCanonicalName());
+                }
                 throw new BoxRestException("Invalid class, expected:" + expectedClass.getCanonicalName() + ";current:" + obj.getClass().getCanonicalName());
             }
         }

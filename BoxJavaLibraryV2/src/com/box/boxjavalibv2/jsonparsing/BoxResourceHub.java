@@ -8,6 +8,7 @@ import com.box.boxjavalibv2.dao.BoxEvent;
 import com.box.boxjavalibv2.dao.BoxFile;
 import com.box.boxjavalibv2.dao.BoxFileVersion;
 import com.box.boxjavalibv2.dao.BoxFolder;
+import com.box.boxjavalibv2.dao.BoxGroup;
 import com.box.boxjavalibv2.dao.BoxItem;
 import com.box.boxjavalibv2.dao.BoxLock;
 import com.box.boxjavalibv2.dao.BoxOAuthToken;
@@ -46,6 +47,8 @@ public class BoxResourceHub extends BaseBoxResourceHub {
                 return BoxWebLink.class;
             case USER:
                 return BoxUser.class;
+            case GROUP:
+                return BoxGroup.class;
             case FILE_VERSION:
                 return BoxFileVersion.class;
             case ITEM:
