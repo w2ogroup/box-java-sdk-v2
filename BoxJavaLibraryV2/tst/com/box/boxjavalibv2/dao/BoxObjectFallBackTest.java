@@ -11,6 +11,9 @@ import org.junit.Test;
 import com.box.boxjavalibv2.testutils.TestUtils;
 import com.box.restclientv2.exceptions.BoxRestException;
 
+/**
+ * Test when parsing box object, if type cannot be recognized, we fall back to the specified base object.
+ */
 public class BoxObjectFallBackTest {
 
     @Test
@@ -20,6 +23,11 @@ public class BoxObjectFallBackTest {
         Assert.assertEquals(BoxTypedObject.class, obj.getClass());
 
         BoxItem obj1 = (BoxItem) TestUtils.getFromJSON(json, BoxItem.class);
+        Assert.assertEquals(BoxItem.class, obj1.getClass());
+
+        // Make sure can also parse for string without type.
+        json = json.replace("\"type\":\"notype\",", "");
+        obj1 = (BoxItem) TestUtils.getFromJSON(json, BoxItem.class);
         Assert.assertEquals(BoxItem.class, obj1.getClass());
     }
 }
