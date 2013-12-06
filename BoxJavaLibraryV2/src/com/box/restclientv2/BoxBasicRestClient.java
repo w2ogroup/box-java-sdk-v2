@@ -27,7 +27,7 @@ import com.box.restclientv2.responses.DefaultBoxResponse;
  */
 public class BoxBasicRestClient implements IBoxRESTClient {
 
-    final DefaultHttpClient mHttpClient;
+    private final DefaultHttpClient mHttpClient;
 
     public HttpClient getRawHttpClient() {
         return mHttpClient;
