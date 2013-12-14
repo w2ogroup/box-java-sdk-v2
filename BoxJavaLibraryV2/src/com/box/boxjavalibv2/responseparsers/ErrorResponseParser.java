@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.box.boxjavalibv2.dao.BoxGenericServerError;
 import com.box.boxjavalibv2.dao.BoxServerError;
-import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedStatus;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -50,7 +49,7 @@ public class ErrorResponseParser extends DefaultBoxJSONResponseParser {
         String errorStr = null;
         try {
             errorStr = IOUtils.toString(in);
-            BoxTypedObject obj = getParser().parseIntoBoxObject(errorStr, getObjectClass());
+            Object obj = getParser().parseIntoBoxObject(errorStr, getObjectClass());
             // JSON parser falls back to BoxTypedObject when there is no "type" in error String. In this case, this "BoxTypedObject" does not really make sense
             // and should not be used.
             if (obj instanceof BoxServerError) {
