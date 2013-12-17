@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 /**
  * Box item, this is a base class for the box items({@link BoxFileV2}/{@link BoxFolder}/...)
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = BoxItem.class)
 public class BoxItem extends BoxTypedObject {
 
     public static final String FIELD_ETAG = "etag";

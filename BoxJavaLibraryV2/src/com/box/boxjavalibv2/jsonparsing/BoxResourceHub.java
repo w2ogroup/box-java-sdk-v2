@@ -5,6 +5,7 @@ import com.box.boxjavalibv2.dao.BoxCollection;
 import com.box.boxjavalibv2.dao.BoxComment;
 import com.box.boxjavalibv2.dao.BoxEmailAlias;
 import com.box.boxjavalibv2.dao.BoxEvent;
+import com.box.boxjavalibv2.dao.BoxEventCollection;
 import com.box.boxjavalibv2.dao.BoxFile;
 import com.box.boxjavalibv2.dao.BoxFileVersion;
 import com.box.boxjavalibv2.dao.BoxFolder;
@@ -63,6 +64,8 @@ public class BoxResourceHub extends BaseBoxResourceHub {
                 return BoxOAuthToken.class;
             case EVENT:
                 return BoxEvent.class;
+            case EVENTS:
+                return BoxEventCollection.class;
             case REALTIME_SERVER:
                 return BoxRealTimeServer.class;
             case LOCK:
