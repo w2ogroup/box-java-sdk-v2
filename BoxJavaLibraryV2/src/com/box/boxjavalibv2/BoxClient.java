@@ -325,8 +325,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @param authFlowUI
      *            UI for the auth(OAuth) flow.
      * @param autoRefreshOAuth
-     *            whether the OAuth token should be auto refreshed when it expires. Note only set this to true when you are making api calls in a single thread
-     *            fashion, multi-thread auto-refreshing at a same time could cause problem.
+     *            whether the OAuth token should be auto refreshed when it expires.
      * @param listener
      *            listener listening to the auth flow events.
      */

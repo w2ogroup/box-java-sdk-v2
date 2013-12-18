@@ -213,9 +213,6 @@ public class OAuthDataController implements IAuthDataController {
             return mOAuthToken;
         }
         else {
-            if (getTokenState() == OAuthTokenState.FAIL) {
-                throw new AuthFatalFailureException();
-            }
             doWait();
             numRetry[0]++;
             return getAuthData(numRetry);

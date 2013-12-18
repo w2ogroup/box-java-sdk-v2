@@ -54,7 +54,8 @@ public class BoxOAuthManager extends BoxResourceManager {
     }
 
     /**
-     * Refresh the OAuth token.
+     * Refresh the OAuth token. Don't call this directly if you enabled OAuth auto-refresh since this is not thread safe. In that case, call
+     * boxClient.getOAuthDataController().refresh(), which is thread-safe.
      * 
      * @param requestObject
      *            request object
