@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
 
 import com.box.boxjavalibv2.dao.BoxGenericServerError;
 import com.box.boxjavalibv2.dao.BoxServerError;
@@ -31,13 +32,20 @@ public class ErrorResponseParser extends DefaultBoxJSONResponseParser {
             throw new BoxRestException("class mismatch, expected:" + DefaultBoxResponse.class.getName() + ";current:" + response.getClass().getName());
         }
 
-        int statusCode = ((DefaultBoxResponse) response).getHttpResponse().getStatusLine().getStatusCode();
+        HttpResponse httpResponse = ((DefaultBoxResponse) response).getHttpResponse();
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
         BoxServerError error = null;
         if (isErrorResponse(statusCode)) {
             error = (BoxServerError) super.parse(response);
         }
         else {
             error = new BoxUnexpectedStatus(statusCode);
+            try {
+                httpResponse.getEntity().consumeContent();
+            }
+            catch (Exception e) {
+                // Nothing we can do here. Worst case we left an InputStream open and it will be recycled later.
+            }
         }
         error.setStatus(statusCode);
         return error;
