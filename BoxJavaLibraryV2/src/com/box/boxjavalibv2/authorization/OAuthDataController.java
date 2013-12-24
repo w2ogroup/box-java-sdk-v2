@@ -20,7 +20,7 @@ public class OAuthDataController implements IAuthDataController {
     /**
      * Time to wait for lock.
      */
-    private static final int WAIT = 100;
+    private static final int WAIT = 200;
     /**
      * Default timeout waiting for lock.
      */
@@ -162,15 +162,24 @@ public class OAuthDataController implements IAuthDataController {
     }
 
     /**
-     * get OAuthData.
+     * Get OAuthData, counting number of retries, in case of too many retries, throw.
      * 
      * @return OAuthData
      * @throws AuthFatalFailureException
      */
     @Override
     public BoxOAuthToken getAuthData() throws AuthFatalFailureException {
-        int[] num = new int[] {0};
-        return getAuthData(num);
+        long num = 0;
+        while (num * WAIT <= mWaitTimeOut) {
+            if (getAndSetLock(false)) {
+                return mOAuthToken;
+            }
+            else {
+                doWait();
+                num++;
+            }
+        }
+        throw new AuthFatalFailureException();
     }
 
     /**
@@ -192,30 +201,6 @@ public class OAuthDataController implements IAuthDataController {
             else {
                 doRefresh();
             }
-        }
-    }
-
-    /**
-     * Get OAuthData, counting number of retries, in case of too many retries, throw.
-     * 
-     * @param numRetry
-     *            array holding number of retries.
-     * @return
-     * @throws AuthFatalFailureException
-     */
-    private BoxOAuthToken getAuthData(int[] numRetry) throws AuthFatalFailureException {
-        int num = numRetry[0];
-        if (num * WAIT > mWaitTimeOut) {
-            throw new AuthFatalFailureException();
-        }
-
-        if (getAndSetLock(false)) {
-            return mOAuthToken;
-        }
-        else {
-            doWait();
-            numRetry[0]++;
-            return getAuthData(numRetry);
         }
     }
 
