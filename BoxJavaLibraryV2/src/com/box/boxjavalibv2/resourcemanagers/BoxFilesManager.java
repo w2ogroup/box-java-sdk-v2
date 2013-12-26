@@ -15,6 +15,7 @@ import com.box.boxjavalibv2.dao.BoxFile;
 import com.box.boxjavalibv2.dao.BoxFileVersion;
 import com.box.boxjavalibv2.dao.BoxPreview;
 import com.box.boxjavalibv2.dao.BoxResourceType;
+import com.box.boxjavalibv2.dao.BoxServerError;
 import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
@@ -35,6 +36,7 @@ import com.box.boxjavalibv2.requests.requestobjects.BoxImageRequestObject;
 import com.box.boxjavalibv2.requests.requestobjects.BoxItemRestoreRequestObject;
 import com.box.boxjavalibv2.responseparsers.ErrorResponseParser;
 import com.box.boxjavalibv2.responseparsers.PreviewResponseParser;
+import com.box.boxjavalibv2.responseparsers.RetryErrorResponseParser;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.interfaces.IBoxRESTClient;
@@ -206,6 +208,13 @@ public class BoxFilesManager extends BoxItemsManager {
         ThumbnailRequest request = new ThumbnailRequest(getConfig(), getJSONParser(), fileId, extension, requestObject);
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
+        if (response.getResponseStatusCode() != HttpStatus.SC_OK) {
+            RetryErrorResponseParser errorParser = new RetryErrorResponseParser(getJSONParser());
+            Object o = errorParser.parse(response);
+            if (o instanceof BoxServerError) {
+                throw new BoxServerException((BoxServerError) o);
+            }
+        }
         return (InputStream) (new DefaultFileResponseParser()).parse(response);
     }
 
