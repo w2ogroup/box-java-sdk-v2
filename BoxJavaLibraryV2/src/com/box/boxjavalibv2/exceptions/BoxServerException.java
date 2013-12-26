@@ -69,4 +69,18 @@ public class BoxServerException extends BoxSDKException {
     public int getStatusCode() {
         return statusCode;
     }
+
+
+    @Override
+    public String getMessage() {
+        if ( customMessage != null ) {
+            return String.format( "%s:%s", statusCode, customMessage );
+        } else if ( error != null ) {
+            return error.getMessage();
+        } else {
+            return null;
+        }
+    }
+
+
 }
