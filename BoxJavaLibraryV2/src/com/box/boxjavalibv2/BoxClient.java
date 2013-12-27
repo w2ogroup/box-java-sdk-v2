@@ -104,7 +104,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      */
     public boolean isAuthenticated() {
         try {
-            return getAuthData() != null;
+            return getOAuthDataController().getTokenState() != OAuthTokenState.FAIL && getAuthData() != null;
         }
         catch (AuthFatalFailureException e) {
             return false;
