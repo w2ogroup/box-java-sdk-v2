@@ -15,6 +15,7 @@ import com.box.boxjavalibv2.dao.BoxFile;
 import com.box.boxjavalibv2.dao.BoxFileVersion;
 import com.box.boxjavalibv2.dao.BoxPreview;
 import com.box.boxjavalibv2.dao.BoxResourceType;
+import com.box.boxjavalibv2.dao.BoxServerError;
 import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
@@ -206,6 +207,13 @@ public class BoxFilesManager extends BoxItemsManager {
         ThumbnailRequest request = new ThumbnailRequest(getConfig(), getJSONParser(), fileId, extension, requestObject);
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
+        if (response.getResponseStatusCode() != request.getExpectedHttpStatus()) {
+            ErrorResponseParser errorParser = new ErrorResponseParser(getJSONParser());
+            Object o = errorParser.parse(response);
+            if (o instanceof BoxServerError) {
+                throw new BoxServerException((BoxServerError) o);
+            }
+        }
         return (InputStream) (new DefaultFileResponseParser()).parse(response);
     }
 

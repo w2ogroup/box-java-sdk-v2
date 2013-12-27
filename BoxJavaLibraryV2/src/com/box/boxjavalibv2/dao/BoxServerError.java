@@ -134,6 +134,7 @@ public class BoxServerError extends BoxTypedObject {
         put(FIELD_REQUEST_ID, requestId);
     }
 
+
     /**
      * Deprecated, use getStatus() instead
      * 
