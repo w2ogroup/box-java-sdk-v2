@@ -207,7 +207,7 @@ public class BoxFilesManager extends BoxItemsManager {
         ThumbnailRequest request = new ThumbnailRequest(getConfig(), getJSONParser(), fileId, extension, requestObject);
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
-        if (response.getResponseStatusCode() != HttpStatus.SC_OK) {
+        if (response.getResponseStatusCode() != request.getExpectedHttpStatus()) {
             ErrorResponseParser errorParser = new ErrorResponseParser(getJSONParser());
             Object o = errorParser.parse(response);
             if (o instanceof BoxServerError) {
