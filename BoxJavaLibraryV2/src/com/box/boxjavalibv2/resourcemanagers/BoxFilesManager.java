@@ -8,8 +8,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpStatus;
-
 import com.box.boxjavalibv2.dao.BoxCollection;
 import com.box.boxjavalibv2.dao.BoxFile;
 import com.box.boxjavalibv2.dao.BoxFileVersion;
@@ -207,7 +205,7 @@ public class BoxFilesManager extends BoxItemsManager {
         ThumbnailRequest request = new ThumbnailRequest(getConfig(), getJSONParser(), fileId, extension, requestObject);
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
-        if (response.getResponseStatusCode() != request.getExpectedHttpStatus()) {
+        if (response.getResponseStatusCode() != request.getExpectedResponseCode()) {
             ErrorResponseParser errorParser = new ErrorResponseParser(getJSONParser());
             Object o = errorParser.parse(response);
             if (o instanceof BoxServerError) {
