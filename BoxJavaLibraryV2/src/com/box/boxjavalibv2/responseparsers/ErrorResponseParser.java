@@ -4,7 +4,9 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 
 import com.box.boxjavalibv2.dao.BoxGenericServerError;
 import com.box.boxjavalibv2.dao.BoxServerError;
@@ -21,6 +23,8 @@ import com.box.restclientv2.responses.DefaultBoxResponse;
  * objects.
  */
 public class ErrorResponseParser extends DefaultBoxJSONResponseParser {
+    
+    private static final String RETRY_AFTER = "Retry-After";
 
     public ErrorResponseParser(final IBoxJSONParser parser) {
         super(BoxServerError.class, parser);
@@ -40,6 +44,14 @@ public class ErrorResponseParser extends DefaultBoxJSONResponseParser {
         }
         else {
             error = new BoxUnexpectedStatus(statusCode);
+            if (isRetryAccepted(statusCode)) {
+                Header header = ((DefaultBoxResponse) response).getHttpResponse().getFirstHeader(RETRY_AFTER);
+                if (header != null) {
+                    String value = header.getValue();
+                    ((BoxUnexpectedStatus) error).setRetryAfter(Integer.valueOf(value));
+                }
+            }
+            
             try {
                 httpResponse.getEntity().consumeContent();
             }
@@ -78,4 +90,9 @@ public class ErrorResponseParser extends DefaultBoxJSONResponseParser {
     private boolean isErrorResponse(int statusCode) {
         return statusCode >= 400 && statusCode < 600;
     }
+    
+    private boolean isRetryAccepted(int statusCode) {
+        return statusCode == HttpStatus.SC_ACCEPTED;
+    }
+    
 }

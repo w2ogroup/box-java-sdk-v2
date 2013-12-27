@@ -36,7 +36,6 @@ import com.box.boxjavalibv2.requests.requestobjects.BoxImageRequestObject;
 import com.box.boxjavalibv2.requests.requestobjects.BoxItemRestoreRequestObject;
 import com.box.boxjavalibv2.responseparsers.ErrorResponseParser;
 import com.box.boxjavalibv2.responseparsers.PreviewResponseParser;
-import com.box.boxjavalibv2.responseparsers.RetryErrorResponseParser;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxConfig;
 import com.box.restclientv2.interfaces.IBoxRESTClient;
@@ -209,7 +208,7 @@ public class BoxFilesManager extends BoxItemsManager {
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
         if (response.getResponseStatusCode() != HttpStatus.SC_OK) {
-            RetryErrorResponseParser errorParser = new RetryErrorResponseParser(getJSONParser());
+            ErrorResponseParser errorParser = new ErrorResponseParser(getJSONParser());
             Object o = errorParser.parse(response);
             if (o instanceof BoxServerError) {
                 throw new BoxServerException((BoxServerError) o);

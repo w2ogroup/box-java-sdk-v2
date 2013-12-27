@@ -16,7 +16,6 @@ public class BoxServerError extends BoxTypedObject {
     public static final String FIELD_HELP_URL = "help_url";
     public static final String FIELD_MESSAGE = "message";
     public static final String FIELD_REQUEST_ID = "request_id";
-    public static final String FIELD_RETRY_AFTER = "retry_after";
 
     public BoxServerError() {
         setType(BoxResourceType.ERROR.toString());
@@ -135,22 +134,6 @@ public class BoxServerError extends BoxTypedObject {
         put(FIELD_REQUEST_ID, requestId);
     }
 
-    /**
-     * 
-     * @return the time in seconds to wait before retrying this api call.
-     */
-    public Integer getRetryAfter() {
-        return (Integer) getValue(FIELD_RETRY_AFTER);
-    }
-
-    /**
-     * Setter.
-     * 
-     * @param retryAfter
-     */
-    public void setRetryAfter(Integer retryAfter) {
-        put(FIELD_RETRY_AFTER, retryAfter);
-    }
 
     /**
      * Deprecated, use getStatus() instead
