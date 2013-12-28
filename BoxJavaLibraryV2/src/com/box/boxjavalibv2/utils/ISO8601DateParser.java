@@ -7,6 +7,7 @@ package com.box.boxjavalibv2.utils;
  * implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +22,31 @@ import org.apache.commons.lang.StringUtils;
  * @version $Id: ISO8601DateParser.java,v 1.2 2005/06/03 20:25:29 snoopdave Exp $
  */
 public class ISO8601DateParser {
+
+    // Use ThreadLocal because SimpleDateFormat is not thread safe. See http://www.javacodegeeks.com/2010/07/java-best-practices-dateformat-in.html.
+    private final static ThreadLocal<DateFormat> mThreadLocalSimpleDateFormat = new ThreadLocal<DateFormat>() {
+
+        @Override
+        public DateFormat get() {
+            return super.get();
+        }
+
+        @Override
+        protected DateFormat initialValue() {
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+        }
+
+        @Override
+        public void remove() {
+            super.remove();
+        }
+
+        @Override
+        public void set(DateFormat value) {
+            super.set(value);
+        }
+
+    };
 
     // 2004-06-14T19:GMT20:30Z
     // 2004-06-20T06:GMT22:01Z
@@ -71,7 +97,7 @@ public class ISO8601DateParser {
 
         // NOTE: SimpleDateFormat uses GMT[-+]hh:mm for the TZ which breaks
         // things a bit. Before we go on we have to repair this.
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+        DateFormat df = mThreadLocalSimpleDateFormat.get();
 
         // this is zero time so we need to add that TZ indicator for
         if (input.endsWith("Z")) {
@@ -105,7 +131,7 @@ public class ISO8601DateParser {
 
     public static String toString(Date date) {
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+        DateFormat df = mThreadLocalSimpleDateFormat.get();
 
         TimeZone tz = TimeZone.getTimeZone("UTC");
 
