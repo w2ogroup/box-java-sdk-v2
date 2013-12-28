@@ -27,23 +27,8 @@ public class ISO8601DateParser {
     private final static ThreadLocal<DateFormat> mThreadLocalSimpleDateFormat = new ThreadLocal<DateFormat>() {
 
         @Override
-        public DateFormat get() {
-            return super.get();
-        }
-
-        @Override
         protected DateFormat initialValue() {
             return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
-        }
-
-        @Override
-        public void remove() {
-            super.remove();
-        }
-
-        @Override
-        public void set(DateFormat value) {
-            super.set(value);
         }
 
     };
