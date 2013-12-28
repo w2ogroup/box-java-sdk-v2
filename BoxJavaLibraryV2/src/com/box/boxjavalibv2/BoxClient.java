@@ -315,7 +315,14 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      * @param token
      */
     public void authenticate(IAuthData authData) {
-        getOAuthDataController().setOAuthData((BoxOAuthToken) authData);
+        OAuthDataController con = getOAuthDataController();
+        con.setOAuthData((BoxOAuthToken) authData);
+        if (authData != null) {
+            con.setTokenState(OAuthTokenState.AVAILABLE);
+        }
+        else {
+            con.setTokenState(OAuthTokenState.PRE_CREATION);
+        }
     }
 
     /**
