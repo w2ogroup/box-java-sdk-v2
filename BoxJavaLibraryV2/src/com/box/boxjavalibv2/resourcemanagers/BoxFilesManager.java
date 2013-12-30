@@ -17,6 +17,8 @@ import com.box.boxjavalibv2.dao.BoxServerError;
 import com.box.boxjavalibv2.dao.BoxTypedObject;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.boxjavalibv2.exceptions.BoxServerException;
+import com.box.boxjavalibv2.exceptions.BoxUnexpectedHttpStatusException;
+import com.box.boxjavalibv2.exceptions.BoxUnexpectedStatus;
 import com.box.boxjavalibv2.filetransfer.BoxFileDownload;
 import com.box.boxjavalibv2.filetransfer.BoxFileUpload;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
@@ -209,7 +211,12 @@ public class BoxFilesManager extends BoxItemsManager {
             ErrorResponseParser errorParser = new ErrorResponseParser(getJSONParser());
             Object o = errorParser.parse(response);
             if (o instanceof BoxServerError) {
-                throw new BoxServerException((BoxServerError) o);
+                if (o instanceof BoxUnexpectedStatus) {
+                    throw new BoxUnexpectedHttpStatusException((BoxUnexpectedStatus) o);
+                }
+                else {
+                    throw new BoxServerException((BoxServerError) o);
+                }
             }
         }
         return (InputStream) (new DefaultFileResponseParser()).parse(response);
