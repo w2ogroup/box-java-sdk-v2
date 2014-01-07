@@ -2,6 +2,9 @@ package com.box.boxjavalibv2.requests.requestobjects;
 
 public class BoxEventRequestObject extends BoxItemRequestObject {
 
+    /**
+     * Stream position of "now",See http://developers.box.com/docs/#events. Currently it's only supported for regular events, not enterprise events(admin_logs).
+     */
     public static final int STREAM_POSITION_NOW = -1;
 
     public static final String STREAM_TYPE_ALL = "all";
@@ -16,7 +19,8 @@ public class BoxEventRequestObject extends BoxItemRequestObject {
      * 
      * @param streamPosition
      *            Stream position. See http://developers.box.com/docs/#events for how to set this. To set this to "now", use
-     *            BoxEventRequestObject.STREAM_POSITION_NOW.
+     *            BoxEventRequestObject.STREAM_POSITION_NOW.Don't use STREAM_POSITION_NOW if you are requesting for enterprise
+     *            events(admin_logs),STREAM_POSITION_NOW is only supported for regular events.
      * @return BoxEventRequestObject.
      */
     public static BoxEventRequestObject getEventsRequestObject(final long streamPosition) {
