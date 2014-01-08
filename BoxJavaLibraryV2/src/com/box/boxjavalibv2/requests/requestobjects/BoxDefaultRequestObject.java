@@ -151,6 +151,18 @@ public class BoxDefaultRequestObject implements IBoxRequestObject {
     }
 
     /**
+     * Add a key value string pair to the request body.
+     *
+     * @param key
+     *            key
+     * @param value
+     *            value
+     */
+    public String[] put(String key, String[] value) {
+        return (String[]) getJSONEntity().put(key, value);
+    }
+
+    /**
      * Get value.
      * 
      * @param key

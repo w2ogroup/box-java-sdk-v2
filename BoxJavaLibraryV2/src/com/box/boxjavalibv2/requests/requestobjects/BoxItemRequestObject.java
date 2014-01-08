@@ -78,4 +78,9 @@ public class BoxItemRequestObject extends BoxDefaultRequestObject {
         put(BoxFile.FIELD_DESCRIPTION, description);
         return this;
     }
+
+    public BoxItemRequestObject setTags(String[] tags) {
+        put(BoxFile.FIELD_TAGS, tags);
+        return this;
+    }
 }
