@@ -39,5 +39,10 @@ public class BoxUserTest {
         Assert.assertEquals("http://testboxavatarurl.com", fromParcel.getAvatarUrl());
         Assert.assertEquals(true, fromParcel.isExemptFromDeviceLimits().booleanValue());
         Assert.assertEquals(false, fromParcel.isExemptFromLoginVerification().booleanValue());
+
+        String[] tags = fromParcel.getMyTags();
+        Assert.assertEquals(2, tags.length);
+        Assert.assertEquals("mytaga", tags[0]);
+        Assert.assertEquals("mytagb", tags[1]);
     }
 }

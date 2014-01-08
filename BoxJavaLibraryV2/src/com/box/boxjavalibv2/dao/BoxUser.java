@@ -462,7 +462,7 @@ public class BoxUser extends BoxTypedObject {
 
     /**
      * Setter. This is only used by {@see <a href="http://jackson.codehaus.org">Jackson JSON processer</a>}
-     *
+     * 
      * @param my_tags
      *            my_tags
      */
@@ -472,8 +472,8 @@ public class BoxUser extends BoxTypedObject {
     }
 
     /**
-     * Get set of all tags on items that are visible by this user.
-     *
+     * Get set of all tags on items that are visible by this user. Note this is not tags of the "BoxUser" object.
+     * 
      * @return tags
      */
     @JsonProperty(FIELD_MY_TAGS)

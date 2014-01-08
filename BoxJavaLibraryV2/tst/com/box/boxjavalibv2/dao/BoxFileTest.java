@@ -28,5 +28,10 @@ public class BoxFileTest {
         Assert.assertEquals("2", fromParcel.getVersionNumber());
         Assert.assertEquals(2, (int) fromParcel.getCommentCount());
 
+        String[] tags = fromParcel.getTags();
+        Assert.assertEquals(2, tags.length);
+        Assert.assertEquals("taga", tags[0]);
+        Assert.assertEquals("tagb", tags[1]);
+
     }
 }
