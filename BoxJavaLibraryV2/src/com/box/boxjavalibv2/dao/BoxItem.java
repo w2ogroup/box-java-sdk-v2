@@ -24,6 +24,7 @@ public class BoxItem extends BoxTypedObject {
     public static final String FIELD_OWNED_BY = "owned_by";
     public static final String FIELD_PARENT = "parent";
     public static final String FIELD_PATH_COLLECTION = "path_collection";
+    public static final String FIELD_TAGS = "tags";
 
     public BoxItem() {
     }
@@ -65,6 +66,27 @@ public class BoxItem extends BoxTypedObject {
     @JsonProperty(FIELD_PATH_COLLECTION)
     private void setPathCollection(BoxCollection pathCollection) {
         put(FIELD_PATH_COLLECTION, pathCollection);
+    }
+
+    /**
+     * Get the tags that are set on this item.
+     *
+     * @return the tags
+     */
+    @JsonProperty(FIELD_TAGS)
+    public String[] getTags() {
+        return (String[]) getValue(FIELD_TAGS);
+    }
+
+    /**
+     * This is only used by {@see <a href="http://jackson.codehaus.org">Jackson JSON processer</a>}
+     *
+     * @param tags
+     *            the tags to set
+     */
+    @JsonProperty(FIELD_TAGS)
+    private void setTags(String[] tags) {
+        put(FIELD_TAGS, tags);
     }
 
     /**

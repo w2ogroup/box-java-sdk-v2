@@ -50,6 +50,7 @@ public class BoxUser extends BoxTypedObject {
     public static final String FIELD_AVATAR_URL = "avatar_url";
     public static final String FIELD_EXEMPT_FROM_DEVICE_LIMITS = "is_exempt_from_device_limits";
     public static final String FIELD_EXEMPT_FROM_LOGIN_VERIFICATION = "is_exempt_from_login_verification";
+    public static final String FIELD_MY_TAGS = "my_tags";
 
     /**
      * Constructor.
@@ -457,5 +458,26 @@ public class BoxUser extends BoxTypedObject {
     @JsonProperty(FIELD_ENTERPRISE)
     public BoxEnterprise getEnterprise() {
         return (BoxEnterprise) getValue(FIELD_ENTERPRISE);
+    }
+
+    /**
+     * Setter. This is only used by {@see <a href="http://jackson.codehaus.org">Jackson JSON processer</a>}
+     * 
+     * @param my_tags
+     *            my_tags
+     */
+    @JsonProperty(FIELD_MY_TAGS)
+    private void setMyTags(String[] myTags) {
+        put(FIELD_MY_TAGS, myTags);
+    }
+
+    /**
+     * Get set of all tags on items that are visible by this user. Note this is not tags of the "BoxUser" object.
+     * 
+     * @return tags
+     */
+    @JsonProperty(FIELD_MY_TAGS)
+    public String[] getMyTags() {
+        return (String[]) getValue(FIELD_MY_TAGS);
     }
 }
