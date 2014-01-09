@@ -5,7 +5,7 @@ import java.util.Map;
 import com.box.boxjavalibv2.interfaces.IBoxParcelWrapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class BoxEventCollection extends BoxCollection {
+public class BoxEventCollection extends BoxCollectionBase {
 
     public static final String FIELD_CHUNK_SIZE = "chunk_size";
     public static final String FIELD_NEXT_STREAM_POSITION = "next_stream_position";
