@@ -65,7 +65,9 @@ public enum BoxResourceType implements IBoxType {
     /** Service action is a subtype of file lock. */
     SERVICE_ACTION,
     /** Administrator settings */
-    ADMIN_SETTINGS;
+    ADMIN_SETTINGS,
+    /** Login token */
+    LOGIN_TOKEN;
 
     // As a performance optimization, set up string values for all types.
     private static final Map<BoxResourceType, String> typeToLowercaseString = new HashMap<BoxResourceType, String>();
