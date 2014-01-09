@@ -1,14 +1,12 @@
 package com.box.boxjavalibv2.dao;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import com.box.boxjavalibv2.interfaces.IBoxParcelWrapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class BoxCollection extends BoxObject {
+public class BoxCollection extends BoxCollectionBase {
 
-    public static final String FIELD_ENTRIES = "entries";
     public static final String FIELD_TOTAL_COUNT = "total_count";
 
     public BoxCollection() {
@@ -30,24 +28,6 @@ public class BoxCollection extends BoxObject {
      */
     public BoxCollection(Map<String, Object> map) {
         super(map);
-    }
-
-    /**
-     * @return the entries
-     */
-    @SuppressWarnings("unchecked")
-    @JsonProperty("entries")
-    public ArrayList<BoxTypedObject> getEntries() {
-        return (ArrayList<BoxTypedObject>) super.getValue(FIELD_ENTRIES);
-    }
-
-    /**
-     * @param entries
-     *            the entries to set
-     */
-    @JsonProperty("entries")
-    private void setEntries(ArrayList<BoxTypedObject> entries) {
-        put(FIELD_ENTRIES, entries);
     }
 
     /**
