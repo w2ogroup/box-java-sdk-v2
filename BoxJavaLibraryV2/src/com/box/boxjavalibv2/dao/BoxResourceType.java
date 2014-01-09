@@ -66,8 +66,8 @@ public enum BoxResourceType implements IBoxType {
     SERVICE_ACTION,
     /** Administrator settings */
     ADMIN_SETTINGS,
-    /** Local token */
-    LOCAL_TOKEN;
+    /** Login token */
+    LOGIN_TOKEN;
 
     // As a performance optimization, set up string values for all types.
     private static final Map<BoxResourceType, String> typeToLowercaseString = new HashMap<BoxResourceType, String>();
