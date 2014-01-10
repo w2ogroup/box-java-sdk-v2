@@ -15,17 +15,21 @@ public class ConnectionMonitor {
      * @param idleTimeThreshold
      *            time threshold, an idle connection will be closed if idled above this threshold of time.
      */
-    public static void monitorConnection(final ClientConnectionManager connManager, final long timePeriodCleanUpIdleConnection, final long idleTimeThreshold) {
+    public static void monitorConnection(ClientConnectionManager connManager, final long timePeriodCleanUpIdleConnection, final long idleTimeThreshold) {
         final WeakReference<ClientConnectionManager> ref = new WeakReference<ClientConnectionManager>(connManager);
+        connManager = null;
         Thread monitorThread = new Thread() {
 
             @Override
             public void run() {
                 try {
-                    ClientConnectionManager connMan = ref.get();
-                    // while not garbage collected.
-                    while (connMan != null) {
+                    while (true) {
                         synchronized (this) {
+                            ClientConnectionManager connMan = ref.get();
+                            if (connMan == null) {
+                                return;
+                            }
+
                             wait(timePeriodCleanUpIdleConnection);
                             // Close expired connections
                             connMan.closeExpiredConnections();
