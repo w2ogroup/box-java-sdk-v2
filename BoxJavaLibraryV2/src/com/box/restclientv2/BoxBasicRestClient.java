@@ -15,6 +15,7 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
+import com.box.boxjavalibv2.ConnectionMonitor;
 import com.box.boxjavalibv2.exceptions.AuthFatalFailureException;
 import com.box.restclientv2.exceptions.BoxRestException;
 import com.box.restclientv2.interfaces.IBoxRESTClient;
@@ -34,6 +35,33 @@ public class BoxBasicRestClient implements IBoxRESTClient {
     }
 
     /**
+     * 
+     * @param maxConnection
+     * @param maxConnectionPerRoute
+     * @param timePeriodCleanUpIdleConnection
+     *            clean up idle connection every such period of time.
+     * @param idleTimeThreshold
+     *            time threshold, an idle connection will be closed if idled above this threshold of time.
+     */
+    public BoxBasicRestClient(final int maxConnection, final int maxConnectionPerRoute, final long timePeriodCleanUpIdleConnection, final long idleTimeThreshold) {
+        HttpParams params = new BasicHttpParams();
+        ConnManagerParams.setMaxTotalConnections(params, maxConnection);
+        ConnManagerParams.setMaxConnectionsPerRoute(params, new ConnPerRoute() {
+
+            @Override
+            public int getMaxForRoute(HttpRoute httpRoute) {
+                return maxConnectionPerRoute;
+            }
+        });
+        SchemeRegistry schemeReg = new SchemeRegistry();
+        schemeReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+        schemeReg.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
+        ThreadSafeClientConnManager connectionManager = new ThreadSafeClientConnManager(params, schemeReg);
+        ConnectionMonitor.monitorConnection(connectionManager, timePeriodCleanUpIdleConnection, idleTimeThreshold);
+        mHttpClient = new DefaultHttpClient(connectionManager, params);
+    }
+
+    /**
      * Constructor.
      */
     public BoxBasicRestClient() {
@@ -46,7 +74,6 @@ public class BoxBasicRestClient implements IBoxRESTClient {
                 return 100;
             }
         });
-
         SchemeRegistry schemeReg = new SchemeRegistry();
         schemeReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
         schemeReg.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));

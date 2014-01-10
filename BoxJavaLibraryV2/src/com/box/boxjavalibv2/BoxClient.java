@@ -53,7 +53,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
 
     private final IBoxResourceHub resourceHub;
     private final IBoxJSONParser jsonParser;
-    private final IBoxRESTClient restClient;
+    private IBoxRESTClient restClient;
 
     private final BoxFilesManager filesManager;
     private final BoxFoldersManager foldersManager;
@@ -64,6 +64,12 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
     private final BoxUsersManager usersManager;
     private final BoxOAuthManager oauthManager;
     private IAuthFlowListener mAuthListener;
+
+    public BoxClient(final String clientId, final String clientSecret, final IBoxResourceHub hub, final IBoxJSONParser parser, final int maxConnection,
+        final int maxConnectionPerRoute, final long timePeriodCleanUpIdleConnection, final long idleTimeThreshold) {
+        this(clientId, clientSecret, hub, parser);
+        restClient = createMonitoredRestClient(maxConnection, maxConnectionPerRoute, timePeriodCleanUpIdleConnection, idleTimeThreshold);
+    }
 
     /**
      * @param clientId
@@ -418,6 +424,11 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      */
     protected IBoxRESTClient createRestClient() {
         return new BoxRESTClient();
+    }
+
+    protected IBoxRESTClient createMonitoredRestClient(final int maxConnection, final int maxConnectionPerRoute, final long timePeriodCleanUpIdleConnection,
+        final long idleTimeThreshold) {
+        return new BoxRESTClient(maxConnection, maxConnectionPerRoute, timePeriodCleanUpIdleConnection, idleTimeThreshold);
     }
 
     /**
