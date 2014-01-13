@@ -6,6 +6,10 @@ import com.box.boxjavalibv2.interfaces.IBoxType;
 
 public abstract class BaseBoxResourceHub implements IBoxResourceHub {
 
+    public BaseBoxResourceHub() {
+        initializeTypes();
+    }
+
     @Override
     @SuppressWarnings("rawtypes")
     public Class getClass(IBoxType type) {
@@ -30,4 +34,6 @@ public abstract class BaseBoxResourceHub implements IBoxResourceHub {
      */
     @SuppressWarnings("rawtypes")
     protected abstract Class getObjectClassGivenConcreteIBoxType(IBoxType type);
+
+    protected abstract void initializeTypes();
 }
