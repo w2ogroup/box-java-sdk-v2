@@ -3,6 +3,7 @@ package com.box.restclientv2;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.params.ConnPerRoute;
 import org.apache.http.conn.routing.HttpRoute;
@@ -56,8 +57,8 @@ public class BoxBasicRestClient implements IBoxRESTClient {
         SchemeRegistry schemeReg = new SchemeRegistry();
         schemeReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
         schemeReg.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
-        ThreadSafeClientConnManager connectionManager = new ThreadSafeClientConnManager(params, schemeReg);
-        ConnectionMonitor.monitorConnection(connectionManager, timePeriodCleanUpIdleConnection, idleTimeThreshold);
+        ClientConnectionManager connectionManager = ConnectionMonitor.getConnectionManagerInstance(params, schemeReg, timePeriodCleanUpIdleConnection,
+            idleTimeThreshold);
         mHttpClient = new DefaultHttpClient(connectionManager, params);
     }
 
