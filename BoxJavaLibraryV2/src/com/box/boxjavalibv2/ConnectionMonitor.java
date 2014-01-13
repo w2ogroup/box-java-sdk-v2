@@ -13,7 +13,7 @@ public class ConnectionMonitor {
     private static ClientConnectionManager connManager;
 
     // TODO: this need to be changed for real production code, either use a real singleton pattern or other way to get parameters of ClienConnectionManager set.
-    public static ClientConnectionManager getConnectionManagerInstance(final HttpParams params, final SchemeRegistry schemeReg,
+    public synchronized static ClientConnectionManager getConnectionManagerInstance(final HttpParams params, final SchemeRegistry schemeReg,
         final long timePeriodCleanUpIdleConnection, final long idleTimeThreshold) {
         if (connManager == null) {
             connManager = new ThreadSafeClientConnManager(params, schemeReg);
