@@ -1,9 +1,6 @@
 package com.box.boxjavalibv2.jsonparsing;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 import com.box.boxjavalibv2.dao.BoxCollaboration;
 import com.box.boxjavalibv2.dao.BoxCollection;
@@ -29,9 +26,6 @@ import com.box.boxjavalibv2.interfaces.IBoxType;
 
 public class BoxResourceHub extends BaseBoxResourceHub {
 
-    // As a performance optimization, set up string values for all types.
-    private static final Map<String, IBoxType> lowercaseStringToType = new HashMap<String, IBoxType>();
-
     public BoxResourceHub() {
         super();
     }
@@ -49,7 +43,7 @@ public class BoxResourceHub extends BaseBoxResourceHub {
 
     @Override
     public Collection<IBoxType> getAllTypes() {
-        return lowercaseStringToType.values();
+        return getLowerCaseStringToTypeMap().values();
     }
 
     @Override
@@ -110,14 +104,12 @@ public class BoxResourceHub extends BaseBoxResourceHub {
 
     @Override
     public IBoxType getTypeFromLowercaseString(String type) {
-        return lowercaseStringToType.get(type);
+        return getLowerCaseStringToTypeMap().get(type);
     }
 
     @Override
     protected void initializeTypes() {
-        for (BoxResourceType type : BoxResourceType.values()) {
-            String str = type.name().toLowerCase(Locale.ENGLISH);
-            lowercaseStringToType.put(str, type);
-        }
+        super.initializeTypes();
+        initializeEnumTypes(BoxResourceType.class);
     }
 }
