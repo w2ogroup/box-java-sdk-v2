@@ -3,6 +3,7 @@
 bin/
 gen/
 dist/
+target/
 reports/
 build/
 *.class
