@@ -14,7 +14,7 @@
 
 	<groupId>net.box</groupId>
 	<artifactId>boxjavalibv2</artifactId>
-	<version>2.1.16-SNAPSHOT</version>
+	<version>2.1.16</version>
 	<packaging>jar</packaging>
 	<name>Box Java Lib v2</name>
 
@@ -99,7 +99,7 @@
 
 	<distributionManagement>
 		<repository>
-			<id>nexus-releases</id>
+			<id>sonatype-nexus-staging</id>
 			<name>Sonatype Repository</name>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
