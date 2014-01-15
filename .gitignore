@@ -1,5 +1,6 @@
 *.war
 *.ear
+*.releaseBackup
 bin/
 gen/
 dist/
@@ -7,6 +8,7 @@ target/
 reports/
 build/
 *.class
+release.properties
 local.properties
 BoxJavaLibraryV2.jar
 .DS_Store
