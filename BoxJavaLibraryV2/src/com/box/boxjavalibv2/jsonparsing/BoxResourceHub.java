@@ -1,5 +1,7 @@
 package com.box.boxjavalibv2.jsonparsing;
 
+import java.util.Collection;
+
 import com.box.boxjavalibv2.dao.BoxCollaboration;
 import com.box.boxjavalibv2.dao.BoxCollection;
 import com.box.boxjavalibv2.dao.BoxComment;
@@ -24,6 +26,10 @@ import com.box.boxjavalibv2.interfaces.IBoxType;
 
 public class BoxResourceHub extends BaseBoxResourceHub {
 
+    public BoxResourceHub() {
+        super();
+    }
+
     @Override
     @SuppressWarnings("rawtypes")
     public Class getClass(IBoxType type) {
@@ -33,6 +39,11 @@ public class BoxResourceHub extends BaseBoxResourceHub {
         else {
             return super.getClass(type);
         }
+    }
+
+    @Override
+    public Collection<IBoxType> getAllTypes() {
+        return getLowerCaseStringToTypeMap().values();
     }
 
     @Override
@@ -89,5 +100,16 @@ public class BoxResourceHub extends BaseBoxResourceHub {
     @Override
     protected Class getConcreteClassForIBoxType() {
         return BoxResourceType.class;
+    }
+
+    @Override
+    public IBoxType getTypeFromLowercaseString(String type) {
+        return getLowerCaseStringToTypeMap().get(type);
+    }
+
+    @Override
+    protected void initializeTypes() {
+        super.initializeTypes();
+        initializeEnumTypes(BoxResourceType.class);
     }
 }

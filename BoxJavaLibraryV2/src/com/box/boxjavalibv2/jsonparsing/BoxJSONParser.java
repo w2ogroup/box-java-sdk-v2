@@ -2,10 +2,10 @@ package com.box.boxjavalibv2.jsonparsing;
 
 import java.io.InputStream;
 
-import com.box.boxjavalibv2.dao.BoxResourceType;
 import com.box.boxjavalibv2.exceptions.BoxJSONException;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
+import com.box.boxjavalibv2.interfaces.IBoxType;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -28,7 +28,7 @@ public class BoxJSONParser implements IBoxJSONParser {
         mObjectMapper.setSerializationInclusion(Include.NON_NULL);
         mObjectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
         mObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        for (BoxResourceType type : BoxResourceType.values()) {
+        for (IBoxType type : hub.getAllTypes()) {
             mObjectMapper.registerSubtypes(new NamedType(hub.getClass(type), type.toString()));
         }
     }
