@@ -8,6 +8,7 @@ import com.box.boxjavalibv2.exceptions.BoxUnexpectedHttpStatusException;
 import com.box.boxjavalibv2.exceptions.BoxUnexpectedStatus;
 import com.box.boxjavalibv2.interfaces.IBoxJSONParser;
 import com.box.boxjavalibv2.interfaces.IBoxResourceHub;
+import com.box.boxjavalibv2.interfaces.IBoxType;
 import com.box.boxjavalibv2.responseparsers.BoxObjectResponseParser;
 import com.box.boxjavalibv2.responseparsers.ErrorResponseParser;
 import com.box.restclientv2.exceptions.BoxRestException;
@@ -128,8 +129,8 @@ public abstract class BoxResourceManager {
      * @throws BoxServerException
      *             exception
      */
-    public Object getResponseAndParseAndTryCast(final DefaultBoxRequest request, final BoxResourceType type, final IBoxJSONParser parser)
-        throws BoxRestException, AuthFatalFailureException, BoxServerException {
+    public Object getResponseAndParseAndTryCast(final DefaultBoxRequest request, final IBoxType type, final IBoxJSONParser parser) throws BoxRestException,
+        AuthFatalFailureException, BoxServerException {
         Object obj = getResponseAndParse(request, type, parser);
         return tryCastObject(type, obj);
     }
@@ -149,7 +150,7 @@ public abstract class BoxResourceManager {
      * @throws AuthFatalFailureException
      *             exception indicating authenticating totally failed
      */
-    public Object getResponseAndParse(final DefaultBoxRequest request, final BoxResourceType type, final IBoxJSONParser parser) throws BoxRestException,
+    public Object getResponseAndParse(final DefaultBoxRequest request, final IBoxType type, final IBoxJSONParser parser) throws BoxRestException,
         AuthFatalFailureException {
         request.setAuth(getAuth());
         DefaultBoxResponse response = (DefaultBoxResponse) getRestClient().execute(request);
@@ -190,7 +191,7 @@ public abstract class BoxResourceManager {
      *             exception
      */
     @SuppressWarnings("rawtypes")
-    public Object tryCastObject(final BoxResourceType expectedType, final Object obj) throws BoxServerException, BoxRestException {
+    public Object tryCastObject(final IBoxType expectedType, final Object obj) throws BoxServerException, BoxRestException {
         if (obj instanceof BoxServerError) {
             throw new BoxServerException((BoxServerError) obj);
         }

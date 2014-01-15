@@ -42,10 +42,12 @@ public class BoxTypedObject extends BoxObject {
     }
 
     /**
-     * Get BoxResourceType of this object.
+     * Get BoxResourceType of this object. using getBoxResourceType() instead. use getTypeFromLowercaseString method in IBoxResourceHub to parse the result
+     * String into type object.
      * 
      * @return
      */
+    @Deprecated
     public BoxResourceType resourceType() {
         return BoxResourceType.getTypeFromLowercaseString(getType());
     }

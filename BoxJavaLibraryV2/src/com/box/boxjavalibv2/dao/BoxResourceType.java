@@ -71,12 +71,10 @@ public enum BoxResourceType implements IBoxType {
 
     // As a performance optimization, set up string values for all types.
     private static final Map<BoxResourceType, String> typeToLowercaseString = new HashMap<BoxResourceType, String>();
-    private static final Map<String, BoxResourceType> lowercaseStringToType = new HashMap<String, BoxResourceType>();
     static {
         for (BoxResourceType type : values()) {
-            String str = type.name().toLowerCase(Locale.ENGLISH);
+            String str = type.name().toLowerCase(Locale.US);
             typeToLowercaseString.put(type, str);
-            lowercaseStringToType.put(str, type);
         }
     }
 
@@ -95,12 +93,14 @@ public enum BoxResourceType implements IBoxType {
     }
 
     /**
-     * Get the BoxResourceType from a lower case string value. For example "file" would return BoxResourceType.FILE
+     * Get the BoxResourceType from a lower case string value. For example "file" would return BoxResourceType.FILE Deprecated, use getTypeFromLowercaseString
+     * method in IBoxResourceHub instead.
      * 
      * @param string
      * @return
      */
+    @Deprecated
     public static BoxResourceType getTypeFromLowercaseString(final String string) {
-        return lowercaseStringToType.get(string);
+        return Enum.valueOf(BoxResourceType.class, string.toUpperCase(Locale.US));
     }
 }
