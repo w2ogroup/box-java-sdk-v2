@@ -23,7 +23,6 @@ public class ConnectionMonitor {
     private static long timePeriodCleanUpIdleConnection = 30000;
     private static long idleTimeThreshold = 30000;
 
-    // TODO: this need to be changed for real production code, either use a real singleton pattern or other way to get parameters of ClienConnectionManager set.
     public synchronized static ClientConnectionManager getConnectionManagerInstance() {
         if (connManager == null) {
             SchemeRegistry schemeReg = new SchemeRegistry();
