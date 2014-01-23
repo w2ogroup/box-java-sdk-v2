@@ -65,6 +65,18 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
     private final BoxOAuthManager oauthManager;
     private IAuthFlowListener mAuthListener;
 
+    /**
+     * This constructor has some connection parameters. They are used to periodically close idle connections that HttpClient opens.
+     * 
+     * @param maxConnection
+     *            maximum connection. Recommend value: 1000
+     * @param maxConnectionPerRoute
+     *            maximum connection allowed per route. Recommend value: 50
+     * @param timePeriodCleanUpIdleConnection
+     *            clean up idle connection every such period of time. in miliseconds. Recommend value: 300000(5 minutes)
+     * @param idleTimeThreshold
+     *            an idle connection will be closed if idled above this threshold of time. in miliseconds. Recommend value: 60000(1 minute)
+     */
     public BoxClient(final String clientId, final String clientSecret, final IBoxResourceHub hub, final IBoxJSONParser parser, final int maxConnection,
         final int maxConnectionPerRoute, final long timePeriodCleanUpIdleConnection, final long idleTimeThreshold) {
         this(clientId, clientSecret, hub, parser);

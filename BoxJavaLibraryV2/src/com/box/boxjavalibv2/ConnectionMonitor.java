@@ -18,10 +18,10 @@ import org.apache.http.params.HttpParams;
 public class ConnectionMonitor {
 
     private static ClientConnectionManager connManager;
-    private static int maxConnectionPerRoute = 100;
-    private static int maxConnection = 5000;
-    private static long timePeriodCleanUpIdleConnection = 30000;
-    private static long idleTimeThreshold = 30000;
+    private static int maxConnectionPerRoute = 50;
+    private static int maxConnection = 1000;
+    private static long timePeriodCleanUpIdleConnection = 300000;
+    private static long idleTimeThreshold = 60000;
 
     public synchronized static ClientConnectionManager getConnectionManagerInstance() {
         if (connManager == null) {
