@@ -45,21 +45,12 @@ public class BoxBasicRestClient implements IBoxRESTClient {
      *            time threshold, an idle connection will be closed if idled above this threshold of time.
      */
     public BoxBasicRestClient(final int maxConnection, final int maxConnectionPerRoute, final long timePeriodCleanUpIdleConnection, final long idleTimeThreshold) {
-        HttpParams params = new BasicHttpParams();
-        ConnManagerParams.setMaxTotalConnections(params, maxConnection);
-        ConnManagerParams.setMaxConnectionsPerRoute(params, new ConnPerRoute() {
-
-            @Override
-            public int getMaxForRoute(HttpRoute httpRoute) {
-                return maxConnectionPerRoute;
-            }
-        });
-        SchemeRegistry schemeReg = new SchemeRegistry();
-        schemeReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-        schemeReg.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
-        ClientConnectionManager connectionManager = ConnectionMonitor.getConnectionManagerInstance(params, schemeReg, timePeriodCleanUpIdleConnection,
-            idleTimeThreshold);
-        mHttpClient = new DefaultHttpClient(connectionManager, params);
+        ConnectionMonitor.setIdleTimeThreshold(idleTimeThreshold);
+        ConnectionMonitor.setMaxConnection(maxConnectionPerRoute);
+        ConnectionMonitor.setMaxConnectionPerRoute(maxConnectionPerRoute);
+        ConnectionMonitor.setTimePeriodCleanUpIdleConnection(timePeriodCleanUpIdleConnection);
+        ClientConnectionManager connectionManager = ConnectionMonitor.getConnectionManagerInstance();
+        mHttpClient = new DefaultHttpClient(connectionManager, ConnectionMonitor.getHttpParams());
     }
 
     /**

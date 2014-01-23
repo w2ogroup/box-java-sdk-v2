@@ -4,34 +4,52 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.params.ConnManagerParams;
+import org.apache.http.conn.params.ConnPerRoute;
+import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
 public class ConnectionMonitor {
 
     private static ClientConnectionManager connManager;
+    private static int maxConnectionPerRoute = 100;
+    private static int maxConnection = 5000;
+    private static long timePeriodCleanUpIdleConnection = 30000;
+    private static long idleTimeThreshold = 30000;
 
     // TODO: this need to be changed for real production code, either use a real singleton pattern or other way to get parameters of ClienConnectionManager set.
-    public synchronized static ClientConnectionManager getConnectionManagerInstance(final HttpParams params, final SchemeRegistry schemeReg,
-        final long timePeriodCleanUpIdleConnection, final long idleTimeThreshold) {
+    public synchronized static ClientConnectionManager getConnectionManagerInstance() {
         if (connManager == null) {
-            connManager = new ThreadSafeClientConnManager(params, schemeReg);
-            ConnectionMonitor.monitorConnection(connManager, timePeriodCleanUpIdleConnection, idleTimeThreshold);
+            SchemeRegistry schemeReg = new SchemeRegistry();
+            schemeReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+            schemeReg.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
+            connManager = new ThreadSafeClientConnManager(getHttpParams(), schemeReg);
+            monitorConnection(connManager);
         }
 
         return connManager;
     }
 
-    /**
-     * 
-     * @param connManager
-     * @param timePeriodCleanUpIdleConnection
-     *            clean up idle connection every such period of time.
-     * @param idleTimeThreshold
-     *            time threshold, an idle connection will be closed if idled above this threshold of time.
-     */
-    private static void monitorConnection(ClientConnectionManager connManager, final long timePeriodCleanUpIdleConnection, final long idleTimeThreshold) {
+    public static HttpParams getHttpParams() {
+        HttpParams params = new BasicHttpParams();
+        ConnManagerParams.setMaxTotalConnections(params, maxConnection);
+        ConnManagerParams.setMaxConnectionsPerRoute(params, new ConnPerRoute() {
+
+            @Override
+            public int getMaxForRoute(HttpRoute httpRoute) {
+                return maxConnectionPerRoute;
+            }
+        });
+        return params;
+    }
+
+    private static void monitorConnection(ClientConnectionManager connManager) {
         final WeakReference<ClientConnectionManager> ref = new WeakReference<ClientConnectionManager>(connManager);
         connManager = null;
         Thread monitorThread = new Thread() {
@@ -59,5 +77,29 @@ public class ConnectionMonitor {
             }
         };
         monitorThread.start();
+    }
+
+    public static void setMaxConnectionPerRoute(int maxConnectionPerRoute) {
+        ConnectionMonitor.maxConnectionPerRoute = maxConnectionPerRoute;
+    }
+
+    public static void setMaxConnection(int maxConnection) {
+        ConnectionMonitor.maxConnection = maxConnection;
+    }
+
+    /**
+     * @param timePeriodCleanUpIdleConnection
+     *            clean up idle connection every such period of time. in miliseconds.
+     */
+    public static void setTimePeriodCleanUpIdleConnection(long timePeriodCleanUpIdleConnection) {
+        ConnectionMonitor.timePeriodCleanUpIdleConnection = timePeriodCleanUpIdleConnection;
+    }
+
+    /**
+     * @param idleTimeThreshold
+     *            an idle connection will be closed if idled above this threshold of time. in miliseconds.
+     */
+    public static void setIdleTimeThreshold(long idleTimeThreshold) {
+        ConnectionMonitor.idleTimeThreshold = idleTimeThreshold;
     }
 }
