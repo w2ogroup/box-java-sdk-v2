@@ -38,6 +38,14 @@ public class BoxRESTClient extends BoxBasicRestClient {
     private boolean keepConnectionOpen = true;
     private int clientTimeOut = -1;
 
+    public BoxRESTClient() {
+        super();
+    }
+
+    public BoxRESTClient(final int maxConnection, final int maxConnectionPerRoute, final long timePeriodCleanUpIdleConnection, final long idleTimeThreshold) {
+        super(maxConnection, maxConnectionPerRoute, timePeriodCleanUpIdleConnection, idleTimeThreshold);
+    }
+
     /**
      * Accept a visitor to visit http request/response.
      * 
