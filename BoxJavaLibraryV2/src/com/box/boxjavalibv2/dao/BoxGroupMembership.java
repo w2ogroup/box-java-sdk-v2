@@ -13,7 +13,6 @@ public class BoxGroupMembership extends BoxTypedObject {
 
     public final static String ROLE_ADMIN = "admin";
     public final static String ROLE_MEMBER = "member";
-    public final static String ROLE_SUBMASTER = "submaster";
 
     public BoxGroupMembership() {
         setType(BoxResourceType.GROUP_MEMBERSHIP.toString());

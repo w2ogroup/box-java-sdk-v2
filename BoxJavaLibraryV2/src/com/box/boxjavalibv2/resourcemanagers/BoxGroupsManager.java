@@ -79,7 +79,7 @@ public class BoxGroupsManager extends BoxResourceManager {
      * @param userId
      *            id of the user to be added.
      * @param role
-     *            role of the user.
+     *            role of the user. e.g. BoxGroupMembership.ROLE_ADMIN
      */
     public BoxGroupMembership createMembership(String groupId, String userId, String role) throws BoxRestException, AuthFatalFailureException,
         BoxServerException {
