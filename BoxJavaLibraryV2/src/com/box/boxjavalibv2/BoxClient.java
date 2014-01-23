@@ -196,7 +196,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
     }
 
     /**
-     * Get the BoxFilesManager, which can be used to make API calls on groups endpoints.
+     * Get the BoxGroupsManager, which can be used to make API calls on groups endpoints.
      */
     public BoxGroupsManager getGroupsManager() {
         return groupsManager;
