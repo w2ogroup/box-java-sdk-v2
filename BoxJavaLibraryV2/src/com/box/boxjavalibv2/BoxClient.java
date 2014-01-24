@@ -28,6 +28,7 @@ import com.box.boxjavalibv2.resourcemanagers.BoxCommentsManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxEventsManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxFilesManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxFoldersManager;
+import com.box.boxjavalibv2.resourcemanagers.BoxGroupsManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxOAuthManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxResourceManager;
 import com.box.boxjavalibv2.resourcemanagers.BoxSearchManager;
@@ -63,6 +64,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
     private final BoxCommentsManager commentsManager;
     private final BoxUsersManager usersManager;
     private final BoxOAuthManager oauthManager;
+    private final BoxGroupsManager groupsManager;
     private IAuthFlowListener mAuthListener;
 
     /**
@@ -108,6 +110,7 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
         commentsManager = new BoxCommentsManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
         usersManager = new BoxUsersManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
         oauthManager = new BoxOAuthManager(getConfig(), getResourceHub(), getJSONParser(), getRestClient());
+        groupsManager = new BoxGroupsManager(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
     }
 
     @Deprecated
@@ -208,6 +211,13 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
      */
     public BoxOAuthManager getOAuthManager() {
         return oauthManager;
+    }
+
+    /**
+     * Get the BoxGroupsManager, which can be used to make API calls on groups endpoints.
+     */
+    public BoxGroupsManager getGroupsManager() {
+        return groupsManager;
     }
 
     /**

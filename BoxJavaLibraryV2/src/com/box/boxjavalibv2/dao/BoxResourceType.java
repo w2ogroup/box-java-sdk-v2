@@ -30,8 +30,10 @@ public enum BoxResourceType implements IBoxType {
     USER,
     /** A plural format of {@link #USER}. */
     USERS,
-    /** A group of {@link #GROUPS}. */
+    /** A group. */
     GROUP,
+    /** A plural format of {@link #GROUP}. */
+    GROUPS,
     /** A comment. */
     COMMENT,
     /** A plural format of {@link #COMMENT}. */
@@ -67,7 +69,11 @@ public enum BoxResourceType implements IBoxType {
     /** Administrator settings */
     ADMIN_SETTINGS,
     /** Login token */
-    LOGIN_TOKEN;
+    LOGIN_TOKEN,
+    /** group membership. */
+    GROUP_MEMBERSHIP,
+    /** A plural format of {@link #GROUP_MEMBERSHIP}. */
+    GROUP_MEMBERSHIPS;
 
     // As a performance optimization, set up string values for all types.
     private static final Map<BoxResourceType, String> typeToLowercaseString = new HashMap<BoxResourceType, String>();

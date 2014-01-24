@@ -81,7 +81,7 @@ public class BoxCollaboration extends BoxTypedObject {
      *            the accessible_by to set
      */
     @JsonProperty(FIELD_ACCESSIBLE_BY)
-    private void setAccessibleBy(BoxUser accessibleBy) {
+    private void setAccessibleBy(BoxUserBase accessibleBy) {
         put(FIELD_ACCESSIBLE_BY, accessibleBy);
     }
 
@@ -91,8 +91,8 @@ public class BoxCollaboration extends BoxTypedObject {
      * @return the accessible_by
      */
     @JsonProperty(FIELD_ACCESSIBLE_BY)
-    public BoxUser getAccessibleBy() {
-        return (BoxUser) getValue(FIELD_ACCESSIBLE_BY);
+    public BoxUserBase getAccessibleBy() {
+        return (BoxUserBase) getValue(FIELD_ACCESSIBLE_BY);
     }
 
     /**

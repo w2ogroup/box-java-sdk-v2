@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Box user.
  */
-public class BoxUser extends BoxTypedObject {
+public class BoxUser extends BoxUserBase {
 
     /** Used when the user's enterprise role is admin. */
     public static final String ROLE_ADMIN = "admin";
@@ -37,7 +37,6 @@ public class BoxUser extends BoxTypedObject {
     public static final String FIELD_IS_EXEMPT_FROM_LOGIN_VERIFICATION = "is_exempt_from_login_verficiation";
     /** Mini representation of this user's enterprise, including the ID of its enterprise */
     public static final String FIELD_ENTERPRISE = "enterprise";
-    public static final String FIELD_NAME = "name";
     public static final String FIELD_LOGIN = "login";
     public static final String FIELD_LANGUAGE = "language";
     public static final String FIELD_SPACE_AMOUNT = "space_amount";
@@ -56,6 +55,7 @@ public class BoxUser extends BoxTypedObject {
      * Constructor.
      */
     public BoxUser() {
+        super();
         setType(BoxResourceType.USER.toString());
     }
 
@@ -75,27 +75,6 @@ public class BoxUser extends BoxTypedObject {
      */
     public BoxUser(Map<String, Object> map) {
         super(map);
-    }
-
-    /**
-     * Get name of this user.
-     * 
-     * @return name
-     */
-    @JsonProperty(FIELD_NAME)
-    public String getName() {
-        return (String) getValue(FIELD_NAME);
-    }
-
-    /**
-     * Setter. This is only used by {@see <a href="http://jackson.codehaus.org">Jackson JSON processer</a>}
-     * 
-     * @param name
-     *            name
-     */
-    @JsonProperty(FIELD_NAME)
-    private void setName(String name) {
-        put(FIELD_NAME, name);
     }
 
     /**

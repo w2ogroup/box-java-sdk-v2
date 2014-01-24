@@ -12,6 +12,7 @@ import com.box.boxjavalibv2.dao.BoxFile;
 import com.box.boxjavalibv2.dao.BoxFileVersion;
 import com.box.boxjavalibv2.dao.BoxFolder;
 import com.box.boxjavalibv2.dao.BoxGroup;
+import com.box.boxjavalibv2.dao.BoxGroupMembership;
 import com.box.boxjavalibv2.dao.BoxItem;
 import com.box.boxjavalibv2.dao.BoxLock;
 import com.box.boxjavalibv2.dao.BoxOAuthToken;
@@ -61,6 +62,8 @@ public class BoxResourceHub extends BaseBoxResourceHub {
                 return BoxUser.class;
             case GROUP:
                 return BoxGroup.class;
+            case GROUP_MEMBERSHIP:
+                return BoxGroupMembership.class;
             case FILE_VERSION:
                 return BoxFileVersion.class;
             case ITEM:
@@ -86,10 +89,13 @@ public class BoxResourceHub extends BaseBoxResourceHub {
             case ITEMS:
             case FILES:
             case USERS:
+            case GROUPS:
             case COMMENTS:
             case FILE_VERSIONS:
             case COLLABORATIONS:
             case EMAIL_ALIASES:
+            case WEB_LINKS:
+            case GROUP_MEMBERSHIPS:
                 return BoxCollection.class;
             default:
                 return BoxTypedObject.class;
