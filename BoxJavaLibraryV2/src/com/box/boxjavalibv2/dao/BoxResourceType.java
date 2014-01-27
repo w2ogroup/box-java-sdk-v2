@@ -58,18 +58,12 @@ public enum BoxResourceType implements IBoxType {
     EVENT,
     /** A plural format of {@link #EVENT}. */
     EVENTS,
-    /** Updates */
-    UPDATES,
     /** Realtime server. */
     REALTIME_SERVER,
     /** File lock (shows up in event stream). */
     LOCK,
     /** Service action is a subtype of file lock. */
     SERVICE_ACTION,
-    /** Administrator settings */
-    ADMIN_SETTINGS,
-    /** Login token */
-    LOGIN_TOKEN,
     /** group membership. */
     GROUP_MEMBERSHIP,
     /** A plural format of {@link #GROUP_MEMBERSHIP}. */
