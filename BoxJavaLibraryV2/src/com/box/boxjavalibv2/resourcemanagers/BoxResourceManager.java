@@ -64,7 +64,7 @@ public abstract class BoxResourceManager {
         return mAuth;
     }
 
-    IBoxRESTClient getRestClient() {
+    protected IBoxRESTClient getRestClient() {
         return this.mRestClient;
     }
 
