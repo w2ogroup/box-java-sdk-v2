@@ -123,8 +123,10 @@ public class BoxClient extends BoxBase implements IAuthFlowListener {
         this(clientId, clientSecret, null, null);
     }
 
-    public void pluginResourceManager(String key, IPluginResourceManagerBuilder builder) {
-        pluginResourceManagers.put(key, builder.build(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient()));
+    public BoxResourceManager pluginResourceManager(String key, IPluginResourceManagerBuilder builder) {
+        BoxResourceManager manager = builder.build(getConfig(), getResourceHub(), getJSONParser(), getAuth(), getRestClient());
+        pluginResourceManagers.put(key, manager);
+        return manager;
     }
 
     /**
